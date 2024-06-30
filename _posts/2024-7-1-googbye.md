@@ -10,18 +10,18 @@ tags:
 
 > 2024年7月1日，正式結業。
 
-![](https://raw.githubusercontent.com/ychlin1986/ychlin1986.github.io/master/img/2024/yongning1.jpg)
+![](https://github.com/Lxp1986/lxp1986.github.io/blob/master/img/2024/yongning1.JPG?raw=true)
 ------
 
-![](https://raw.githubusercontent.com/ychlin1986/ychlin1986.github.io/master/img/2024/yongning2.jpg)
+![](https://github.com/Lxp1986/lxp1986.github.io/blob/master/img/2024/yongning2.JPG?raw=true)
 ------
 
 再也不見，新農村！
 
-![](https://raw.githubusercontent.com/ychlin1986/ychlin1986.github.io/master/img/2024/yongning3.jpg)
+![](https://github.com/Lxp1986/lxp1986.github.io/blob/master/img/2024/yongning3.JPG?raw=true)
 ------
 
-![](https://raw.githubusercontent.com/ychlin1986/ychlin1986.github.io/master/img/2024/yongning4.jpg)
+![](https://github.com/Lxp1986/lxp1986.github.io/blob/master/img/2024/yongning4.JPG?raw=true)
 ------
 
 Goodbye！
