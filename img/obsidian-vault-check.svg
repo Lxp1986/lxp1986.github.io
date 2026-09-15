@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 250" width="780" height="250" font-family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif">
+  <rect width="780" height="250" fill="#f7f8fa"/>
+  <text x="24" y="34" font-size="17" font-weight="600" fill="#2f3b4c">obsidian-check.py 扫一遍做什么</text>
+
+  <!-- step boxes -->
+  <g fill="#ffffff" stroke="#2f3b4c" stroke-width="1.4">
+    <rect x="24" y="58" width="150" height="58" rx="6"/>
+    <rect x="204" y="58" width="150" height="58" rx="6"/>
+    <rect x="384" y="58" width="160" height="58" rx="6"/>
+  </g>
+  <g font-size="13" fill="#2f3b4c" text-anchor="middle">
+    <text x="99" y="82">遍历库内 .md</text>
+    <text x="99" y="101" font-size="11" fill="#6b7684">跳过 .trash / 模板</text>
+    <text x="279" y="82">按文件名建索引</text>
+    <text x="279" y="101" font-size="11" fill="#6b7684">笔记 + 附件分开放</text>
+    <text x="464" y="82">逐篇解析 [[链接]]</text>
+    <text x="464" y="101" font-size="11" fill="#6b7684">切掉 | 别名和 # 锚点</text>
+  </g>
+  <g stroke="#8a94a2" stroke-width="1.4" fill="none" marker-end="url(#a)">
+    <path d="M174 87 H200"/>
+    <path d="M354 87 H380"/>
+    <path d="M544 87 H576"/>
+  </g>
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 z" fill="#8a94a2"/>
+    </marker>
+  </defs>
+
+  <!-- report card -->
+  <rect x="580" y="46" width="176" height="116" rx="6" fill="#ffffff" stroke="#3d7eff" stroke-width="1.4"/>
+  <text x="668" y="68" font-size="13" font-weight="600" fill="#3d7eff" text-anchor="middle">报告</text>
+  <g font-size="12" fill="#2f3b4c">
+    <text x="596" y="92">· 断链 + 行号</text>
+    <text x="596" y="112">· 重名笔记</text>
+    <text x="596" y="132">· 孤儿笔记</text>
+    <text x="596" y="152">· 缺 frontmatter</text>
+  </g>
+
+  <!-- footer note -->
+  <line x1="24" y1="188" x2="756" y2="188" stroke="#d8dde5" stroke-width="1"/>
+  <text x="24" y="212" font-size="12.5" fill="#6b7684">只读，不改任何文件；iCloud 里没落地的文件报 Errno 11，重试后仍读不了的单列一行，不中断整次扫描。</text>
+  <text x="24" y="233" font-size="12.5" fill="#6b7684">标准库实现，不需要 pip 装任何依赖。</text>
+</svg>

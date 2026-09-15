@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>FreeCAD 导 DXF 丢文字标注，换旧版导出器就好了 | 三色风</title><meta name="author" content="Levi"><meta name="copyright" content="Levi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f0e4"><meta name="description" content="FreeCAD 默认的 C++ 导出器不导文字和标注，导出的 DXF 只剩几何线。勾上「使用旧版 Python 导出器」就回来了；中文变方块是字体映射问题，曲线多的图还得留个心眼。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FreeCAD 导 DXF 丢文字标注，换旧版导出器就好了">
+<meta property="og:url" content="https://www.lxpyll.top/posts/2026/08/25/FreeCAD%E5%AF%BCDXF%E4%B8%A2%E6%96%87%E5%AD%97%E6%A0%87%E6%B3%A8-%E6%8D%A2%E6%97%A7%E7%89%88%E5%AF%BC%E5%87%BA%E5%99%A8%E5%B0%B1%E5%A5%BD%E4%BA%86/">
+<meta property="og:site_name" content="三色风">
+<meta property="og:description" content="FreeCAD 默认的 C++ 导出器不导文字和标注，导出的 DXF 只剩几何线。勾上「使用旧版 Python 导出器」就回来了；中文变方块是字体映射问题，曲线多的图还得留个心眼。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lxpyll.top/img/fc-dxf-exporters.svg">
+<meta property="article:published_time" content="2026-08-25T14:30:00.000Z">
+<meta property="article:modified_time" content="2026-09-15T14:43:25.163Z">
+<meta property="article:author" content="Levi">
+<meta property="article:tag" content="DXF">
+<meta property="article:tag" content="FreeCAD">
+<meta property="article:tag" content="LibreCAD">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="施工图">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.lxpyll.top/img/og.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "FreeCAD 导 DXF 丢文字标注，换旧版导出器就好了",
+  "url": "https://www.lxpyll.top/posts/2026/08/25/FreeCAD%E5%AF%BCDXF%E4%B8%A2%E6%96%87%E5%AD%97%E6%A0%87%E6%B3%A8-%E6%8D%A2%E6%97%A7%E7%89%88%E5%AF%BC%E5%87%BA%E5%99%A8%E5%B0%B1%E5%A5%BD%E4%BA%86/",
+  "image": "https://www.lxpyll.top/img/fc-dxf-exporters.svg",
+  "datePublished": "2026-08-25T14:30:00.000Z",
+  "dateModified": "2026-09-15T14:43:25.163Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Levi",
+      "url": "https://www.lxpyll.top"
+    }
+  ],
+  "description": "FreeCAD 默认的 C++ 导出器不导文字和标注，导出的 DXF 只剩几何线。勾上「使用旧版 Python 导出器」就回来了；中文变方块是字体映射问题，曲线多的图还得留个心眼。"
+}</script><link rel="shortcut icon" href="/img/levi-avatar.svg"><link rel="canonical" href="https://www.lxpyll.top/posts/2026/08/25/FreeCAD%E5%AF%BCDXF%E4%B8%A2%E6%96%87%E5%AD%97%E6%A0%87%E6%B3%A8-%E6%8D%A2%E6%97%A7%E7%89%88%E5%AF%BC%E5%87%BA%E5%99%A8%E5%B0%B1%E5%A5%BD%E4%BA%86/"><link rel="alternate" type="application/atom+xml" title="三色风 RSS" href="https://www.lxpyll.top/atom.xml"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#231d17')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f0e4')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&amp;family=Noto+Serif+SC:wght@400;500;600;700;900&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":2,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'FreeCAD 导 DXF 丢文字标注，换旧版导出器就好了',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-78CVHQTCM7"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-78CVHQTCM7')</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/custom.css?v=20260728-hero-poster-3"><meta name="msvalidate.01" content="C77AD03ECD54E088B341BF1F23909B07"><meta name="generator" content="Hexo 8.1.2"></head><body><a class="skip-link" href="#content-inner">跳到主要内容</a><div class="bg-animation" id="web_bg" style="background-color: #f7f0e4;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus" aria-hidden="true" inert="inert"><div class="avatar-img text-center"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">三色风</span></a><a class="nav-page-title" href="/"><span class="site-name">FreeCAD 导 DXF 丢文字标注，换旧版导出器就好了</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><button class="site-page social-icon search" type="button" aria-label="搜索"><i class="fas fa-search fa-fw"></i><span> 搜索</span></button></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><button id="toggle-menu" type="button" aria-label="打开导航菜单" aria-controls="sidebar-menus" aria-expanded="false"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></button></div></nav></header><main class="layout" id="content-inner" tabindex="-1"><div id="post"><div id="post-info"><h1 class="post-title">FreeCAD 导 DXF 丢文字标注，换旧版导出器就好了</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-25T14:30:00.000Z" title="发表于 2026-08-25 22:30:00">2026-08-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-15T14:43:25.163Z" title="更新于 2026-09-15 22:43:25">2026-09-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E7%A8%8B%E8%BD%AF%E4%BB%B6/">工程软件</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><p>画施工图这行，FreeCAD 出图之后绕不开一步：导 DXF。我的流程是 FreeCAD 里画好，导 DXF 给做预算的或者施工队，对方用 LibreCAD 或者 CAD 打开接着干活。</p>
+<p>上个月给一个村道项目的排水断面图收尾，画完导 DXF 发出去，隔天对方回一句：标注呢？我打开文件一看，线都在，尺寸标注全没了，图上的文字说明也一个不剩。图能看，但没尺寸没标注，等于白画。</p>
+<p>查了半天，问题出在 FreeCAD 的默认导出器上。</p>
+<h2 id="两个导出器，差在哪"><a href="#两个导出器，差在哪" class="headerlink" title="两个导出器，差在哪"></a>两个导出器，差在哪</h2><p>FreeCAD 里有两套 DXF 导出器：</p>
+<ul>
+<li>C++ 导出器：默认用的这个，速度快，但导出的东西少</li>
+<li>旧版 Python 导出器：慢，但功能全</li>
+</ul>
+<p>官方文档里的对比表列得很清楚：文字和标注、颜色、组和块，默认的 C++ 导出器一概不导出。也就是说你在 Draft 工作台里标了一堆尺寸、写了几行说明，导出来只剩几何线。速度快是快，该丢的一样没少丢。</p>
+<h2 id="第一步：换旧版导出器"><a href="#第一步：换旧版导出器" class="headerlink" title="第一步：换旧版导出器"></a>第一步：换旧版导出器</h2><p>解决就一步：</p>
+<ol>
+<li>打开 FreeCAD，菜单：编辑 → 偏好设置 → 导入&#x2F;导出 → DXF</li>
+<li>勾选「使用旧版 Python 导出器」（Use legacy python exporter）</li>
+<li>如果提示需要下载 DXF 转换库，把「允许自动下载并更新 DXF 库」也勾上——这个库因为许可证原因不能打包进 FreeCAD，第一次会自动下载，之后就没事了</li>
+<li>重新导出，文字标注就回来了</li>
+</ol>
+<h2 id="中文变方块，是字体的事"><a href="#中文变方块，是字体的事" class="headerlink" title="中文变方块，是字体的事"></a>中文变方块，是字体的事</h2><p>换旧版导出器之后，文字是有了，但 LibreCAD 里打开全是方块。一开始以为导出坏了，后来才搞明白：DXF 里的文字内容是 Unicode，没坏，坏的是打开端的字体映射。TEXT 实体里带一个字体名，LibreCAD 找不到对应字体，就画方块。</p>
+<p>处理办法：LibreCAD 里选中文字，属性编辑器里把字体换成系统里带的中文字体，方块立刻变回字。更省事的做法是导出前在 FreeCAD 里把 Draft 文字对象的字体属性设成系统里真实存在的中文字体，一劳永逸。</p>
+<h2 id="曲线和图层，两个边角料"><a href="#曲线和图层，两个边角料" class="headerlink" title="曲线和图层，两个边角料"></a>曲线和图层，两个边角料</h2><p>旧版导出器对椭圆支持不好，官方论坛都承认这事。河道断面、边坡这种带曲线的图，用旧版导出器，椭圆容易出问题。我的做法是看情况：曲线多就先用默认导出器把几何出干净，标注到 LibreCAD 里补；曲线少就直接旧版一把梭。要是用脚本导出，<code>importDXF.export()</code> 里有个 <code>nospline</code> 参数，默认 False 按样条导，设 True 就把样条离散成多段线，跟下游软件不兼容时可以试这个。</p>
+<p>图层也顺带说一句。默认导出器按对象名映射图层，旧版按 Draft 工作台的图层（Layer）映射。想让 DXF 里图层名可控、分得清，画的时候就把线分门别类放进 Draft 图层里，导出后在 LibreCAD 里才好开关图层。工程图不分层，后面改图能改到哭。</p>
+<p>现在的流程固定下来了：Draft 工作台里把几何和标注都画好，图层分好，旧版导出器导出，LibreCAD 打开核对一遍字体，再发出去。没再出过丢标注的事。官方文档在 <a target="_blank" rel="noopener" href="https://wiki.freecad.org/Draft_DXF">wiki.freecad.org&#x2F;Draft_DXF</a>，对比表值得存个书签。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top">Levi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top/posts/2026/08/25/FreeCAD%E5%AF%BCDXF%E4%B8%A2%E6%96%87%E5%AD%97%E6%A0%87%E6%B3%A8-%E6%8D%A2%E6%97%A7%E7%89%88%E5%AF%BC%E5%87%BA%E5%99%A8%E5%B0%B1%E5%A5%BD%E4%BA%86/">https://www.lxpyll.top/posts/2026/08/25/FreeCAD%E5%AF%BCDXF%E4%B8%A2%E6%96%87%E5%AD%97%E6%A0%87%E6%B3%A8-%E6%8D%A2%E6%97%A7%E7%89%88%E5%AF%BC%E5%87%BA%E5%99%A8%E5%B0%B1%E5%A5%BD%E4%BA%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://www.lxpyll.top" target="_blank">三色风</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%99%E7%A8%8B/">教程</a><a class="post-meta__tags" href="/tags/FreeCAD/">FreeCAD</a><a class="post-meta__tags" href="/tags/DXF/">DXF</a><a class="post-meta__tags" href="/tags/LibreCAD/">LibreCAD</a><a class="post-meta__tags" href="/tags/%E6%96%BD%E5%B7%A5%E5%9B%BE/">施工图</a></div><div class="post-share"><div class="social-share" data-image="/img/fc-dxf-exporters.svg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat-reward-qr.jpg" alt="微信支付"/></a><div class="post-qr-code-desc">微信支付</div></li><li class="reward-item"><a href="/img/alipay-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay-reward-qr.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/2026/08/26/%E5%8D%9A%E5%AE%A2%E6%9B%B4%E6%96%B0%E4%B8%8D%E7%94%9F%E6%95%88-%E6%88%91%E5%9C%A8%E9%83%A8%E7%BD%B2%E6%B5%81%E7%A8%8B%E9%87%8C%E5%8A%A0%E4%BA%86Cloudflare%E8%87%AA%E5%8A%A8%E6%B8%85%E7%BC%93%E5%AD%98/" title="博客更新不生效，我在部署流程里加了 Cloudflare 自动清缓存"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">博客更新不生效，我在部署流程里加了 Cloudflare 自动清缓存</div></div><div class="info-2"><div class="info-item-1">博客是 Hexo 压 GitHub Pages，前面套了层 Cloudflare CDN。有段时间发完文章，手机刷半天还是旧页面，一度以为 Actions 部署挂了，打开日志一看，构建、部署都成功了，就是页面不更新。 后来才搞明白：Cloudflare 默认根本不缓存 HTML（官方文档原话：the CDN does not cache HTML or...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/24/python-docx%E7%94%9F%E6%88%90%E6%8A%A5%E4%BB%B7%E4%B9%A6-%E4%B8%AD%E6%96%87%E5%AD%97%E4%BD%93%E5%92%8C%E8%A1%A8%E6%A0%BC%E8%BE%B9%E6%A1%86%E8%BF%99%E4%B9%88%E8%AE%BE%E7%BD%AE/" title="python-docx 生成报价书，中文字体和表格边框这么设置"><img class="cover" src="/img/rfonts-eastasia.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">python-docx 生成报价书，中文字体和表格边框这么设置</div></div><div class="info-2"><div class="info-item-1">干工程劳务这行，报价书是高频产出。一个项目清单几十行，单价改来改去，每次都在 Word 里重新排版：字体字号、表格边框、表头底纹，烦得很。后来我把报价书改成脚本生成，改单价只改一个 Python 列表，几秒钟出一份新文档。 但第一个坑马上就来了：设置了 font.name = &#39;宋体&#39;，Word 里打开，中文还是默认字体。查了一圈才知道...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/2026/09/05/%E4%B8%80%E5%A0%86DXF%E5%9B%BE%E7%BA%B8%E8%A6%81%E7%AE%97%E9%9D%A2%E7%A7%AF-freecadcmd%E4%B8%80%E4%B8%AA%E8%84%9A%E6%9C%AC%E5%85%A8%E8%B7%91%E5%AE%8C/" title="一堆 DXF 图纸要算面积，freecadcmd 一个脚本全跑完"><img class="cover" src="/img/fc-dxf-area-flow.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-05</div><div class="info-item-2">一堆 DXF 图纸要算面积，freecadcmd 一个脚本全跑完</div></div><div class="info-2"><div class="info-item-1">干工程的总逃不掉一个动作：收方、算量，最后落到”这块多少平方”。图纸来了，要么是设计院丢过来的 DXF，要么是自己画的图，反正最后都得要个面积数。 日常画图我用 LibreCAD 为主，量面积要一个封闭对象点一次，点完还得自己拿笔记。几十个井盖、地块，图一多就烦。 后来想到：FreeCAD 不是一直装在机器上吗？它带一个命令行版 freecadcmd，...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/10/%E7%94%A8Obsidian%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93%E6%95%99%E7%A8%8B/" title="笔记散在五个地方，我最后都收进了 Obsidian"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-10</div><div class="info-item-2">笔记散在五个地方，我最后都收进了 Obsidian</div></div><div class="info-2"><div class="info-item-1">我的笔记以前是散成一地的。备忘录里存几条，微信收藏夹一堆，浏览器剪藏一堆，还有几个 Word 文档东一个西一个。真到要用的时候，就是想不起当时记哪去了，等于没记。后来我全搬进 Obsidian，用到现在，把思路和做法记下来，给你个参考。 为什么选 Obsidian我最看重的一点是：笔记是纯 Markdown 文件，就放在你自己硬盘上。厂商关停、改版、涨...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/03/MoneyPrinterTurbo%E8%B7%91%E8%A7%A3%E8%AF%B4%E8%A7%86%E9%A2%91%E6%B5%81%E6%B0%B4%E7%BA%BF-%E4%BB%8E%E9%83%A8%E7%BD%B2%E5%88%B0%E8%B7%91%E9%80%9A/" title="MoneyPrinterTurbo 跑解说视频流水线，从部署到跑通"><img class="cover" src="/img/mpt-pipeline.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-03</div><div class="info-item-2">MoneyPrinterTurbo 跑解说视频流水线，从部署到跑通</div></div><div class="info-2"><div class="info-item-1">我要做一批中文解说短视频——城市航拍、乡村风光那种，画面配旁白。手动剪太慢，就试了开源的 MoneyPrinterTurbo（Python 写的），它把文案、配音、拼素材、烧字幕、合成一条命令串完。文案走 DeepSeek 的接口（兼容 OpenAI 格式），配音用 Edge TTS，这俩都不要钱，素材用自己手头的视频。跑通之后发现真正卡人的不是部署，...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/29/LibreCAD%E5%AF%BC%E5%87%BAPDF%E7%BA%BF%E6%9D%A1%E5%A4%AA%E6%B7%A1-%E6%8C%89%E5%9B%BE%E5%B1%82%E7%BA%BF%E5%AE%BD%E6%98%AF0.00mm/" title="LibreCAD 导出 PDF 线条太淡，原来&quot;按图层&quot;线宽是 0.00mm"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-29</div><div class="info-item-2">LibreCAD 导出 PDF 线条太淡，原来&quot;按图层&quot;线宽是 0.00mm</div></div><div class="info-2"><div class="info-item-1">前阵子画一条排洪沟的断面图，LibreCAD 里分好图层、线分粗细，屏幕上看得清清楚楚。导出 PDF 发给监理，对方回一句”线条太淡了，看不清，重新出”。 排查了半天，问题出在 LibreCAD 的”按图层”线宽上。 屏幕上的线宽是假的LibreCAD 屏幕显示的线宽只是示意，跟打印出来是两回事。更坑的是，图层默认的线宽是”按图层（By Layer）”...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/14/%E6%B8%85%E6%B7%A4%E9%87%8F%E8%A1%A8%E7%9A%84%E5%85%AC%E5%BC%8F%E4%BB%8EC3%E6%94%B9%E6%88%90%E5%90%8D%E5%AD%97%EF%BC%8CFreeCAD%E7%94%B5%E5%AD%90%E8%A1%A8%E6%A0%BC%E8%BF%99%E4%B9%88%E7%94%A8/" title="清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-14</div><div class="info-item-2">清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用</div></div><div class="info-2"><div class="info-item-1">新圩那个水毁修复的渠道清淤量，我原来是在 Excel 里做的，一条渠一块，公式写 =(C3-1*D3)*D3*B3。现场复量回来淤厚从 0.5 改成 0.6，我改完数值还得挨个格子点进去看公式有没有拖对；更要命的是给别人复核的时候，人家问「这个 3211.87 哪来的」，我得先把 C3、D3 翻译成上口宽、淤厚，说半天。 后来把这套表挪进了 FreeC...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/16/deepseek-harness-tutorial/" title="把 DeepSeek Harness 跑起来了，安装过程记录"><img class="cover" src="/img/dsh-tutorial.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-16</div><div class="info-item-2">把 DeepSeek Harness 跑起来了，安装过程记录</div></div><div class="info-2"><div class="info-item-1">Harness 开源那天我装了一个，Windows 和 Mac 都试了一遍。过程比想的简单，把记录放这里，给还没动手的人省点时间。 环境就一个 Node.js版本要 22.19 以上，或者 24。官网下 LTS 版装上，终端里跑 node -v 能出数字就行。 安装是一行命令1npx @deepseek-ai/dsh web  第一次跑会自己下载，等几...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Levi</div><div class="author-info-description">Levi的Blog</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Lxp1986"><i class="fab fa-github"></i><span>访问 GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Lxp1986" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #b85c38;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客，持续更新中。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E5%AF%BC%E5%87%BA%E5%99%A8%EF%BC%8C%E5%B7%AE%E5%9C%A8%E5%93%AA"><span class="toc-number">1.</span> <span class="toc-text">两个导出器，差在哪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E6%8D%A2%E6%97%A7%E7%89%88%E5%AF%BC%E5%87%BA%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">第一步：换旧版导出器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E6%96%87%E5%8F%98%E6%96%B9%E5%9D%97%EF%BC%8C%E6%98%AF%E5%AD%97%E4%BD%93%E7%9A%84%E4%BA%8B"><span class="toc-number">3.</span> <span class="toc-text">中文变方块，是字体的事</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B2%E7%BA%BF%E5%92%8C%E5%9B%BE%E5%B1%82%EF%BC%8C%E4%B8%A4%E4%B8%AA%E8%BE%B9%E8%A7%92%E6%96%99"><span class="toc-number">4.</span> <span class="toc-text">曲线和图层，两个边角料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/15/%E7%94%A8qpdf%E5%90%88%E5%B9%B6%E6%89%AB%E6%8F%8F%E4%BB%B6%E4%BA%A4%E8%B5%84%E6%96%99%EF%BC%8C%E9%A1%BA%E6%89%8B%E8%A7%A3%E5%BC%80%E6%9D%83%E9%99%90%E9%94%81%E5%92%8C%E6%89%93%E5%BC%80%E5%AF%86%E7%A0%81/" title="用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码">用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码</a><time datetime="2026-09-15T14:38:00.000Z" title="发表于 2026-09-15 22:38:00">2026-09-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/14/%E6%B8%85%E6%B7%A4%E9%87%8F%E8%A1%A8%E7%9A%84%E5%85%AC%E5%BC%8F%E4%BB%8EC3%E6%94%B9%E6%88%90%E5%90%8D%E5%AD%97%EF%BC%8CFreeCAD%E7%94%B5%E5%AD%90%E8%A1%A8%E6%A0%BC%E8%BF%99%E4%B9%88%E7%94%A8/" title="清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用">清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用</a><time datetime="2026-09-14T14:38:00.000Z" title="发表于 2026-09-14 22:38:00">2026-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/13/%E5%87%A0%E5%8D%81%E8%A1%8C%E5%B7%A5%E7%A8%8B%E9%87%8F%E5%88%86%E9%A1%B9%EF%BC%8C%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E5%92%8C%E5%85%AC%E5%BC%8F%E4%BA%A4%E7%BB%99%20openpyxl/" title="几十行工程量分项，合并单元格和公式交给 openpyxl">几十行工程量分项，合并单元格和公式交给 openpyxl</a><time datetime="2026-09-13T14:35:00.000Z" title="发表于 2026-09-13 22:35:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/12/Obsidian%E5%BA%93%E6%94%92%E5%88%B0%E4%B8%80%E7%99%BE%E5%A4%9A%E7%AF%87%EF%BC%8C%E6%96%AD%E9%93%BE%E5%92%8C%E5%AD%A4%E5%84%BF%E7%AC%94%E8%AE%B0%E6%88%91%E7%94%A8%E8%84%9A%E6%9C%AC%E6%89%AB/" title="Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫">Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫</a><time datetime="2026-09-12T14:30:00.000Z" title="发表于 2026-09-12 22:30:00">2026-09-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/11/%E6%B8%A0%E9%81%93%E6%96%AD%E9%9D%A2%E5%9B%BE%E7%94%A8matplotlib%E8%84%9A%E6%9C%AC%E7%94%BB%EF%BC%8C%E4%B8%AD%E6%96%87%E6%A0%87%E6%B3%A8%E5%92%8C%E5%B9%B3%E6%96%B9%E5%8F%B7%E9%83%BD%E4%B8%8D%E7%BC%BA/" title="渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺">渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺</a><time datetime="2026-09-11T14:35:00.000Z" title="发表于 2026-09-11 22:35:00">2026-09-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Levi</span></div><div class="footer_custom_text">三色风 | Levi</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Lxp1986/Lxp1986.github.io',
+      'data-repo-id': 'R_kgDOMn0qqg',
+      'data-category-id': 'DIC_kwDOMn0qqs4DDgMy',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="输入关键词搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

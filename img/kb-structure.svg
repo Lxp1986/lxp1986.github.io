@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="root" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1E2A3B"/>
+      <stop offset="1" stop-color="#334155"/>
+    </linearGradient>
+    <linearGradient id="idx" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8DEF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="900" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="50" text-anchor="middle" font-size="30" font-weight="700" fill="#1E2A3B">目录结构设计 · 数字编号排序</text>
+  <text x="600" y="80" text-anchor="middle" font-size="15" fill="#64748B">前缀编号 = 物理排序，一目了然；章目录放章首页，正文归属章内</text>
+
+  <!-- root -->
+  <rect x="420" y="104" width="360" height="54" rx="12" fill="url(#root)"/>
+  <text x="600" y="128" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">📁 知识库根目录（iCloud Obsidian Vault）</text>
+  <text x="600" y="150" text-anchor="middle" font-size="12" fill="#CBD5E1">/Users/…/iCloud~md~obsidian/Documents</text>
+
+  <line x1="600" y1="158" x2="600" y2="186" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow2)"/>
+
+  <!-- main columns -->
+  <rect x="70" y="192" width="280" height="420" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="460" y="192" width="280" height="420" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="850" y="192" width="280" height="420" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+
+  <text x="210" y="224" text-anchor="middle" font-size="16" font-weight="700" fill="#7C5CD6">🗂️ 入口与索引（00）</text>
+  <text x="600" y="224" text-anchor="middle" font-size="16" font-weight="700" fill="#7C5CD6">🗂️ 业务与项目（01–08）</text>
+  <text x="990" y="224" text-anchor="middle" font-size="16" font-weight="700" fill="#7C5CD6">🗂️ 支撑区（09–99）</text>
+
+  <!-- col 1 -->
+  <rect x="92" y="244" width="236" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="210" y="268" text-anchor="middle" font-size="13" fill="#3B5BC9">00-首页与索引 · 首页 / 总规则</text>
+  <rect x="92" y="290" width="236" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="210" y="314" text-anchor="middle" font-size="13" fill="#3B5BC9">知识地图（总目录）</text>
+  <rect x="92" y="336" width="236" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="210" y="360" text-anchor="middle" font-size="13" fill="#3B5BC9">各领域索引 · 规则/使用说明</text>
+  <rect x="92" y="382" width="236" height="40" rx="8" fill="#F0FDFA"/>
+  <text x="210" y="406" text-anchor="middle" font-size="13" fill="#0B8E82">💡 索引页只列「章首页」</text>
+  <rect x="92" y="428" width="236" height="40" rx="8" fill="#F0FDFA"/>
+  <text x="210" y="452" text-anchor="middle" font-size="13" fill="#0B8E82">💡 封面只给 4–7 个链接</text>
+  <rect x="92" y="474" width="236" height="40" rx="8" fill="#F0FDFA"/>
+  <text x="210" y="498" text-anchor="middle" font-size="13" fill="#0B8E82">💡 首页 → 地图 → 索引 3 级</text>
+  <rect x="92" y="520" width="236" height="40" rx="8" fill="#F0FDFA"/>
+  <text x="210" y="544" text-anchor="middle" font-size="13" fill="#0B8E82">💡 再深的正文不直达首页</text>
+
+  <!-- col 2 -->
+  <rect x="482" y="244" width="236" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="600" y="268" text-anchor="middle" font-size="13" fill="#3B5BC9">01-智能体知识 · 规则/工具/创作</text>
+  <rect x="482" y="290" width="236" height="40" rx="8" fill="#F8FAFC"/>
+  <text x="600" y="314" text-anchor="middle" font-size="13" fill="#475569">　└ 01-规则与协作 / 02-Hermes…</text>
+  <rect x="482" y="336" width="236" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="600" y="360" text-anchor="middle" font-size="13" fill="#3B5BC9">02-项目 · 工程劳务 / 软件AI</text>
+  <rect x="482" y="382" width="236" height="40" rx="8" fill="#F0FDFA"/>
+  <text x="600" y="406" text-anchor="middle" font-size="13" fill="#0B8E82">03-施工工艺 / 04-材料与设备</text>
+  <rect x="482" y="428" width="236" height="40" rx="8" fill="#F0FDFA"/>
+  <text x="600" y="452" text-anchor="middle" font-size="13" fill="#0B8E82">05-报价与成本 / 06-合同与风险</text>
+  <rect x="482" y="474" width="236" height="40" rx="8" fill="#F0FDFA"/>
+  <text x="600" y="498" text-anchor="middle" font-size="13" fill="#0B8E82">07-法规与规范 / 08-安全与台风</text>
+  <rect x="482" y="520" width="236" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="600" y="544" text-anchor="middle" font-size="13" fill="#3B5BC9">每域一个「章首页」type: chapter</text>
+
+  <!-- col 3 -->
+  <rect x="872" y="244" width="236" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="990" y="268" text-anchor="middle" font-size="13" fill="#3B5BC9">09-来源资料 · 网页/PDF/文件</text>
+  <rect x="872" y="290" width="236" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="990" y="314" text-anchor="middle" font-size="13" fill="#3B5BC9">10-收集箱 · 待整理临时区</text>
+  <rect x="872" y="336" width="236" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="990" y="360" text-anchor="middle" font-size="13" fill="#3B5BC9">99-模板 · 模板索引聚合</text>
+  <rect x="872" y="382" width="236" height="40" rx="8" fill="#F0FDFA"/>
+  <text x="990" y="406" text-anchor="middle" font-size="13" fill="#0B8E82">写作题材 · 创作区独立成区</text>
+  <rect x="872" y="428" width="236" height="40" rx="8" fill="#FDF2F8"/>
+  <text x="990" y="452" text-anchor="middle" font-size="13" fill="#A21CAF">🎯 收集箱 = 快速捕获，无压力</text>
+  <rect x="872" y="474" width="236" height="40" rx="8" fill="#FDF2F8"/>
+  <text x="990" y="498" text-anchor="middle" font-size="13" fill="#A21CAF">🎯 模板 = 新建笔记的起点</text>
+  <rect x="872" y="520" width="236" height="40" rx="8" fill="#FDF2F8"/>
+  <text x="990" y="544" text-anchor="middle" font-size="13" fill="#A21CAF">🎯 创作区允许内部自由链接</text>
+
+  <!-- bottom principles -->
+  <rect x="70" y="640" width="1060" height="104" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="600" y="672" text-anchor="middle" font-size="16" font-weight="700" fill="#1E2A3B">编号逻辑</text>
+  <text x="600" y="700" text-anchor="middle" font-size="14" fill="#475569">00 入口 → 01–08 内容主体 → 09 来源 → 10 临时 → 99 模板：看数字就知道「先看什么、再看什么」</text>
+  <text x="600" y="726" text-anchor="middle" font-size="14" fill="#475569">章内再按 01-、02- 分子目录；写作题材等创作区不用编号，与工作区图谱互不干扰</text>
+
+  <rect x="70" y="762" width="1060" height="104" rx="12" fill="#F0FDFA" stroke="#12B3A6" stroke-width="1.5"/>
+  <text x="600" y="794" text-anchor="middle" font-size="16" font-weight="700" fill="#0B8E82">分章纪律（防止退化成乱麻）</text>
+  <text x="600" y="822" text-anchor="middle" font-size="14" fill="#0F766E">① 新笔记必须归章，不平铺根部　② 每章必有章首页　③ 索引只列章首页　④ 空目录建占位章</text>
+  <text x="600" y="848" text-anchor="middle" font-size="14" fill="#0F766E">⑤ 作品/项目按「作品集 → 作品 → 章节」三层　⑥ wikilink 按文件名解析，移动文件不断链　⑦ 每笔记 ≥1 入链 + 1 出链</text>
+</svg>

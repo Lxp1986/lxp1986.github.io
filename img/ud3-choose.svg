@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <rect width="1200" height="640" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="48" text-anchor="middle" font-size="28" font-weight="700" fill="#1E2A3B">Dynamic 3.0 量化：区别在哪、文件怎么选</text>
+  <text x="600" y="76" text-anchor="middle" font-size="14" fill="#64748B">左：传统量化一刀切　右：逐层挑精度　下：按内存选 27B 模型的文件</text>
+
+  <!-- 传统量化 -->
+  <rect x="80" y="100" width="500" height="190" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="330" y="132" text-anchor="middle" font-size="16" font-weight="700" fill="#475569">传统量化：所有层同一精度</text>
+  <text x="330" y="154" text-anchor="middle" font-size="13" fill="#64748B">简单省事，但重要的层也被压扁</text>
+  <rect x="120" y="178" width="76" height="46" rx="8" fill="#CBD5E1"/>
+  <rect x="204" y="178" width="76" height="46" rx="8" fill="#CBD5E1"/>
+  <rect x="288" y="178" width="76" height="46" rx="8" fill="#CBD5E1"/>
+  <rect x="372" y="178" width="76" height="46" rx="8" fill="#CBD5E1"/>
+  <rect x="456" y="178" width="76" height="46" rx="8" fill="#CBD5E1"/>
+  <text x="330" y="258" text-anchor="middle" font-size="12" fill="#94A3B8">5 个层，压缩力度完全一样</text>
+
+  <!-- Dynamic 3.0 -->
+  <rect x="620" y="100" width="500" height="190" rx="12" fill="#FFF" stroke="#5B8DEF" stroke-width="1.5"/>
+  <text x="870" y="132" text-anchor="middle" font-size="16" font-weight="700" fill="#3B5BC9">Dynamic 3.0：逐层挑精度</text>
+  <text x="870" y="154" text-anchor="middle" font-size="13" fill="#64748B">重要的层多留精度，不重要的狠压</text>
+  <rect x="660" y="178" width="76" height="46" rx="8" fill="#1E2A3B"/>
+  <rect x="744" y="178" width="76" height="46" rx="8" fill="#5B8DEF"/>
+  <rect x="828" y="178" width="76" height="46" rx="8" fill="#CBD5E1"/>
+  <rect x="912" y="178" width="76" height="46" rx="8" fill="#5B8DEF"/>
+  <rect x="996" y="178" width="76" height="46" rx="8" fill="#CBD5E1"/>
+  <text x="870" y="258" text-anchor="middle" font-size="12" fill="#0B8E82">深色 = 高精度层　浅色 = 低精度层</text>
+
+  <!-- 选择表 -->
+  <rect x="80" y="318" width="1040" height="232" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="600" y="352" text-anchor="middle" font-size="17" font-weight="700" fill="#1E2A3B">按内存选文件（Qwen3.8-27B）</text>
+  <rect x="120" y="376" width="460" height="52" rx="10" fill="#EEF2FF"/>
+  <text x="140" y="400" font-size="15" font-weight="700" fill="#3B5BC9">16GB 内存 → UD-Q2_K_XL</text>
+  <text x="140" y="420" font-size="13" fill="#64748B">约 9.8GB，最推荐的入门档</text>
+  <rect x="620" y="376" width="460" height="52" rx="10" fill="#F0FDFA"/>
+  <text x="640" y="400" font-size="15" font-weight="700" fill="#0B8E82">24GB 内存 → UD-Q3_K_XL</text>
+  <text x="640" y="420" font-size="13" fill="#64748B">体积和质量的平衡点</text>
+  <rect x="120" y="440" width="460" height="52" rx="10" fill="#F0FDFA"/>
+  <text x="140" y="464" font-size="15" font-weight="700" fill="#0B8E82">32GB+ 内存 → UD-Q4_K_XL</text>
+  <text x="140" y="484" font-size="13" fill="#64748B">最接近原版质量的压缩档</text>
+  <rect x="620" y="440" width="460" height="52" rx="10" fill="#FDF2F8"/>
+  <text x="640" y="464" font-size="15" font-weight="700" fill="#A21CAF">极限压缩 → UD-IQ1_S</text>
+  <text x="640" y="484" font-size="13" fill="#64748B">仅 6.2GB，给跑不动的机器</text>
+
+  <text x="600" y="532" text-anchor="middle" font-size="13" fill="#475569">原则：文件大小 + 上下文占用 &lt; 内存/显存。8.37GB 以下的版本砍掉 MTP 加速模块，省约 500MB，只影响生成速度</text>
+</svg>

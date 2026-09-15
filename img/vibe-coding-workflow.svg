@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="vc-g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8DEF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+    <marker id="vc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="520" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#1E2A3B">Vibe Coding 工作流 · 一句话到能跑的代码</text>
+  <text x="600" y="82" text-anchor="middle" font-size="15" fill="#64748B">人只负责提需求和验收，写代码、改报错都交给 AI</text>
+
+  <!-- 5 steps -->
+  <rect x="60" y="150" width="196" height="90" rx="12" fill="url(#vc-g1)"/>
+  <text x="158" y="188" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">① 说清需求</text>
+  <text x="158" y="214" text-anchor="middle" font-size="13" fill="#E2E8F0">功能点列成清单</text>
+
+  <rect x="296" y="150" width="196" height="90" rx="12" fill="#FFF" stroke="#5B8DEF" stroke-width="1.5"/>
+  <text x="394" y="188" text-anchor="middle" font-size="17" font-weight="700" fill="#3B5BC9">② 先给方案</text>
+  <text x="394" y="214" text-anchor="middle" font-size="13" fill="#64748B">确认方向再写码</text>
+
+  <rect x="532" y="150" width="196" height="90" rx="12" fill="#FFF" stroke="#5B8DEF" stroke-width="1.5"/>
+  <text x="630" y="188" text-anchor="middle" font-size="17" font-weight="700" fill="#3B5BC9">③ 本地跑起来</text>
+  <text x="630" y="214" text-anchor="middle" font-size="13" fill="#64748B">报错原样贴给它</text>
+
+  <rect x="768" y="150" width="196" height="90" rx="12" fill="#FFF" stroke="#5B8DEF" stroke-width="1.5"/>
+  <text x="866" y="188" text-anchor="middle" font-size="17" font-weight="700" fill="#3B5BC9">④ 看 diff 验收</text>
+  <text x="866" y="214" text-anchor="middle" font-size="13" fill="#64748B">大改动先问为什么</text>
+
+  <rect x="1004" y="150" width="136" height="90" rx="12" fill="#0B8E82"/>
+  <text x="1072" y="188" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">⑤ 提交</text>
+  <text x="1072" y="214" text-anchor="middle" font-size="13" fill="#D1FAF5">小步 commit</text>
+
+  <!-- arrows -->
+  <line x1="256" y1="195" x2="292" y2="195" stroke="#64748B" stroke-width="2.5" marker-end="url(#vc-arrow)"/>
+  <line x1="492" y1="195" x2="528" y2="195" stroke="#64748B" stroke-width="2.5" marker-end="url(#vc-arrow)"/>
+  <line x1="728" y1="195" x2="764" y2="195" stroke="#64748B" stroke-width="2.5" marker-end="url(#vc-arrow)"/>
+  <line x1="964" y1="195" x2="1000" y2="195" stroke="#64748B" stroke-width="2.5" marker-end="url(#vc-arrow)"/>
+
+  <!-- loop back -->
+  <path d="M 866 240 L 866 310 Q 866 330 846 330 L 394 330 Q 374 330 374 310 L 374 244" fill="none" stroke="#E05252" stroke-width="2.5" stroke-dasharray="8 5" marker-end="url(#vc-arrow)"/>
+  <rect x="540" y="308" width="240" height="36" rx="10" fill="#FEF2F2"/>
+  <text x="660" y="331" text-anchor="middle" font-size="14" font-weight="700" fill="#B91C1C">没跑通？把报错喂回去，回到 ③</text>
+
+  <!-- tips -->
+  <rect x="60" y="390" width="1080" height="96" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="90" y="424" font-size="15" font-weight="700" fill="#1E2A3B">三个提醒</text>
+  <text x="90" y="452" font-size="14" fill="#475569">1. 动手前先 git commit 一次干净基线，改坏了随时回退；</text>
+  <text x="90" y="476" font-size="14" fill="#475569">2. 聊久了 AI 会忘记开头要求，关键约束要重复提醒；</text>
+</svg>

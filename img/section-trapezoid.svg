@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="400" viewBox="0 0 760 400" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="10" stroke="#9cc2e0" stroke-width="1.1"/>
+    </pattern>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c00000"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="400" fill="#f7fafd"/>
+  <text x="28" y="34" font-size="15" font-weight="600" fill="#1f4e79">渠道清淤断面（梯形示意，竖向已放大）</text>
+
+  <line x1="220" y1="120" x2="220" y2="86" stroke="#c8c8c8" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="540" y1="120" x2="540" y2="86" stroke="#c8c8c8" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="220" y1="94" x2="540" y2="94" stroke="#c00000" stroke-width="1.4" marker-start="url(#ar)" marker-end="url(#ar)"/>
+  <text x="380" y="82" font-size="12.5" fill="#c00000" text-anchor="middle">上口最大宽 B = 3.50 m</text>
+
+  <rect x="220" y="120" width="320" height="120" fill="none"/>
+  <polygon points="220,120 540,120 503,240 257,240" fill="#dae8f5" stroke="none"/>
+  <polygon points="220,120 540,120 503,240 257,240" fill="url(#hatch)"/>
+  <polygon points="220,120 540,120 503,240 257,240" fill="none" stroke="#1f4e79" stroke-width="2"/>
+  <text x="380" y="186" font-size="13" fill="#1f4e79" text-anchor="middle">淤积层（待清淤）</text>
+
+  <line x1="172" y1="240" x2="620" y2="240" stroke="#555555" stroke-width="1.4" stroke-dasharray="8 5"/>
+  <text x="626" y="244" font-size="12" fill="#555555">原渠底</text>
+
+  <line x1="196" y1="120" x2="196" y2="240" stroke="#c00000" stroke-width="1.4" marker-start="url(#ar)" marker-end="url(#ar)"/>
+  <text x="180" y="180" font-size="12.5" fill="#c00000" text-anchor="middle" transform="rotate(-90 180 180)">淤厚 h = 0.40 m</text>
+
+  <line x1="257" y1="268" x2="503" y2="268" stroke="#c00000" stroke-width="1.4" marker-start="url(#ar)" marker-end="url(#ar)"/>
+  <text x="380" y="288" font-size="12.5" fill="#c00000" text-anchor="middle">底宽 b = B − 2mh = 2.70 m</text>
+
+  <text x="470" y="146" font-size="12.5" fill="#1f4e79" text-anchor="middle" transform="rotate(-33 470 146)">边坡 1:1</text>
+
+  <text x="28" y="330" font-size="13" fill="#1f4e79">面积 A = (B + b) / 2 × h = (3.50 + 2.70) / 2 × 0.40 = 1.240 m²/m</text>
+  <text x="28" y="360" font-size="12" fill="#7a7a7a">B 取设计断面顶宽（上口最大宽），不是底宽；土渠 m=1.0，砂性松散的溪河 m=1.25</text>
+</svg>

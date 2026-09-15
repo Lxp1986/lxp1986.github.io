@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="gHero" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8DEF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+    <linearGradient id="gMap" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#12B3A6"/>
+      <stop offset="1" stop-color="#3AA0E0"/>
+    </linearGradient>
+    <linearGradient id="gIdx" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F2A93B"/>
+      <stop offset="1" stop-color="#F2714B"/>
+    </linearGradient>
+    <linearGradient id="gChap" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8E7BF2"/>
+      <stop offset="1" stop-color="#B05FD0"/>
+    </linearGradient>
+    <linearGradient id="gBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F9FAFB"/>
+      <stop offset="1" stop-color="#EFF2F7"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect width="1200" height="780" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#1E2A3B">像「书」一样分层的知识库 · 总体架构</text>
+  <text x="600" y="84" text-anchor="middle" font-size="16" fill="#64748B">封面 → 目录 → 章 → 节 → 正文，全程用双向链接串成逻辑链</text>
+
+  <!-- 首页 -->
+  <rect x="430" y="110" width="340" height="86" rx="14" fill="url(#gHero)"/>
+  <text x="600" y="146" text-anchor="middle" font-size="22" font-weight="700" fill="#fff">🏠 首页（封面）</text>
+  <text x="600" y="176" text-anchor="middle" font-size="14" fill="#E8ECFF">唯一顶层入口，只放 4–7 个核心链接</text>
+
+  <!-- arrow -->
+  <line x1="600" y1="196" x2="600" y2="232" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 知识地图 -->
+  <rect x="400" y="236" width="400" height="76" rx="14" fill="url(#gMap)"/>
+  <text x="600" y="270" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">🗺️ 知识地图（总目录）</text>
+  <text x="600" y="296" text-anchor="middle" font-size="14" fill="#DFF7F5">只列「索引页 / 章首页」，不直接列正文</text>
+
+  <!-- arrows to index row -->
+  <line x1="600" y1="312" x2="600" y2="338" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 索引行 -->
+  <rect x="120" y="344" width="200" height="62" rx="12" fill="#FFF7ED" stroke="#F2A93B" stroke-width="1.5"/>
+  <text x="220" y="374" text-anchor="middle" font-size="16" font-weight="700" fill="#B45309">📇 业务索引</text>
+  <text x="220" y="396" text-anchor="middle" font-size="12" fill="#92631F">施工 / 材料 / 报价 / 合同…</text>
+
+  <rect x="360" y="344" width="200" height="62" rx="12" fill="#EEF2FF" stroke="#5B8DEF" stroke-width="1.5"/>
+  <text x="460" y="374" text-anchor="middle" font-size="16" font-weight="700" fill="#3B5BC9">🤖 智能体索引</text>
+  <text x="460" y="396" text-anchor="middle" font-size="12" fill="#4E6DC9">规则 / 工具链 / 创作系统</text>
+
+  <rect x="600" y="344" width="200" height="62" rx="12" fill="#F0FDFA" stroke="#12B3A6" stroke-width="1.5"/>
+  <text x="700" y="374" text-anchor="middle" font-size="16" font-weight="700" fill="#0B8E82">📚 作品索引</text>
+  <text x="700" y="396" text-anchor="middle" font-size="12" fill="#0B8E82">作品集 → 作品 → 章节</text>
+
+  <rect x="840" y="344" width="200" height="62" rx="12" fill="#FDF2F8" stroke="#D946EF" stroke-width="1.5"/>
+  <text x="940" y="374" text-anchor="middle" font-size="16" font-weight="700" fill="#A21CAF">🗃️ 模板 / 来源</text>
+  <text x="940" y="396" text-anchor="middle" font-size="12" fill="#A21CAF">99-模板 · 09-来源资料</text>
+
+  <!-- arrows to chapter row -->
+  <line x1="220" y1="406" x2="220" y2="442" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="460" y1="406" x2="460" y2="442" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="700" y1="406" x2="700" y2="442" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="940" y1="406" x2="940" y2="442" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 章首页 -->
+  <rect x="320" y="448" width="560" height="70" rx="14" fill="url(#gChap)"/>
+  <text x="600" y="480" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">📖 章首页（type: chapter）</text>
+  <text x="600" y="504" text-anchor="middle" font-size="14" fill="#F3EFFE">每章一个 · 向下链「节」 · 向上链索引 · 空目录也建占位</text>
+
+  <!-- arrow -->
+  <line x1="600" y1="518" x2="600" y2="552" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 正文笔记 -->
+  <rect x="130" y="560" width="230" height="84" rx="12" fill="url(#gBody)" stroke="#C7D0DC" stroke-width="1.5"/>
+  <text x="245" y="590" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">📄 正文笔记</text>
+  <text x="245" y="614" text-anchor="middle" font-size="12" fill="#64748B">有 YAML 属性</text>
+  <text x="245" y="634" text-anchor="middle" font-size="12" fill="#64748B">至少 1 条入链 + 1 条出链</text>
+
+  <rect x="485" y="560" width="230" height="84" rx="12" fill="url(#gBody)" stroke="#C7D0DC" stroke-width="1.5"/>
+  <text x="600" y="590" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">📄 正文笔记</text>
+  <text x="600" y="614" text-anchor="middle" font-size="12" fill="#64748B">归属唯一章节目录</text>
+  <text x="600" y="634" text-anchor="middle" font-size="12" fill="#64748B">不平铺在根部</text>
+
+  <rect x="840" y="560" width="230" height="84" rx="12" fill="url(#gBody)" stroke="#C7D0DC" stroke-width="1.5"/>
+  <text x="955" y="590" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">📄 正文笔记</text>
+  <text x="955" y="614" text-anchor="middle" font-size="12" fill="#64748B">wikilink 跨目录可达</text>
+  <text x="955" y="634" text-anchor="middle" font-size="12" fill="#64748B">移动文件不断链</text>
+
+  <!-- bottom note -->
+  <rect x="240" y="676" width="720" height="72" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="600" y="704" text-anchor="middle" font-size="15" font-weight="700" fill="#1E2A3B">🗂️ 目录编号：00-首页与索引 → 01-智能体知识 → 02-项目 → 03~08 业务 → 09-来源 → 10-收集箱 → 99-模板</text>
+  <text x="600" y="732" text-anchor="middle" font-size="13" fill="#64748B">编号=排序权：数字越小越靠前，10/99 单独预留，写作题材等创作区独立成区</text>
+</svg>

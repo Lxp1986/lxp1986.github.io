@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="300" viewBox="0 0 760 300" font-family="PingFang SC,Hiragino Sans GB,sans-serif">
+  <rect width="760" height="300" fill="#f7f9fb"/>
+  <text x="30" y="34" font-size="15" font-weight="bold" fill="#20303f">合并单元格只认左上角那一格</text>
+
+  <!-- 表格主体 -->
+  <rect x="30" y="55" width="428" height="34" fill="#dce6f1" stroke="#4a6b8a"/>
+  <text x="244" y="77" font-size="12" fill="#20303f" text-anchor="middle">渠道清淤工程量计算表（A1:F1 横向合并）</text>
+
+  <g font-size="11" fill="#20303f" text-anchor="middle">
+    <rect x="30" y="89" width="44" height="30" fill="#eef3f8" stroke="#4a6b8a"/>
+    <text x="52" y="108">序号</text>
+    <rect x="74" y="89" width="168" height="30" fill="#eef3f8" stroke="#4a6b8a"/>
+    <text x="158" y="108">分项名称</text>
+    <rect x="242" y="89" width="46" height="30" fill="#eef3f8" stroke="#4a6b8a"/>
+    <text x="265" y="108">单位</text>
+    <rect x="288" y="89" width="56" height="30" fill="#eef3f8" stroke="#4a6b8a"/>
+    <text x="316" y="108">工程量</text>
+    <rect x="344" y="89" width="56" height="30" fill="#eef3f8" stroke="#4a6b8a"/>
+    <text x="372" y="108">单价</text>
+    <rect x="400" y="89" width="58" height="30" fill="#eef3f8" stroke="#4a6b8a"/>
+    <text x="429" y="108">合价</text>
+  </g>
+
+  <!-- 纵向合并的序号列 -->
+  <rect x="30" y="119" width="44" height="84" fill="#fdf6e3" stroke="#4a6b8a"/>
+  <text x="52" y="165" font-size="11" fill="#a05000" text-anchor="middle">一</text>
+
+  <g font-size="11" fill="#20303f">
+    <rect x="74" y="119" width="168" height="28" stroke="#4a6b8a" fill="#fff"/>
+    <text x="82" y="137">人工清淤</text>
+    <rect x="74" y="147" width="168" height="28" stroke="#4a6b8a" fill="#fff"/>
+    <text x="82" y="165">土渠清淤 1:1</text>
+    <rect x="74" y="175" width="168" height="28" stroke="#4a6b8a" fill="#fff"/>
+    <text x="82" y="193">溪河清淤 1:1.25</text>
+  </g>
+  <g font-size="11" fill="#20303f" text-anchor="end">
+    <text x="284" y="137">m³</text><text x="336" y="137">492.60</text><text x="392" y="137">60.00</text>
+    <text x="451" y="137" font-size="10" fill="#a05000">=D3*E3</text>
+    <text x="284" y="165">m³</text><text x="336" y="165">2916.13</text><text x="392" y="165">60.00</text>
+    <text x="451" y="165" font-size="10" fill="#a05000">=D4*E4</text>
+    <text x="284" y="193">m³</text><text x="336" y="193">295.75</text><text x="392" y="193">60.00</text>
+    <text x="451" y="193" font-size="10" fill="#a05000">=D5*E5</text>
+  </g>
+  <g stroke="#4a6b8a" fill="none">
+    <path d="M242 119v84M288 119v84M344 119v84M400 119v84M458 119v84"/>
+    <path d="M344 119v84M74 147h168M74 175h168"/>
+  </g>
+
+  <!-- 合计行 -->
+  <rect x="30" y="203" width="370" height="28" fill="#eef3f8" stroke="#4a6b8a"/>
+  <text x="392" y="222" font-size="11" fill="#20303f" text-anchor="end">合计</text>
+  <rect x="400" y="203" width="58" height="28" fill="#eef3f8" stroke="#4a6b8a"/>
+  <text x="451" y="221" font-size="10" fill="#a05000" text-anchor="end">=SUM(F3:F5)</text>
+
+  <!-- 右侧说明 -->
+  <g font-size="12" fill="#20303f">
+    <path d="M470 72h60" stroke="#a05000" stroke-dasharray="3 3"/>
+    <text x="540" y="70">A1 存值，B1～F1 是</text>
+    <text x="540" y="86">MergedCell，读了是 None</text>
+
+    <path d="M470 160h60" stroke="#a05000" stroke-dasharray="3 3"/>
+    <text x="540" y="152">A3:A5 纵合并，值只在</text>
+    <text x="540" y="168">A3；往 A4 写会报错：</text>
+    <text x="540" y="184" font-size="11" fill="#8a2f2f">'MergedCell' object</text>
+    <text x="540" y="199" font-size="11" fill="#8a2f2f">attribute 'value' is read-only</text>
+
+    <text x="540" y="234">数字格只放数字，单位</text>
+    <text x="540" y="250">在“单位”列，number_format</text>
+    <text x="540" y="266">统一 0.00 / #,##0.00</text>
+  </g>
+
+  <g stroke="#a05000" stroke-width="1.5" fill="none">
+    <circle cx="52" cy="137" r="3" fill="#a05000"/>
+    <circle cx="52" cy="165" r="3" fill="#a05000"/>
+    <path d="M52 137v28" stroke-dasharray="4 3"/>
+  </g>
+</svg>

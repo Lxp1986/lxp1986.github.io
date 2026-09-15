@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="880" viewBox="0 0 1200 880" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8DEF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="880" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#1E2A3B">Qwen 3.8 27B 本地部署 · 六步流程图</text>
+  <text x="600" y="82" text-anchor="middle" font-size="15" fill="#64748B">LM Studio 从零到跑通 · 内存 32GB 起步 · 重点在第 4 步和第 5 步</text>
+
+  <!-- step 1 -->
+  <rect x="250" y="108" width="700" height="72" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="300" cy="144" r="20" fill="url(#g1)"/>
+  <text x="300" y="150" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">1</text>
+  <text x="340" y="136" font-size="17" font-weight="700" fill="#1E2A3B">下载 LM Studio</text>
+  <text x="340" y="160" font-size="13" fill="#64748B">lmstudio.ai 官网 · Windows / macOS 免费 · 打不开就挂代理</text>
+
+  <line x1="600" y1="180" x2="600" y2="204" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- step 2 -->
+  <rect x="250" y="210" width="700" height="72" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="300" cy="246" r="20" fill="url(#g1)"/>
+  <text x="300" y="252" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">2</text>
+  <text x="340" y="238" font-size="17" font-weight="700" fill="#1E2A3B">下载模型文件</text>
+  <text x="340" y="262" font-size="13" fill="#64748B">unsloth 的 GGUF 量化版 Q4_K_M 约 17GB · 国内走魔搭 ModelScope 直连</text>
+
+  <line x1="600" y1="282" x2="600" y2="306" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- step 3 -->
+  <rect x="250" y="312" width="700" height="72" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="300" cy="348" r="20" fill="url(#g1)"/>
+  <text x="300" y="354" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">3</text>
+  <text x="340" y="340" font-size="17" font-weight="700" fill="#1E2A3B">加载模型</text>
+  <text x="340" y="364" font-size="13" fill="#64748B">列表里选 Qwen3.8-27B 点加载 · 先随便问一句验证能用</text>
+
+  <line x1="600" y1="384" x2="600" y2="408" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- step 4 highlight -->
+  <rect x="250" y="414" width="700" height="82" rx="12" fill="#FFF5F5" stroke="#F87171" stroke-width="2"/>
+  <circle cx="300" cy="455" r="20" fill="#EF4444"/>
+  <text x="300" y="461" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">4</text>
+  <text x="340" y="446" font-size="17" font-weight="700" fill="#B91C1C">关掉默认的「深度思考」★ 重点</text>
+  <text x="340" y="470" font-size="13" fill="#B91C1C">默认 reasoning_effort=xhigh 会疯狂脑补：画个图能想 21 分钟</text>
+  <text x="340" y="488" font-size="13" fill="#B91C1C">改成 low 或直接关 thinking · API 传 reasoning_effort="low"</text>
+
+  <line x1="600" y1="496" x2="600" y2="520" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- step 5 highlight -->
+  <rect x="250" y="526" width="700" height="82" rx="12" fill="#FEFCE8" stroke="#FACC15" stroke-width="2"/>
+  <circle cx="300" cy="567" r="20" fill="#EAB308"/>
+  <text x="300" y="573" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">5</text>
+  <text x="340" y="558" font-size="17" font-weight="700" fill="#854D0E">把上下文窗口调大 ★ 重点</text>
+  <text x="340" y="582" font-size="13" fill="#854D0E">默认 8192 token 不够它「思考」 · 模型原生支持 26 万</text>
+  <text x="340" y="600" font-size="13" fill="#854D0E">加载时改到 32768 或 262144 · 内存小就量力而行</text>
+
+  <line x1="600" y1="608" x2="600" y2="632" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- step 6 -->
+  <rect x="250" y="638" width="700" height="72" rx="12" fill="#F0FDFA" stroke="#2DD4BF" stroke-width="1.5"/>
+  <circle cx="300" cy="674" r="20" fill="#0B8E82"/>
+  <text x="300" y="680" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">6</text>
+  <text x="340" y="666" font-size="17" font-weight="700" fill="#0B8E82">开跑：聊天或 API</text>
+  <text x="340" y="690" font-size="13" fill="#0B8E82">开发者模式起本地服务器 http://127.0.0.1:1234 · OpenAI 兼容接口</text>
+
+  <text x="600" y="850" text-anchor="middle" font-size="13" fill="#94A3B8">信息查于 2026-08-17 · 以官方文档为准</text>
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" width="640" height="420" font-family="-apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif">
+  <rect width="640" height="420" fill="#f8fafc"/>
+  <text x="35" y="24" font-size="13" fill="#475569">① Vision 输出：归一化坐标（0~1），原点在左下</text>
+  <text x="355" y="24" font-size="13" fill="#475569">② 转成像素坐标，原点在左上</text>
+
+  <!-- 左：Vision 坐标系 -->
+  <rect x="35" y="35" width="250" height="280" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <polygon points="85,75 230,100 215,290 70,272" fill="#ffffff" stroke="#c2410c" stroke-width="2"/>
+  <circle cx="85" cy="75" r="4" fill="#c2410c"/>
+  <circle cx="230" cy="100" r="4" fill="#c2410c"/>
+  <text x="238" y="98" font-size="11" fill="#c2410c">右上角</text>
+  <!-- Vision 轴：左下原点 -->
+  <line x1="35" y1="315" x2="288" y2="315" stroke="#2563eb" stroke-width="2" marker-end="url(#arrB)"/>
+  <line x1="35" y1="315" x2="35" y2="32" stroke="#2563eb" stroke-width="2" marker-end="url(#arrB2)"/>
+  <circle cx="35" cy="315" r="3.5" fill="#2563eb"/>
+  <text x="150" y="334" font-size="12" fill="#2563eb">x: 0 → 1</text>
+  <text x="52" y="330" font-size="12" fill="#2563eb">y: 0 → 1（向上）</text>
+
+  <!-- 右：像素坐标系 -->
+  <rect x="355" y="35" width="250" height="280" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <polygon points="405,75 550,100 535,290 390,272" fill="#ffffff" stroke="#c2410c" stroke-width="2"/>
+  <circle cx="405" cy="75" r="4" fill="#c2410c"/>
+  <text x="413" y="73" font-size="11" fill="#c2410c">同一角点</text>
+  <!-- 像素轴：左上原点 -->
+  <line x1="355" y1="35" x2="608" y2="35" stroke="#b45309" stroke-width="2" marker-end="url(#arrO)"/>
+  <line x1="355" y1="35" x2="355" y2="318" stroke="#b45309" stroke-width="2" marker-end="url(#arrO2)"/>
+  <circle cx="355" cy="35" r="3.5" fill="#b45309"/>
+  <text x="470" y="28" font-size="12" fill="#b45309">x: 0 → 宽</text>
+  <text x="370" y="330" font-size="12" fill="#b45309">y: 0 → 高（向下）</text>
+
+  <!-- 换算公式 -->
+  <rect x="35" y="348" width="570" height="58" rx="8" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="320" y="374" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">x′ = x × 宽，y′ = (1 − y) × 高</text>
+  <text x="320" y="396" text-anchor="middle" font-size="13" fill="#b45309">漏了 y 翻转直接乘高，输出就是上下颠倒的</text>
+
+  <defs>
+    <marker id="arrB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2563eb"/></marker>
+    <marker id="arrB2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2563eb"/></marker>
+    <marker id="arrO" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#b45309"/></marker>
+    <marker id="arrO2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#b45309"/></marker>
+  </defs>
+</svg>

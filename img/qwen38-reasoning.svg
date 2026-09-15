@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="gxhigh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8DEF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34A853"/>
+      <stop offset="1" stop-color="#2E9E6B"/>
+    </linearGradient>
+    <linearGradient id="goff" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#94A3B8"/>
+      <stop offset="1" stop-color="#64748B"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="620" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#1E2A3B">Qwen 3.8 思考强度三档对比</text>
+  <text x="600" y="82" text-anchor="middle" font-size="15" fill="#64748B">reasoning_effort：回答前先写一段“内心独白”再给答案，档位越高思考越久</text>
+
+  <!-- xhigh 卡片 -->
+  <rect x="70" y="110" width="340" height="330" rx="14" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="70" y="110" width="340" height="62" rx="14" fill="url(#gxhigh)"/>
+  <rect x="70" y="146" width="340" height="26" fill="url(#gxhigh)"/>
+  <text x="240" y="136" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">xhigh（默认）</text>
+  <text x="240" y="172" text-anchor="middle" font-size="13" fill="#E2E8F0">适合复杂任务，但默认开它太夸张</text>
+  <text x="240" y="220" text-anchor="middle" font-size="14" fill="#1E2A3B">画一张 SVG 图：</text>
+  <text x="240" y="250" text-anchor="middle" font-size="14" fill="#1E2A3B">思考 22276 个 token，输出 3223 个</text>
+  <text x="240" y="290" text-anchor="middle" font-size="28" font-weight="700" fill="#7C5CD6">约 21 分钟</text>
+  <text x="240" y="322" text-anchor="middle" font-size="13" fill="#64748B">问“画个圆”还会自己加戏：动画、渐变、</text>
+  <text x="240" y="342" text-anchor="middle" font-size="13" fill="#64748B">同心圆……产出完全不是要的东西</text>
+
+  <!-- low 卡片 -->
+  <rect x="430" y="110" width="340" height="330" rx="14" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="430" y="110" width="340" height="62" rx="14" fill="url(#glow)"/>
+  <rect x="430" y="146" width="340" height="26" fill="url(#glow)"/>
+  <text x="600" y="136" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">low（推荐日常）</text>
+  <text x="600" y="172" text-anchor="middle" font-size="13" fill="#E2E8F0">思考一小段，兼顾速度与质量</text>
+  <text x="600" y="230" text-anchor="middle" font-size="14" fill="#1E2A3B">日常问答、写邮件、改文案、</text>
+  <text x="600" y="260" text-anchor="middle" font-size="14" fill="#1E2A3B">普通代码，基本够用</text>
+  <text x="600" y="300" text-anchor="middle" font-size="28" font-weight="700" fill="#2E9E6B">速度快很多</text>
+  <text x="600" y="332" text-anchor="middle" font-size="13" fill="#64748B">实在拿不准，就从这档开始</text>
+
+  <!-- off 卡片 -->
+  <rect x="790" y="110" width="340" height="330" rx="14" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="790" y="110" width="340" height="62" rx="14" fill="url(#goff)"/>
+  <rect x="790" y="146" width="340" height="26" fill="url(#goff)"/>
+  <text x="960" y="136" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">off / 关掉</text>
+  <text x="960" y="172" text-anchor="middle" font-size="13" fill="#E2E8F0">不思考，直接给答案，最快</text>
+  <text x="960" y="230" text-anchor="middle" font-size="14" fill="#1E2A3B">同一张 SVG 图：3715 个 token，</text>
+  <text x="960" y="260" text-anchor="middle" font-size="14" fill="#1E2A3B">不写思考直接输出</text>
+  <text x="960" y="300" text-anchor="middle" font-size="28" font-weight="700" fill="#64748B">约 137 秒</text>
+  <text x="960" y="332" text-anchor="middle" font-size="13" fill="#64748B">但复杂任务容易“差一步”</text>
+  <text x="960" y="352" text-anchor="middle" font-size="13" fill="#64748B">（画边界框工具就摆错过位置）</text>
+
+  <rect x="70" y="470" width="1060" height="110" rx="14" fill="#1E2A3B"/>
+  <text x="600" y="508" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">一句话结论：默认 xhigh 不是给你日常用的</text>
+  <text x="600" y="540" text-anchor="middle" font-size="14" fill="#CBD5E1">日常用 low 或关掉；写代码 agent、复杂工具调用、要精确格式的输出，再开回高思考</text>
+  <text x="600" y="566" text-anchor="middle" font-size="12" fill="#64748B">实测数据来源：Simon Willison，2026-08-16，LM Studio + Q4_K_M 量化版（17GB）</text>
+</svg>

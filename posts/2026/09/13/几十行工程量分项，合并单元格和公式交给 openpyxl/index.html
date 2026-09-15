@@ -1,0 +1,279 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>几十行工程量分项，合并单元格和公式交给 openpyxl | 三色风</title><meta name="author" content="Levi"><meta name="copyright" content="Levi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f0e4"><meta name="description" content="工程量计算表用 openpyxl 生成 xlsx 的完整写法：标题行、表头、序号列三种合并方式，数值与单位为什么必须分列，number_format 和列宽怎么设，公式写进格子不等于算过（data_only 读回是 None，实测），以及打印前要加的冻结行与重复标题行。附带可直接跑通的脚本。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几十行工程量分项，合并单元格和公式交给 openpyxl">
+<meta property="og:url" content="https://www.lxpyll.top/posts/2026/09/13/%E5%87%A0%E5%8D%81%E8%A1%8C%E5%B7%A5%E7%A8%8B%E9%87%8F%E5%88%86%E9%A1%B9%EF%BC%8C%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E5%92%8C%E5%85%AC%E5%BC%8F%E4%BA%A4%E7%BB%99%20openpyxl/">
+<meta property="og:site_name" content="三色风">
+<meta property="og:description" content="工程量计算表用 openpyxl 生成 xlsx 的完整写法：标题行、表头、序号列三种合并方式，数值与单位为什么必须分列，number_format 和列宽怎么设，公式写进格子不等于算过（data_only 读回是 None，实测），以及打印前要加的冻结行与重复标题行。附带可直接跑通的脚本。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lxpyll.top/img/og.jpg">
+<meta property="article:published_time" content="2026-09-13T14:35:00.000Z">
+<meta property="article:modified_time" content="2026-09-15T14:43:25.164Z">
+<meta property="article:author" content="Levi">
+<meta property="article:tag" content="Excel">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="openpyxl">
+<meta property="article:tag" content="工程量">
+<meta property="article:tag" content="报价">
+<meta property="article:tag" content="表格打印">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.lxpyll.top/img/og.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "几十行工程量分项，合并单元格和公式交给 openpyxl",
+  "url": "https://www.lxpyll.top/posts/2026/09/13/%E5%87%A0%E5%8D%81%E8%A1%8C%E5%B7%A5%E7%A8%8B%E9%87%8F%E5%88%86%E9%A1%B9%EF%BC%8C%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E5%92%8C%E5%85%AC%E5%BC%8F%E4%BA%A4%E7%BB%99%20openpyxl/",
+  "image": "https://www.lxpyll.top/img/og.jpg",
+  "datePublished": "2026-09-13T14:35:00.000Z",
+  "dateModified": "2026-09-15T14:43:25.164Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Levi",
+      "url": "https://www.lxpyll.top"
+    }
+  ],
+  "description": "工程量计算表用 openpyxl 生成 xlsx 的完整写法：标题行、表头、序号列三种合并方式，数值与单位为什么必须分列，number_format 和列宽怎么设，公式写进格子不等于算过（data_only 读回是 None，实测），以及打印前要加的冻结行与重复标题行。附带可直接跑通的脚本。"
+}</script><link rel="shortcut icon" href="/img/levi-avatar.svg"><link rel="canonical" href="https://www.lxpyll.top/posts/2026/09/13/%E5%87%A0%E5%8D%81%E8%A1%8C%E5%B7%A5%E7%A8%8B%E9%87%8F%E5%88%86%E9%A1%B9%EF%BC%8C%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E5%92%8C%E5%85%AC%E5%BC%8F%E4%BA%A4%E7%BB%99%20openpyxl/"><link rel="alternate" type="application/atom+xml" title="三色风 RSS" href="https://www.lxpyll.top/atom.xml"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#231d17')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f0e4')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&amp;family=Noto+Serif+SC:wght@400;500;600;700;900&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":2,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '几十行工程量分项，合并单元格和公式交给 openpyxl',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-78CVHQTCM7"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-78CVHQTCM7')</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/custom.css?v=20260728-hero-poster-3"><meta name="msvalidate.01" content="C77AD03ECD54E088B341BF1F23909B07"><meta name="generator" content="Hexo 8.1.2"></head><body><a class="skip-link" href="#content-inner">跳到主要内容</a><div class="bg-animation" id="web_bg" style="background-color: #f7f0e4;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus" aria-hidden="true" inert="inert"><div class="avatar-img text-center"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">三色风</span></a><a class="nav-page-title" href="/"><span class="site-name">几十行工程量分项，合并单元格和公式交给 openpyxl</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><button class="site-page social-icon search" type="button" aria-label="搜索"><i class="fas fa-search fa-fw"></i><span> 搜索</span></button></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><button id="toggle-menu" type="button" aria-label="打开导航菜单" aria-controls="sidebar-menus" aria-expanded="false"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></button></div></nav></header><main class="layout" id="content-inner" tabindex="-1"><div id="post"><div id="post-info"><h1 class="post-title">几十行工程量分项，合并单元格和公式交给 openpyxl</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-13T14:35:00.000Z" title="发表于 2026-09-13 22:35:00">2026-09-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-15T14:43:25.164Z" title="更新于 2026-09-15 22:43:25">2026-09-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8A%9E%E5%85%AC%E8%87%AA%E5%8A%A8%E5%8C%96/">办公自动化</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><p>工程量计算表这活，麻烦不在算，在排版。一个项目分三大类、十几个分项，每个大类底下挂几个子项，序号列要竖着合并，单位单独一列，报出去的数还得统一两位小数。手工做的时候，复核阶段淤厚从 12 cm 改成 15 cm，工程量全变，合并区域跟着错位，等于重做一遍。</p>
+<p>现在这张表是脚本出的：分项和工程量在 Python 里算完，openpyxl 负责落成 xlsx。参数改完重跑一条命令，表连格式一起重出。</p>
+<h2 id="先确认版本对得上"><a href="#先确认版本对得上" class="headerlink" title="先确认版本对得上"></a>先确认版本对得上</h2><p>macOS 自带的 <code>/usr/bin/python3</code> 里就带 openpyxl（我这台是 3.1.5），先看一眼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -c <span class="string">&quot;import openpyxl; print(openpyxl.__version__)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>没有就装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m pip install -U openpyxl</span><br></pre></td></tr></table></figure>
+
+<p>写 <code>python3 -m pip</code> 而不是直接 <code>pip</code>，能保证装进当前这个解释器。如果你脚本里用的是 Homebrew 的 python，命令里的 python3 得换成同一个路径，否则跑起来报 ModuleNotFoundError。</p>
+<h2 id="数字和单位分开放"><a href="#数字和单位分开放" class="headerlink" title="数字和单位分开放"></a>数字和单位分开放</h2><p>后面所有格式能不能生效，就看这一步：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rows = [</span><br><span class="line">    (<span class="string">&quot;一&quot;</span>, <span class="string">&quot;人工清淤&quot;</span>, <span class="string">&quot;m³&quot;</span>, <span class="number">492.60</span>, <span class="number">60.00</span>),</span><br><span class="line">    (<span class="string">&quot;&quot;</span>, <span class="string">&quot;土渠清淤（1:1）&quot;</span>, <span class="string">&quot;m³&quot;</span>, <span class="number">2916.13</span>, <span class="number">60.00</span>),</span><br><span class="line">    (<span class="string">&quot;&quot;</span>, <span class="string">&quot;溪河清淤（1:1.25）&quot;</span>, <span class="string">&quot;m³&quot;</span>, <span class="number">295.75</span>, <span class="number">60.00</span>),</span><br><span class="line">    (<span class="string">&quot;二&quot;</span>, <span class="string">&quot;除草清障&quot;</span>, <span class="string">&quot;m²&quot;</span>, <span class="number">1180.00</span>, <span class="number">6.50</span>),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>工程量存 float，单位存字符串，别拼成一格写成 <code>&quot;492.60m³&quot;</code>。拼起来这格就变成文本，甲方把表导进他自己的汇总表时这列一个数都加不起来——被这么问过一回，对方原话是”你这列怎么全是字”。</p>
+<h2 id="三种合并写法"><a href="#三种合并写法" class="headerlink" title="三种合并写法"></a>三种合并写法</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ws.merge_cells(<span class="string">&quot;A1:F1&quot;</span>)                                              <span class="comment"># 标题横跨整行</span></span><br><span class="line">ws.merge_cells(start_row=<span class="number">3</span>, start_column=<span class="number">1</span>, end_row=<span class="number">5</span>, end_column=<span class="number">1</span>) <span class="comment"># 序号列纵合并</span></span><br></pre></td></tr></table></figure>
+
+<p>记住一条：<strong>值只存在左上角那一格</strong>。A3:A5 合并后 A3 是”一”，A4、A5 读出来是 None；往 A4 写值会直接抛异常（<code>&#39;MergedCell&#39; object attribute &#39;value&#39; is read-only</code>）。所以顺序是先写值、后合并。</p>
+<p><img src="/img/openpyxl-merge-rules.svg" alt="合并单元格只认左上角那一格"></p>
+<h2 id="数字格式与列宽"><a href="#数字格式与列宽" class="headerlink" title="数字格式与列宽"></a>数字格式与列宽</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ws.cell(row=r, column=<span class="number">4</span>, value=qty).number_format = <span class="string">&quot;0.00&quot;</span>      <span class="comment"># 工程量两位小数</span></span><br><span class="line">ws.cell(row=r, column=<span class="number">5</span>).number_format = <span class="string">&quot;#,##0.00&quot;</span>             <span class="comment"># 单价带千分位</span></span><br><span class="line">ws.column_dimensions[<span class="string">&quot;B&quot;</span>].width = <span class="number">24</span></span><br></pre></td></tr></table></figure>
+
+<p><code>number_format</code> 只管显示，格子里存的还是原数，不影响计算。规则写一次，所有分项一起生效，这是比手工点格式刷省事的地方。</p>
+<h2 id="公式写进去不等于算过了"><a href="#公式写进去不等于算过了" class="headerlink" title="公式写进去不等于算过了"></a>公式写进去不等于算过了</h2><p>合价那列写的是公式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ws.cell(row=r, column=<span class="number">6</span>, value=<span class="string">&quot;=D&#123;0&#125;*E&#123;0&#125;&quot;</span>.<span class="built_in">format</span>(r))</span><br><span class="line">ws.cell(row=total, column=<span class="number">6</span>, value=<span class="string">&quot;=SUM(F3:F&#123;0&#125;)&quot;</span>.<span class="built_in">format</span>(total - <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<p>openpyxl 不计算公式，它只是把 <code>=D3*E3</code> 这个字符串塞进单元格，等你用表格软件打开时才算。刚生成的表里，合价格子其实是空的。</p>
+<p>读回来更要小心：<code>load_workbook(path, data_only=True)</code> 读的是缓存值，脚本刚生成的文件没有缓存，读到的是 None（我实测确认）。要是下一步还要拿合价去干别的活——汇总到总表、或者塞进报价书文档——别去读公式格，在 Python 里算好写数值；或者先让 LibreOffice 无头转一遍，把缓存算出来：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">soffice --headless --convert-to xlsx --outdir /tmp /tmp/工程量计算表.xlsx</span><br></pre></td></tr></table></figure>
+
+<p>转完再 <code>data_only</code> 读一次，合价格子就从 None 变成数了（我这边 F3 读出来是 29556，对应 492.60 × 60）。</p>
+<h2 id="打印前加两行设置"><a href="#打印前加两行设置" class="headerlink" title="打印前加两行设置"></a>打印前加两行设置</h2><p>工程量表最后是要打出来签字的，这两行不加，打出来就是废纸：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ws.freeze_panes = <span class="string">&quot;A3&quot;</span>            <span class="comment"># 冻结标题行，滚动不错行</span></span><br><span class="line">ws.print_title_rows = <span class="string">&quot;1:2&quot;</span>       <span class="comment"># 每页重复打印标题</span></span><br><span class="line">ws.page_setup.orientation = <span class="string">&quot;landscape&quot;</span></span><br><span class="line">ws.page_setup.paperSize = ws.PAPERSIZE_A4</span><br></pre></td></tr></table></figure>
+
+<p>竖向 A4 装不下六列，右边两列会被切到第二页。改横向、加上标题行重复，一页一页摊开看，每页顶上都有”序号&#x2F;分项名称&#x2F;单位&#x2F;工程量…”，签完字归档也认得出来。</p>
+<h2 id="完整脚本"><a href="#完整脚本" class="headerlink" title="完整脚本"></a>完整脚本</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> openpyxl <span class="keyword">import</span> Workbook</span><br><span class="line"><span class="keyword">from</span> openpyxl.styles <span class="keyword">import</span> Font, Alignment, Border, Side, PatternFill</span><br><span class="line"></span><br><span class="line">rows = [(<span class="string">&quot;一&quot;</span>, <span class="string">&quot;人工清淤&quot;</span>, <span class="string">&quot;m³&quot;</span>, <span class="number">492.60</span>, <span class="number">60.00</span>),</span><br><span class="line">        (<span class="string">&quot;&quot;</span>, <span class="string">&quot;土渠清淤（1:1）&quot;</span>, <span class="string">&quot;m³&quot;</span>, <span class="number">2916.13</span>, <span class="number">60.00</span>),</span><br><span class="line">        (<span class="string">&quot;&quot;</span>, <span class="string">&quot;溪河清淤（1:1.25）&quot;</span>, <span class="string">&quot;m³&quot;</span>, <span class="number">295.75</span>, <span class="number">60.00</span>),</span><br><span class="line">        (<span class="string">&quot;二&quot;</span>, <span class="string">&quot;除草清障&quot;</span>, <span class="string">&quot;m²&quot;</span>, <span class="number">1180.00</span>, <span class="number">6.50</span>)]</span><br><span class="line"></span><br><span class="line">wb = Workbook(); ws = wb.active; ws.title = <span class="string">&quot;工程量&quot;</span></span><br><span class="line">thin = Side(style=<span class="string">&quot;thin&quot;</span>, color=<span class="string">&quot;808080&quot;</span>)</span><br><span class="line">bd = Border(left=thin, right=thin, top=thin, bottom=thin)</span><br><span class="line">font = Font(name=<span class="string">&quot;宋体&quot;</span>, size=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">ws.merge_cells(<span class="string">&quot;A1:F1&quot;</span>)</span><br><span class="line">ws[<span class="string">&quot;A1&quot;</span>] = <span class="string">&quot;渠道清淤工程量计算表&quot;</span></span><br><span class="line">ws[<span class="string">&quot;A1&quot;</span>].font = Font(name=<span class="string">&quot;宋体&quot;</span>, size=<span class="number">14</span>, bold=<span class="literal">True</span>)</span><br><span class="line">ws[<span class="string">&quot;A1&quot;</span>].alignment = Alignment(horizontal=<span class="string">&quot;center&quot;</span>, vertical=<span class="string">&quot;center&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, t <span class="keyword">in</span> <span class="built_in">enumerate</span>([<span class="string">&quot;序号&quot;</span>, <span class="string">&quot;分项名称&quot;</span>, <span class="string">&quot;单位&quot;</span>, <span class="string">&quot;工程量&quot;</span>, <span class="string">&quot;单价（元）&quot;</span>, <span class="string">&quot;合价（元）&quot;</span>], <span class="number">1</span>):</span><br><span class="line">    c = ws.cell(row=<span class="number">2</span>, column=i, value=t)</span><br><span class="line">    c.font = Font(name=<span class="string">&quot;宋体&quot;</span>, size=<span class="number">10</span>, bold=<span class="literal">True</span>); c.border = bd</span><br><span class="line">    c.fill = PatternFill(<span class="string">&quot;solid&quot;</span>, fgColor=<span class="string">&quot;DCE6F1&quot;</span>)</span><br><span class="line">    c.alignment = Alignment(horizontal=<span class="string">&quot;center&quot;</span>, vertical=<span class="string">&quot;center&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, (no, name, unit, qty, price) <span class="keyword">in</span> <span class="built_in">enumerate</span>(rows):</span><br><span class="line">    r = <span class="number">3</span> + i</span><br><span class="line">    ws.cell(row=r, column=<span class="number">1</span>, value=no)</span><br><span class="line">    ws.cell(row=r, column=<span class="number">2</span>, value=name)</span><br><span class="line">    ws.cell(row=r, column=<span class="number">3</span>, value=unit)</span><br><span class="line">    ws.cell(row=r, column=<span class="number">4</span>, value=qty).number_format = <span class="string">&quot;0.00&quot;</span></span><br><span class="line">    ws.cell(row=r, column=<span class="number">5</span>, value=price).number_format = <span class="string">&quot;#,##0.00&quot;</span></span><br><span class="line">    ws.cell(row=r, column=<span class="number">6</span>, value=<span class="string">&quot;=D&#123;0&#125;*E&#123;0&#125;&quot;</span>.<span class="built_in">format</span>(r)).number_format = <span class="string">&quot;#,##0.00&quot;</span></span><br><span class="line">    <span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">7</span>):</span><br><span class="line">        cell = ws.cell(row=r, column=col); cell.border = bd; cell.font = font</span><br><span class="line">        cell.alignment = Alignment(horizontal=<span class="string">&quot;center&quot;</span> <span class="keyword">if</span> col <span class="keyword">in</span> (<span class="number">1</span>, <span class="number">3</span>) <span class="keyword">else</span> <span class="string">&quot;right&quot;</span>,</span><br><span class="line">                                   vertical=<span class="string">&quot;center&quot;</span>)</span><br><span class="line"></span><br><span class="line">ws.merge_cells(start_row=<span class="number">3</span>, start_column=<span class="number">1</span>, end_row=<span class="number">5</span>, end_column=<span class="number">1</span>)   <span class="comment"># 写完值再合并</span></span><br><span class="line"></span><br><span class="line">total = <span class="number">3</span> + <span class="built_in">len</span>(rows)</span><br><span class="line">ws.merge_cells(start_row=total, start_column=<span class="number">1</span>, end_row=total, end_column=<span class="number">5</span>)</span><br><span class="line">c = ws.cell(row=total, column=<span class="number">1</span>, value=<span class="string">&quot;合计&quot;</span>)</span><br><span class="line">c.alignment = Alignment(horizontal=<span class="string">&quot;right&quot;</span>, vertical=<span class="string">&quot;center&quot;</span>)</span><br><span class="line">t = ws.cell(row=total, column=<span class="number">6</span>, value=<span class="string">&quot;=SUM(F3:F&#123;0&#125;)&quot;</span>.<span class="built_in">format</span>(total - <span class="number">1</span>))</span><br><span class="line">t.number_format = <span class="string">&quot;#,##0.00&quot;</span>; t.font = Font(name=<span class="string">&quot;宋体&quot;</span>, size=<span class="number">10</span>, bold=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">7</span>):</span><br><span class="line">    ws.cell(row=total, column=col).border = bd</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> col, w <span class="keyword">in</span> <span class="built_in">zip</span>(<span class="string">&quot;ABCDEF&quot;</span>, (<span class="number">8</span>, <span class="number">24</span>, <span class="number">6</span>, <span class="number">12</span>, <span class="number">12</span>, <span class="number">14</span>)):</span><br><span class="line">    ws.column_dimensions[col].width = w</span><br><span class="line">ws.freeze_panes = <span class="string">&quot;A3&quot;</span></span><br><span class="line">ws.print_title_rows = <span class="string">&quot;1:2&quot;</span></span><br><span class="line">ws.page_setup.orientation = <span class="string">&quot;landscape&quot;</span></span><br><span class="line">ws.page_setup.paperSize = ws.PAPERSIZE_A4</span><br><span class="line">wb.save(<span class="string">&quot;工程量计算表.xlsx&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>跑完用 <code>openpyxl.load_workbook</code> 读回来核一下合并区域，上面这段脚本出来的是 <code>[&#39;A1:F1&#39;, &#39;A3:A5&#39;, &#39;A7:E7&#39;]</code>，对得上就没问题。</p>
+<p>什么时候别用脚本：表结构还在天天变、列要临时加减的阶段，改脚本比手改格子还慢。脚本适合结构定了、要反复重出的表——工程量计算表、清单表都是这一类。我这套定型之后，同一个项目的表重出过四遍，改的都是参数，没再动过格子。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top">Levi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top/posts/2026/09/13/%E5%87%A0%E5%8D%81%E8%A1%8C%E5%B7%A5%E7%A8%8B%E9%87%8F%E5%88%86%E9%A1%B9%EF%BC%8C%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E5%92%8C%E5%85%AC%E5%BC%8F%E4%BA%A4%E7%BB%99%20openpyxl/">https://www.lxpyll.top/posts/2026/09/13/%E5%87%A0%E5%8D%81%E8%A1%8C%E5%B7%A5%E7%A8%8B%E9%87%8F%E5%88%86%E9%A1%B9%EF%BC%8C%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E5%92%8C%E5%85%AC%E5%BC%8F%E4%BA%A4%E7%BB%99%20openpyxl/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://www.lxpyll.top" target="_blank">三色风</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/openpyxl/">openpyxl</a><a class="post-meta__tags" href="/tags/Excel/">Excel</a><a class="post-meta__tags" href="/tags/%E5%B7%A5%E7%A8%8B%E9%87%8F/">工程量</a><a class="post-meta__tags" href="/tags/%E8%A1%A8%E6%A0%BC%E6%89%93%E5%8D%B0/">表格打印</a><a class="post-meta__tags" href="/tags/%E6%8A%A5%E4%BB%B7/">报价</a></div><div class="post-share"><div class="social-share" data-image="/img/og.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat-reward-qr.jpg" alt="微信支付"/></a><div class="post-qr-code-desc">微信支付</div></li><li class="reward-item"><a href="/img/alipay-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay-reward-qr.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/2026/09/14/%E6%B8%85%E6%B7%A4%E9%87%8F%E8%A1%A8%E7%9A%84%E5%85%AC%E5%BC%8F%E4%BB%8EC3%E6%94%B9%E6%88%90%E5%90%8D%E5%AD%97%EF%BC%8CFreeCAD%E7%94%B5%E5%AD%90%E8%A1%A8%E6%A0%BC%E8%BF%99%E4%B9%88%E7%94%A8/" title="清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用</div></div><div class="info-2"><div class="info-item-1">新圩那个水毁修复的渠道清淤量，我原来是在 Excel 里做的，一条渠一块，公式写 =(C3-1*D3)*D3*B3。现场复量回来淤厚从 0.5 改成 0.6，我改完数值还得挨个格子点进去看公式有没有拖对；更要命的是给别人复核的时候，人家问「这个 3211.87 哪来的」，我得先把 C3、D3 翻译成上口宽、淤厚，说半天。 后来把这套表挪进了 FreeC...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/12/Obsidian%E5%BA%93%E6%94%92%E5%88%B0%E4%B8%80%E7%99%BE%E5%A4%9A%E7%AF%87%EF%BC%8C%E6%96%AD%E9%93%BE%E5%92%8C%E5%AD%A4%E5%84%BF%E7%AC%94%E8%AE%B0%E6%88%91%E7%94%A8%E8%84%9A%E6%9C%AC%E6%89%AB/" title="Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫"><img class="cover" src="/img/obsidian-vault-check.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫</div></div><div class="info-2"><div class="info-item-1">笔记过了一百篇之后，有两件事眼睛查不了了。 一个是断链。我改文件名最勤的就是项目记录，去年那篇叫「某某记录」，今年加上日期变成「某某记录-2026-09-11」，链过去的那几篇里还写着旧名字。Obsidian 只在打开那篇笔记的时候，把断链显示成灰色的未创建链接，你不点进去就永远发现不了。另一个是孤儿笔记：当时写完顺手丢进某个章目录，没人链过来，索引里...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/2026/09/12/Obsidian%E5%BA%93%E6%94%92%E5%88%B0%E4%B8%80%E7%99%BE%E5%A4%9A%E7%AF%87%EF%BC%8C%E6%96%AD%E9%93%BE%E5%92%8C%E5%AD%A4%E5%84%BF%E7%AC%94%E8%AE%B0%E6%88%91%E7%94%A8%E8%84%9A%E6%9C%AC%E6%89%AB/" title="Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫"><img class="cover" src="/img/obsidian-vault-check.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-12</div><div class="info-item-2">Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫</div></div><div class="info-2"><div class="info-item-1">笔记过了一百篇之后，有两件事眼睛查不了了。 一个是断链。我改文件名最勤的就是项目记录，去年那篇叫「某某记录」，今年加上日期变成「某某记录-2026-09-11」，链过去的那几篇里还写着旧名字。Obsidian 只在打开那篇笔记的时候，把断链显示成灰色的未创建链接，你不点进去就永远发现不了。另一个是孤儿笔记：当时写完顺手丢进某个章目录，没人链过来，索引里...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/11/%E6%B8%A0%E9%81%93%E6%96%AD%E9%9D%A2%E5%9B%BE%E7%94%A8matplotlib%E8%84%9A%E6%9C%AC%E7%94%BB%EF%BC%8C%E4%B8%AD%E6%96%87%E6%A0%87%E6%B3%A8%E5%92%8C%E5%B9%B3%E6%96%B9%E5%8F%B7%E9%83%BD%E4%B8%8D%E7%BC%BA/" title="渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-11</div><div class="info-item-2">渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺</div></div><div class="info-2"><div class="info-item-1">渠道清淤的计算书里得配断面示意图，图上要标上口最大宽、淤厚、边坡，还有算出来的面积。以前这几张图我用 LibreCAD 描，一张十来分钟，问题是复核阶段淤厚改了两回、边坡从 1:1 改成 1:1.25，图上的底宽和面积全跟着要重算重标。手画的东西改一处忘一处，到最后图上写的 2.70 m 和表里写的 2.70 m，谁也不知道哪个是对的。 现在这几张图交...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Levi</div><div class="author-info-description">Levi的Blog</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Lxp1986"><i class="fab fa-github"></i><span>访问 GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Lxp1986" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #b85c38;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客，持续更新中。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E7%A1%AE%E8%AE%A4%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BE%97%E4%B8%8A"><span class="toc-number">1.</span> <span class="toc-text">先确认版本对得上</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E5%92%8C%E5%8D%95%E4%BD%8D%E5%88%86%E5%BC%80%E6%94%BE"><span class="toc-number">2.</span> <span class="toc-text">数字和单位分开放</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E5%90%88%E5%B9%B6%E5%86%99%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">三种合并写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E6%A0%BC%E5%BC%8F%E4%B8%8E%E5%88%97%E5%AE%BD"><span class="toc-number">4.</span> <span class="toc-text">数字格式与列宽</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AC%E5%BC%8F%E5%86%99%E8%BF%9B%E5%8E%BB%E4%B8%8D%E7%AD%89%E4%BA%8E%E7%AE%97%E8%BF%87%E4%BA%86"><span class="toc-number">5.</span> <span class="toc-text">公式写进去不等于算过了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8D%B0%E5%89%8D%E5%8A%A0%E4%B8%A4%E8%A1%8C%E8%AE%BE%E7%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">打印前加两行设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E8%84%9A%E6%9C%AC"><span class="toc-number">7.</span> <span class="toc-text">完整脚本</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/15/%E7%94%A8qpdf%E5%90%88%E5%B9%B6%E6%89%AB%E6%8F%8F%E4%BB%B6%E4%BA%A4%E8%B5%84%E6%96%99%EF%BC%8C%E9%A1%BA%E6%89%8B%E8%A7%A3%E5%BC%80%E6%9D%83%E9%99%90%E9%94%81%E5%92%8C%E6%89%93%E5%BC%80%E5%AF%86%E7%A0%81/" title="用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码">用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码</a><time datetime="2026-09-15T14:38:00.000Z" title="发表于 2026-09-15 22:38:00">2026-09-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/14/%E6%B8%85%E6%B7%A4%E9%87%8F%E8%A1%A8%E7%9A%84%E5%85%AC%E5%BC%8F%E4%BB%8EC3%E6%94%B9%E6%88%90%E5%90%8D%E5%AD%97%EF%BC%8CFreeCAD%E7%94%B5%E5%AD%90%E8%A1%A8%E6%A0%BC%E8%BF%99%E4%B9%88%E7%94%A8/" title="清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用">清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用</a><time datetime="2026-09-14T14:38:00.000Z" title="发表于 2026-09-14 22:38:00">2026-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/13/%E5%87%A0%E5%8D%81%E8%A1%8C%E5%B7%A5%E7%A8%8B%E9%87%8F%E5%88%86%E9%A1%B9%EF%BC%8C%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E5%92%8C%E5%85%AC%E5%BC%8F%E4%BA%A4%E7%BB%99%20openpyxl/" title="几十行工程量分项，合并单元格和公式交给 openpyxl">几十行工程量分项，合并单元格和公式交给 openpyxl</a><time datetime="2026-09-13T14:35:00.000Z" title="发表于 2026-09-13 22:35:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/12/Obsidian%E5%BA%93%E6%94%92%E5%88%B0%E4%B8%80%E7%99%BE%E5%A4%9A%E7%AF%87%EF%BC%8C%E6%96%AD%E9%93%BE%E5%92%8C%E5%AD%A4%E5%84%BF%E7%AC%94%E8%AE%B0%E6%88%91%E7%94%A8%E8%84%9A%E6%9C%AC%E6%89%AB/" title="Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫">Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫</a><time datetime="2026-09-12T14:30:00.000Z" title="发表于 2026-09-12 22:30:00">2026-09-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/11/%E6%B8%A0%E9%81%93%E6%96%AD%E9%9D%A2%E5%9B%BE%E7%94%A8matplotlib%E8%84%9A%E6%9C%AC%E7%94%BB%EF%BC%8C%E4%B8%AD%E6%96%87%E6%A0%87%E6%B3%A8%E5%92%8C%E5%B9%B3%E6%96%B9%E5%8F%B7%E9%83%BD%E4%B8%8D%E7%BC%BA/" title="渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺">渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺</a><time datetime="2026-09-11T14:35:00.000Z" title="发表于 2026-09-11 22:35:00">2026-09-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Levi</span></div><div class="footer_custom_text">三色风 | Levi</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Lxp1986/Lxp1986.github.io',
+      'data-repo-id': 'R_kgDOMn0qqg',
+      'data-category-id': 'DIC_kwDOMn0qqs4DDgMy',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="输入关键词搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

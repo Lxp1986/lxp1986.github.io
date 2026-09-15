@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="800" viewBox="0 0 1000 800" font-family="PingFang SC, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="root" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="800" rx="18" fill="#F6F8FB"/>
+  <text x="500" y="48" text-anchor="middle" font-size="26" font-weight="700" fill="#1E2A3B">Kimi K3 开源了，想自己部署？先过三关</text>
+  <text x="500" y="76" text-anchor="middle" font-size="14" fill="#64748B">下载量、硬件、许可证 —— 一张图看懂门槛在哪</text>
+
+  <rect x="380" y="100" width="240" height="48" rx="24" fill="url(#root)"/>
+  <text x="500" y="130" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">听说 Kimi K3 开源了</text>
+  <line x1="500" y1="148" x2="500" y2="176" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="55" y="190" width="290" height="330" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="83" cy="218" r="16" fill="#3B82F6"/>
+    <text x="83" y="224" text-anchor="middle" font-size="15" font-weight="700" fill="#FFFFFF">1</text>
+    <text x="107" y="224" font-size="17" font-weight="700" fill="#1E2A3B">下载这一关</text>
+    <line x1="79" y1="244" x2="321" y2="244" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="83" cy="274" r="3" fill="#94A3B8"/><text x="97" y="278" font-size="13" fill="#475569">权重包 1.56TB</text>
+    <circle cx="83" cy="312" r="3" fill="#94A3B8"/><text x="97" y="316" font-size="13" fill="#475569">96 个分片文件</text>
+    <circle cx="83" cy="350" r="3" fill="#94A3B8"/><text x="97" y="354" font-size="13" fill="#475569">千兆宽带约 3.5 小时</text>
+    <circle cx="83" cy="388" r="3" fill="#94A3B8"/><text x="97" y="392" font-size="13" fill="#475569">支持断点续传</text>
+  </g>
+
+  <g>
+    <rect x="355" y="190" width="290" height="330" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="383" cy="218" r="16" fill="#3B82F6"/>
+    <text x="383" y="224" text-anchor="middle" font-size="15" font-weight="700" fill="#FFFFFF">2</text>
+    <text x="407" y="224" font-size="17" font-weight="700" fill="#1E2A3B">硬件这一关</text>
+    <line x1="379" y1="244" x2="621" y2="244" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="383" cy="274" r="3" fill="#94A3B8"/><text x="397" y="278" font-size="13" fill="#475569">2.8T 总参数，激活 104B</text>
+    <circle cx="383" cy="312" r="3" fill="#94A3B8"/><text x="397" y="316" font-size="13" fill="#475569">896 个专家全部驻留显存</text>
+    <circle cx="383" cy="350" r="3" fill="#94A3B8"/><text x="397" y="354" font-size="13" fill="#475569">原生 4bit，压无可压</text>
+    <circle cx="383" cy="388" r="3" fill="#94A3B8"/><text x="397" y="392" font-size="13" fill="#475569">多卡服务器起步，消费级出局</text>
+  </g>
+
+  <g>
+    <rect x="655" y="190" width="290" height="330" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="683" cy="218" r="16" fill="#3B82F6"/>
+    <text x="683" y="224" text-anchor="middle" font-size="15" font-weight="700" fill="#FFFFFF">3</text>
+    <text x="707" y="224" font-size="17" font-weight="700" fill="#1E2A3B">许可证这一关</text>
+    <line x1="679" y1="244" x2="921" y2="244" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="683" cy="274" r="3" fill="#94A3B8"/><text x="697" y="278" font-size="13" fill="#475569">定制 Kimi K3 License</text>
+    <circle cx="683" cy="312" r="3" fill="#94A3B8"/><text x="697" y="316" font-size="13" fill="#475569">开放权重 ≠ 标准开源协议</text>
+    <circle cx="683" cy="350" r="3" fill="#94A3B8"/><text x="697" y="354" font-size="13" fill="#475569">商用 / 微调先读协议</text>
+    <circle cx="683" cy="388" r="3" fill="#94A3B8"/><text x="697" y="392" font-size="13" fill="#475569">个人折腾基本无碍</text>
+  </g>
+
+  <line x1="500" y1="520" x2="500" y2="548" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="380" y="560" width="240" height="44" rx="22" fill="#E2E8F0"/>
+  <text x="500" y="588" text-anchor="middle" font-size="15" font-weight="700" fill="#1E2A3B">你是哪种人？</text>
+
+  <rect x="70" y="630" width="420" height="96" rx="12" fill="#FFFFFF" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="90" y="658" font-size="15" font-weight="700" fill="#1E2A3B">企业 / 研究机构</text>
+  <text x="90" y="684" font-size="13" fill="#475569">多卡服务器 + vLLM 专用镜像</text>
+  <text x="90" y="706" font-size="13" fill="#475569">数据不出门，私有化部署</text>
+
+  <rect x="510" y="630" width="420" height="96" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="530" y="658" font-size="15" font-weight="700" fill="#1E2A3B">普通玩家</text>
+  <text x="530" y="684" font-size="13" fill="#475569">官方 API 直接尝鲜</text>
+  <text x="530" y="706" font-size="13" fill="#475569">本地玩，等能单卡跑的版本</text>
+
+  <text x="500" y="772" text-anchor="middle" font-size="14" fill="#64748B">我的结论：先 API 尝鲜；想本地部署，等小模型版本出来再说</text>
+</svg>

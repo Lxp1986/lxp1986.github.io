@@ -1,0 +1,276 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>渠道清淤算量：土渠溪河按梯形断面算，不是上口宽乘淤厚乘长 | 三色风</title><meta name="author" content="Levi"><meta name="copyright" content="Levi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f0e4"><meta name="description" content="土渠、溪河清淤是带边坡的倒梯形断面，按上口宽乘淤厚乘长会虚高两成。给出梯形公式 V&#x3D;(B−m·h)×h×L、边坡系数取值、算例和容易踩的点，来自阳春水毁修复项目的实测口径。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="渠道清淤算量：土渠溪河按梯形断面算，不是上口宽乘淤厚乘长">
+<meta property="og:url" content="https://www.lxpyll.top/posts/2026/09/01/%E6%B8%A0%E9%81%93%E6%B8%85%E6%B7%A4%E7%AE%97%E9%87%8F-%E5%9C%9F%E6%B8%A0%E6%BA%AA%E6%B2%B3%E6%8C%89%E6%A2%AF%E5%BD%A2%E6%96%AD%E9%9D%A2%E7%AE%97/">
+<meta property="og:site_name" content="三色风">
+<meta property="og:description" content="土渠、溪河清淤是带边坡的倒梯形断面，按上口宽乘淤厚乘长会虚高两成。给出梯形公式 V&#x3D;(B−m·h)×h×L、边坡系数取值、算例和容易踩的点，来自阳春水毁修复项目的实测口径。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lxpyll.top/img/og.jpg">
+<meta property="article:published_time" content="2026-09-01T14:33:00.000Z">
+<meta property="article:modified_time" content="2026-09-15T14:43:25.166Z">
+<meta property="article:author" content="Levi">
+<meta property="article:tag" content="施工">
+<meta property="article:tag" content="梯形断面">
+<meta property="article:tag" content="水利">
+<meta property="article:tag" content="清淤">
+<meta property="article:tag" content="算量">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.lxpyll.top/img/og.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "渠道清淤算量：土渠溪河按梯形断面算，不是上口宽乘淤厚乘长",
+  "url": "https://www.lxpyll.top/posts/2026/09/01/%E6%B8%A0%E9%81%93%E6%B8%85%E6%B7%A4%E7%AE%97%E9%87%8F-%E5%9C%9F%E6%B8%A0%E6%BA%AA%E6%B2%B3%E6%8C%89%E6%A2%AF%E5%BD%A2%E6%96%AD%E9%9D%A2%E7%AE%97/",
+  "image": "https://www.lxpyll.top/img/og.jpg",
+  "datePublished": "2026-09-01T14:33:00.000Z",
+  "dateModified": "2026-09-15T14:43:25.166Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Levi",
+      "url": "https://www.lxpyll.top"
+    }
+  ],
+  "description": "土渠、溪河清淤是带边坡的倒梯形断面，按上口宽乘淤厚乘长会虚高两成。给出梯形公式 V=(B−m·h)×h×L、边坡系数取值、算例和容易踩的点，来自阳春水毁修复项目的实测口径。"
+}</script><link rel="shortcut icon" href="/img/levi-avatar.svg"><link rel="canonical" href="https://www.lxpyll.top/posts/2026/09/01/%E6%B8%A0%E9%81%93%E6%B8%85%E6%B7%A4%E7%AE%97%E9%87%8F-%E5%9C%9F%E6%B8%A0%E6%BA%AA%E6%B2%B3%E6%8C%89%E6%A2%AF%E5%BD%A2%E6%96%AD%E9%9D%A2%E7%AE%97/"><link rel="alternate" type="application/atom+xml" title="三色风 RSS" href="https://www.lxpyll.top/atom.xml"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#231d17')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f0e4')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&amp;family=Noto+Serif+SC:wght@400;500;600;700;900&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":2,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '渠道清淤算量：土渠溪河按梯形断面算，不是上口宽乘淤厚乘长',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-78CVHQTCM7"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-78CVHQTCM7')</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/custom.css?v=20260728-hero-poster-3"><meta name="msvalidate.01" content="C77AD03ECD54E088B341BF1F23909B07"><meta name="generator" content="Hexo 8.1.2"></head><body><a class="skip-link" href="#content-inner">跳到主要内容</a><div class="bg-animation" id="web_bg" style="background-color: #f7f0e4;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus" aria-hidden="true" inert="inert"><div class="avatar-img text-center"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">三色风</span></a><a class="nav-page-title" href="/"><span class="site-name">渠道清淤算量：土渠溪河按梯形断面算，不是上口宽乘淤厚乘长</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><button class="site-page social-icon search" type="button" aria-label="搜索"><i class="fas fa-search fa-fw"></i><span> 搜索</span></button></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><button id="toggle-menu" type="button" aria-label="打开导航菜单" aria-controls="sidebar-menus" aria-expanded="false"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></button></div></nav></header><main class="layout" id="content-inner" tabindex="-1"><div id="post"><div id="post-info"><h1 class="post-title">渠道清淤算量：土渠溪河按梯形断面算，不是上口宽乘淤厚乘长</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-01T14:33:00.000Z" title="发表于 2026-09-01 22:33:00">2026-09-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-15T14:43:25.166Z" title="更新于 2026-09-15 22:43:25">2026-09-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E7%A8%8B%E8%BD%AF%E4%BB%B6/">工程软件</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><p>上个月在阳春做一条水毁修复的渠道清淤，工程量计算书第一版我按「宽 × 淤厚 × 长」算，量出来比实际能挖的大一截，被业主一句话点醒：土渠、溪河都是带边坡的梯形断面，淤泥层是上宽下窄的倒梯形，拿上口宽直接乘，等于把两个坡脚的三角都算进去了，量自然虚高。</p>
+<p>这单最后全部按梯形口径重算，业主复核没再提意见。记下来，给同样做农村水利、市政渠道的同行省点事。</p>
+<h2 id="为什么矩形算法是错的"><a href="#为什么矩形算法是错的" class="headerlink" title="为什么矩形算法是错的"></a>为什么矩形算法是错的</h2><p>清淤挖的是淤积层，断面是倒梯形：顶面是上口宽 B，挖到底，底面因为两侧边坡往内收，只剩 B − 2m·h（m 是边坡系数，h 是淤厚）。</p>
+<p>按矩形算 &#x3D; B × h × L，把两侧坡脚的两个三角形也算了进去。单个三角看着不大，一条几百米的渠积累下来就是几百方。量虚高，报价跟着虚高：投标要么没竞争力，要么中标后按业主复核的量干，心里没底。</p>
+<h2 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">V = (B − m·h) × h × L</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>B：上口宽（顶宽），现场量最宽那条线，不是底宽，也不是平均宽</li>
+<li>h：淤厚（平均淤深），米</li>
+<li>m：边坡系数，水平:垂直 &#x3D; m:1，无单位</li>
+<li>L：清淤长度，米</li>
+</ul>
+<p>推导很简单：梯形面积 &#x3D;（上底 + 下底）÷ 2 × 高，下底 &#x3D; B − 2m·h，代进去就是 (B − m·h) × h。</p>
+<h2 id="边坡系数-m-怎么定"><a href="#边坡系数-m-怎么定" class="headerlink" title="边坡系数 m 怎么定"></a>边坡系数 m 怎么定</h2><p>m 由土质决定，渠道越松、越砂，坡越要缓，m 越大：</p>
+<ul>
+<li>黏土、壤土渠道：1:1 左右</li>
+<li>偏砂、松散的溪河：1:1.25 ~ 1:1.5</li>
+</ul>
+<p>我们这单定的是：土渠 1:1，小溪小河偏砂松散 1:1.25。这个数一般和业主、设计对一下口径，别自己拍脑袋。</p>
+<h2 id="算例"><a href="#算例" class="headerlink" title="算例"></a>算例</h2><p>一段土渠，上口宽 2.0 m，平均淤厚 0.4 m，长 100 m，m &#x3D; 1：</p>
+<ul>
+<li>矩形：2.0 × 0.4 × 100 &#x3D; 80 m³</li>
+<li>梯形：(2.0 − 1 × 0.4) × 0.4 × 100 &#x3D; 64 m³</li>
+</ul>
+<p>同一条渠，两种算法差 16 m³，差 20%。这就是这层修正必须做的原因。</p>
+<h2 id="几个容易踩的点"><a href="#几个容易踩的点" class="headerlink" title="几个容易踩的点"></a>几个容易踩的点</h2><ol>
+<li>只有土渠、溪河（带边坡的天然断面）才用梯形修正；人工清理的成形矩形渠道、沟槽开挖、回填铺筑，直接按矩形或设计断面算，别乱套。</li>
+<li>宽度取上口最大宽，现场量测先分清哪条线是上口，拿底宽或平均宽出来整个偏小。</li>
+<li>淤厚取分段断面平均，隔一段测一个断面，别拿一个断面代表整条渠。</li>
+<li>公式里所有单位统一用米，m 不带单位。</li>
+<li>渠道清理的分项别漏：一般是清淤 m³ + 除草清障 m²（或 m）+ 淤泥清运，量要分开列。</li>
+</ol>
+<p><img src="/img/qingyu-trapezoid.svg" alt="渠道清淤梯形断面示意"></p>
+<p>这单的量按梯形口径修正后约 3211.87 m³（溪河 1:1.25 与土渠 1:1 分列）。量是计价的地基，量错了，后面单价再准都白搭。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top">Levi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top/posts/2026/09/01/%E6%B8%A0%E9%81%93%E6%B8%85%E6%B7%A4%E7%AE%97%E9%87%8F-%E5%9C%9F%E6%B8%A0%E6%BA%AA%E6%B2%B3%E6%8C%89%E6%A2%AF%E5%BD%A2%E6%96%AD%E9%9D%A2%E7%AE%97/">https://www.lxpyll.top/posts/2026/09/01/%E6%B8%A0%E9%81%93%E6%B8%85%E6%B7%A4%E7%AE%97%E9%87%8F-%E5%9C%9F%E6%B8%A0%E6%BA%AA%E6%B2%B3%E6%8C%89%E6%A2%AF%E5%BD%A2%E6%96%AD%E9%9D%A2%E7%AE%97/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://www.lxpyll.top" target="_blank">三色风</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E9%87%8F/">算量</a><a class="post-meta__tags" href="/tags/%E6%B0%B4%E5%88%A9/">水利</a><a class="post-meta__tags" href="/tags/%E6%B8%85%E6%B7%A4/">清淤</a><a class="post-meta__tags" href="/tags/%E6%A2%AF%E5%BD%A2%E6%96%AD%E9%9D%A2/">梯形断面</a><a class="post-meta__tags" href="/tags/%E6%96%BD%E5%B7%A5/">施工</a></div><div class="post-share"><div class="social-share" data-image="/img/og.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat-reward-qr.jpg" alt="微信支付"/></a><div class="post-qr-code-desc">微信支付</div></li><li class="reward-item"><a href="/img/alipay-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay-reward-qr.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/2026/09/02/%E6%89%8B%E6%9C%BA%E6%8B%8D%E7%85%A7%E8%BD%AC%E6%89%AB%E6%8F%8F%E4%BB%B6-Apple-Vision%E6%9C%AC%E5%9C%B0%E8%87%AA%E5%8A%A8%E6%8B%89%E6%AD%A3/" title="手机拍照转扫描件，Apple Vision 本地自动拉正"><img class="cover" src="/img/docscan-coords.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">手机拍照转扫描件，Apple Vision 本地自动拉正</div></div><div class="info-2"><div class="info-item-1">做工程免不了交扫描件。前几天给公司报名供应商建库，营业执照、法人身份证、授权书，全是「请提供扫描件」。手边没有扫描仪，镇上打印店的机器还得专门跑一趟。手机拍倒是快，但拍出来是斜的——纸成梯形，字越远越小。 手机备忘录自带的扫描能拍正，但一张张在手机上框边、导出，量一多就烦。第三方扫描 App 倒是一拍就正，可证件类资料要传它的服务器，还要看会员脸色。身...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/31/Obsidian%E6%94%BEiCloud%E5%90%8C%E6%AD%A5-%E5%86%B2%E7%AA%81%E5%89%AF%E6%9C%AC%E5%92%8C%E6%97%A7%E7%89%88%E5%9B%9E%E6%BB%9A%E8%BF%99%E6%A0%B7%E5%A4%84%E7%90%86/" title="Obsidian 放 iCloud 同步，冲突副本和旧版回滚这样处理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Obsidian 放 iCloud 同步，冲突副本和旧版回滚这样处理</div></div><div class="info-2"><div class="info-item-1">我的 Obsidian 知识库直接放在 iCloud：~/Library/Mobile Documents/iCloud~md~obsidian/Documents。MacBook、另一台机器、还有几个自动脚本都在读写这个库，好处是啥设备打开都是同一份，坏处是 iCloud 根本没有冲突处理机制——它不合并、不提示，出了冲突自己拿主意，拿错主意就是丢内...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/2026/09/11/%E6%B8%A0%E9%81%93%E6%96%AD%E9%9D%A2%E5%9B%BE%E7%94%A8matplotlib%E8%84%9A%E6%9C%AC%E7%94%BB%EF%BC%8C%E4%B8%AD%E6%96%87%E6%A0%87%E6%B3%A8%E5%92%8C%E5%B9%B3%E6%96%B9%E5%8F%B7%E9%83%BD%E4%B8%8D%E7%BC%BA/" title="渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-11</div><div class="info-item-2">渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺</div></div><div class="info-2"><div class="info-item-1">渠道清淤的计算书里得配断面示意图，图上要标上口最大宽、淤厚、边坡，还有算出来的面积。以前这几张图我用 LibreCAD 描，一张十来分钟，问题是复核阶段淤厚改了两回、边坡从 1:1 改成 1:1.25，图上的底宽和面积全跟着要重算重标。手画的东西改一处忘一处，到最后图上写的 2.70 m 和表里写的 2.70 m，谁也不知道哪个是对的。 现在这几张图交...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/14/%E6%B8%85%E6%B7%A4%E9%87%8F%E8%A1%A8%E7%9A%84%E5%85%AC%E5%BC%8F%E4%BB%8EC3%E6%94%B9%E6%88%90%E5%90%8D%E5%AD%97%EF%BC%8CFreeCAD%E7%94%B5%E5%AD%90%E8%A1%A8%E6%A0%BC%E8%BF%99%E4%B9%88%E7%94%A8/" title="清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-14</div><div class="info-item-2">清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用</div></div><div class="info-2"><div class="info-item-1">新圩那个水毁修复的渠道清淤量，我原来是在 Excel 里做的，一条渠一块，公式写 =(C3-1*D3)*D3*B3。现场复量回来淤厚从 0.5 改成 0.6，我改完数值还得挨个格子点进去看公式有没有拖对；更要命的是给别人复核的时候，人家问「这个 3211.87 哪来的」，我得先把 C3、D3 翻译成上口宽、淤厚，说半天。 后来把这套表挪进了 FreeC...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/05/%E4%B8%80%E5%A0%86DXF%E5%9B%BE%E7%BA%B8%E8%A6%81%E7%AE%97%E9%9D%A2%E7%A7%AF-freecadcmd%E4%B8%80%E4%B8%AA%E8%84%9A%E6%9C%AC%E5%85%A8%E8%B7%91%E5%AE%8C/" title="一堆 DXF 图纸要算面积，freecadcmd 一个脚本全跑完"><img class="cover" src="/img/fc-dxf-area-flow.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-05</div><div class="info-item-2">一堆 DXF 图纸要算面积，freecadcmd 一个脚本全跑完</div></div><div class="info-2"><div class="info-item-1">干工程的总逃不掉一个动作：收方、算量，最后落到”这块多少平方”。图纸来了，要么是设计院丢过来的 DXF，要么是自己画的图，反正最后都得要个面积数。 日常画图我用 LibreCAD 为主，量面积要一个封闭对象点一次，点完还得自己拿笔记。几十个井盖、地块，图一多就烦。 后来想到：FreeCAD 不是一直装在机器上吗？它带一个命令行版 freecadcmd，...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Levi</div><div class="author-info-description">Levi的Blog</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Lxp1986"><i class="fab fa-github"></i><span>访问 GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Lxp1986" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #b85c38;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客，持续更新中。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%9F%A9%E5%BD%A2%E7%AE%97%E6%B3%95%E6%98%AF%E9%94%99%E7%9A%84"><span class="toc-number">1.</span> <span class="toc-text">为什么矩形算法是错的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AC%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">公式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%B9%E5%9D%A1%E7%B3%BB%E6%95%B0-m-%E6%80%8E%E4%B9%88%E5%AE%9A"><span class="toc-number">3.</span> <span class="toc-text">边坡系数 m 怎么定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">算例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E5%AE%B9%E6%98%93%E8%B8%A9%E7%9A%84%E7%82%B9"><span class="toc-number">5.</span> <span class="toc-text">几个容易踩的点</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/15/%E7%94%A8qpdf%E5%90%88%E5%B9%B6%E6%89%AB%E6%8F%8F%E4%BB%B6%E4%BA%A4%E8%B5%84%E6%96%99%EF%BC%8C%E9%A1%BA%E6%89%8B%E8%A7%A3%E5%BC%80%E6%9D%83%E9%99%90%E9%94%81%E5%92%8C%E6%89%93%E5%BC%80%E5%AF%86%E7%A0%81/" title="用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码">用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码</a><time datetime="2026-09-15T14:38:00.000Z" title="发表于 2026-09-15 22:38:00">2026-09-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/14/%E6%B8%85%E6%B7%A4%E9%87%8F%E8%A1%A8%E7%9A%84%E5%85%AC%E5%BC%8F%E4%BB%8EC3%E6%94%B9%E6%88%90%E5%90%8D%E5%AD%97%EF%BC%8CFreeCAD%E7%94%B5%E5%AD%90%E8%A1%A8%E6%A0%BC%E8%BF%99%E4%B9%88%E7%94%A8/" title="清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用">清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用</a><time datetime="2026-09-14T14:38:00.000Z" title="发表于 2026-09-14 22:38:00">2026-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/13/%E5%87%A0%E5%8D%81%E8%A1%8C%E5%B7%A5%E7%A8%8B%E9%87%8F%E5%88%86%E9%A1%B9%EF%BC%8C%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E5%92%8C%E5%85%AC%E5%BC%8F%E4%BA%A4%E7%BB%99%20openpyxl/" title="几十行工程量分项，合并单元格和公式交给 openpyxl">几十行工程量分项，合并单元格和公式交给 openpyxl</a><time datetime="2026-09-13T14:35:00.000Z" title="发表于 2026-09-13 22:35:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/12/Obsidian%E5%BA%93%E6%94%92%E5%88%B0%E4%B8%80%E7%99%BE%E5%A4%9A%E7%AF%87%EF%BC%8C%E6%96%AD%E9%93%BE%E5%92%8C%E5%AD%A4%E5%84%BF%E7%AC%94%E8%AE%B0%E6%88%91%E7%94%A8%E8%84%9A%E6%9C%AC%E6%89%AB/" title="Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫">Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫</a><time datetime="2026-09-12T14:30:00.000Z" title="发表于 2026-09-12 22:30:00">2026-09-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/11/%E6%B8%A0%E9%81%93%E6%96%AD%E9%9D%A2%E5%9B%BE%E7%94%A8matplotlib%E8%84%9A%E6%9C%AC%E7%94%BB%EF%BC%8C%E4%B8%AD%E6%96%87%E6%A0%87%E6%B3%A8%E5%92%8C%E5%B9%B3%E6%96%B9%E5%8F%B7%E9%83%BD%E4%B8%8D%E7%BC%BA/" title="渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺">渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺</a><time datetime="2026-09-11T14:35:00.000Z" title="发表于 2026-09-11 22:35:00">2026-09-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Levi</span></div><div class="footer_custom_text">三色风 | Levi</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Lxp1986/Lxp1986.github.io',
+      'data-repo-id': 'R_kgDOMn0qqg',
+      'data-category-id': 'DIC_kwDOMn0qqs4DDgMy',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="输入关键词搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

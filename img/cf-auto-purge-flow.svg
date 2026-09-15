@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 330" font-family="PingFang SC, Microsoft YaHei, sans-serif">
+  <rect width="700" height="330" fill="#f7f8fa"/>
+  <!-- 节点1: 开发者 -->
+  <rect x="20" y="120" width="120" height="70" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="80" y="147" text-anchor="middle" font-size="14" fill="#1f2937">开发者</text>
+  <text x="80" y="170" text-anchor="middle" font-size="13" fill="#2563eb" font-family="Menlo, monospace">git push</text>
+  <!-- 箭头1 -->
+  <line x1="140" y1="155" x2="185" y2="155" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="185,149 198,155 185,161" fill="#2563eb"/>
+  <!-- 节点2: GitHub Actions -->
+  <rect x="200" y="70" width="280" height="170" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="340" y="95" text-anchor="middle" font-size="14" fill="#1f2937" font-weight="bold">GitHub Actions</text>
+  <rect x="215" y="108" width="250" height="34" rx="6" fill="#eef2ff" stroke="#c7d2fe"/>
+  <text x="340" y="130" text-anchor="middle" font-size="13" fill="#1f2937">hexo clean &amp;&amp; hexo generate</text>
+  <rect x="215" y="150" width="250" height="34" rx="6" fill="#eef2ff" stroke="#c7d2fe"/>
+  <text x="340" y="172" text-anchor="middle" font-size="13" fill="#1f2937">部署到 gh-pages 分支</text>
+  <rect x="215" y="192" width="250" height="34" rx="6" fill="#dcfce7" stroke="#86efac"/>
+  <text x="340" y="214" text-anchor="middle" font-size="13" fill="#166534">curl 调 purge_cache API 清缓存</text>
+  <!-- 箭头2 -->
+  <line x1="480" y1="155" x2="525" y2="155" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="525,149 538,155 525,161" fill="#2563eb"/>
+  <!-- 节点3: Cloudflare -->
+  <rect x="540" y="110" width="140" height="90" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="610" y="137" text-anchor="middle" font-size="14" fill="#1f2937">Cloudflare</text>
+  <text x="610" y="158" text-anchor="middle" font-size="12" fill="#6b7280">边缘缓存已清空</text>
+  <text x="610" y="178" text-anchor="middle" font-size="12" fill="#16a34a">回源取新 HTML</text>
+  <!-- 箭头3 -->
+  <line x1="610" y1="200" x2="610" y2="248" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="604,248 610,261 616,248" fill="#2563eb"/>
+  <!-- 节点4: 访客 -->
+  <rect x="540" y="263" width="140" height="44" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="610" y="290" text-anchor="middle" font-size="14" fill="#1f2937">访客看到新文章</text>
+  <!-- 底部说明 -->
+  <text x="20" y="315" font-size="12" fill="#6b7280">发布 = git push 一件事，构建、部署、清缓存全自动</text>
+</svg>

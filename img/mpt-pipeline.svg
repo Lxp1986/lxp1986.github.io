@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="330" viewBox="0 0 780 330" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <rect width="780" height="330" fill="#fafafa"/>
+  <rect x="0" y="0" width="780" height="330" fill="none" stroke="#cbd5e0" stroke-width="1"/>
+
+  <!-- 标题 -->
+  <text x="20" y="32" font-size="17" font-weight="bold" fill="#2d3748">MoneyPrinterTurbo 本地出片流程（全免费组合）</text>
+
+  <!-- 框1：配置 -->
+  <rect x="20" y="52" width="215" height="92" rx="8" fill="#ffffff" stroke="#4a5568" stroke-width="1.6"/>
+  <text x="35" y="74" font-size="14" font-weight="bold" fill="#2d3748">config.toml</text>
+  <text x="35" y="96" font-size="12.5" fill="#4a5568">文案：DeepSeek（OpenAI 兼容）</text>
+  <text x="35" y="114" font-size="12.5" fill="#4a5568">配音：Edge TTS（免费）</text>
+  <text x="35" y="132" font-size="12.5" fill="#c0392b">素材 key：空 → 走 local</text>
+
+  <!-- 箭头1 -->
+  <polygon points="248,98 258,92 258,104" fill="#4a5568"/>
+  <line x1="235" y1="98" x2="255" y2="98" stroke="#4a5568" stroke-width="2"/>
+
+  <!-- 框2：命令 -->
+  <rect x="262" y="52" width="220" height="92" rx="8" fill="#ffffff" stroke="#4a5568" stroke-width="1.6"/>
+  <text x="277" y="74" font-size="14" font-weight="bold" fill="#2d3748">cli.py 一条命令</text>
+  <text x="277" y="96" font-size="12.5" fill="#4a5568">--video-source local</text>
+  <text x="277" y="114" font-size="12.5" fill="#4a5568">--video-script 固定多段文案</text>
+  <text x="277" y="132" font-size="12.5" fill="#4a5568">--stop-at video 直接出片</text>
+
+  <!-- 箭头2 -->
+  <polygon points="495,98 505,92 505,104" fill="#4a5568"/>
+  <line x1="482" y1="98" x2="502" y2="98" stroke="#4a5568" stroke-width="2"/>
+
+  <!-- 框3：产物 -->
+  <rect x="509" y="52" width="250" height="92" rx="8" fill="#ffffff" stroke="#4a5568" stroke-width="1.6"/>
+  <text x="524" y="74" font-size="14" font-weight="bold" fill="#2d3748">storage/tasks/&lt;uuid&gt;/</text>
+  <text x="524" y="96" font-size="12.5" fill="#2d3748">final-1.mp4 —— 带字幕成片</text>
+  <text x="524" y="114" font-size="12.5" fill="#4a5568">combined-1.mp4 无字幕拼接</text>
+  <text x="524" y="132" font-size="12.5" fill="#4a5568">audio.mp3 / subtitle.srt</text>
+
+  <!-- 坑1 -->
+  <rect x="20" y="168" width="759" height="46" rx="6" fill="#fdf0ef" stroke="#e8b4b4" stroke-width="1"/>
+  <text x="34" y="188" font-size="13" font-weight="bold" fill="#c0392b">坑 1　--task-id 必须是 UUID</text>
+  <text x="34" y="206" font-size="12.5" fill="#7a3b3b">传自定义字符串报 task-id must be a valid UUID，用 uuidgen 生成</text>
+
+  <!-- 坑2 -->
+  <rect x="20" y="222" width="759" height="46" rx="6" fill="#fdf0ef" stroke="#e8b4b4" stroke-width="1"/>
+  <text x="34" y="242" font-size="13" font-weight="bold" fill="#c0392b">坑 2　字幕字体必须放 resource/fonts/</text>
+  <text x="34" y="260" font-size="12.5" fill="#7a3b3b">填系统字体名报 subtitle font file must exist inside ./resource/fonts，用自带 MicrosoftYaHeiNormal.ttc</text>
+
+  <!-- 坑3 -->
+  <rect x="20" y="276" width="759" height="46" rx="6" fill="#fdf0ef" stroke="#e8b4b4" stroke-width="1"/>
+  <text x="34" y="296" font-size="13" font-weight="bold" fill="#c0392b">坑 3　素材 key 空 → 在线素材全废</text>
+  <text x="34" y="314" font-size="12.5" fill="#7a3b3b">pexels/pixabay 没配 key 只能用 --video-source local 喂本地素材，Pexels 直链还会被 Cloudflare 403 挡</text>
+</svg>

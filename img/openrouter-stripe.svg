@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8DEF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+    <linearGradient id="gstripe" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#635BFF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="760" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="50" text-anchor="middle" font-size="30" font-weight="700" fill="#1E2A3B">OpenRouter 是怎么工作的</text>
+  <text x="600" y="80" text-anchor="middle" font-size="15" fill="#64748B">一个 API key 调几百个模型 · 聚合 500+ 模型、80+ 供应商</text>
+
+  <!-- Stripe banner -->
+  <rect x="280" y="100" width="640" height="46" rx="10" fill="url(#gstripe)"/>
+  <text x="600" y="129" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">据 TechCrunch 报道：Stripe 将以 70 亿美元以上收购 OpenRouter（尚未官宣）</text>
+
+  <!-- app side -->
+  <rect x="60" y="200" width="300" height="420" rx="14" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="60" y="200" width="300" height="52" rx="14" fill="#EEF2FF"/>
+  <rect x="60" y="238" width="300" height="14" fill="#EEF2FF"/>
+  <text x="210" y="232" text-anchor="middle" font-size="17" font-weight="700" fill="#3B5BC9">🧑‍💻 你的应用 / Agent</text>
+  <rect x="96" y="272" width="228" height="52" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="210" y="296" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">一个 API key</text>
+  <text x="210" y="314" text-anchor="middle" font-size="12" fill="#64748B">统一 OpenAI 兼容接口</text>
+  <rect x="96" y="344" width="228" height="52" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="210" y="368" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">代码只写一次</text>
+  <text x="210" y="386" text-anchor="middle" font-size="12" fill="#64748B">切换模型只改一个字符串</text>
+  <rect x="96" y="416" width="228" height="52" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="210" y="440" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">按量付费 credits</text>
+  <text x="210" y="458" text-anchor="middle" font-size="12" fill="#64748B">不用开一堆订阅</text>
+  <rect x="96" y="488" width="228" height="52" rx="10" fill="#F0FDFA" stroke="#2DD4BF"/>
+  <text x="210" y="512" text-anchor="middle" font-size="14" font-weight="600" fill="#0B8E82">免费模型随便试</text>
+  <text x="210" y="530" text-anchor="middle" font-size="12" fill="#0B8E82">小模型几毛钱一次</text>
+  <rect x="96" y="560" width="228" height="40" rx="10" fill="#FFF5F5" stroke="#F87171"/>
+  <text x="210" y="585" text-anchor="middle" font-size="13" font-weight="600" fill="#B91C1C">⚠ 国内直连不稳定，需代理</text>
+
+  <!-- arrow app -> OR -->
+  <line x1="360" y1="400" x2="436" y2="400" stroke="#94A3B8" stroke-width="3" marker-end="url(#arrow2)"/>
+
+  <!-- OpenRouter center -->
+  <rect x="442" y="240" width="316" height="340" rx="14" fill="#FFF" stroke="#7C5CD6" stroke-width="2.5"/>
+  <rect x="442" y="240" width="316" height="52" rx="14" fill="url(#g2)"/>
+  <rect x="442" y="278" width="316" height="14" fill="url(#g2)"/>
+  <text x="600" y="272" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">⚡ OpenRouter 网关</text>
+  <rect x="472" y="306" width="256" height="48" rx="10" fill="#EEF2FF"/>
+  <text x="600" y="327" text-anchor="middle" font-size="14" font-weight="600" fill="#3B5BC9">模型路由</text>
+  <text x="600" y="345" text-anchor="middle" font-size="12" fill="#64748B">自动挑模型 / 挑供应商</text>
+  <rect x="472" y="364" width="256" height="48" rx="10" fill="#EEF2FF"/>
+  <text x="600" y="385" text-anchor="middle" font-size="14" font-weight="600" fill="#3B5BC9">故障自动切换</text>
+  <text x="600" y="403" text-anchor="middle" font-size="12" fill="#64748B">某家挂了换另一家</text>
+  <rect x="472" y="422" width="256" height="48" rx="10" fill="#EEF2FF"/>
+  <text x="600" y="443" text-anchor="middle" font-size="14" font-weight="600" fill="#3B5BC9">统一计费与额度</text>
+  <text x="600" y="461" text-anchor="middle" font-size="12" fill="#64748B">一个钱包花所有模型</text>
+  <rect x="472" y="480" width="256" height="48" rx="10" fill="#EEF2FF"/>
+  <text x="600" y="501" text-anchor="middle" font-size="14" font-weight="600" fill="#3B5BC9">数据策略</text>
+  <text x="600" y="519" text-anchor="middle" font-size="12" fill="#64748B">可限制数据只发信任方</text>
+  <text x="600" y="565" text-anchor="middle" font-size="12" fill="#94A3B8">月处理 200T+ token · 1000 万+ 用户</text>
+
+  <!-- arrow OR -> models -->
+  <line x1="758" y1="400" x2="834" y2="400" stroke="#94A3B8" stroke-width="3" marker-end="url(#arrow2)"/>
+
+  <!-- models side -->
+  <rect x="840" y="200" width="300" height="420" rx="14" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="840" y="200" width="300" height="52" rx="14" fill="#EEF2FF"/>
+  <rect x="840" y="238" width="300" height="14" fill="#EEF2FF"/>
+  <text x="990" y="232" text-anchor="middle" font-size="17" font-weight="700" fill="#3B5BC9">🤖 500+ 模型 · 80+ 供应商</text>
+  <rect x="876" y="272" width="228" height="44" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="990" y="300" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">Anthropic Claude</text>
+  <rect x="876" y="326" width="228" height="44" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="990" y="354" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">OpenAI GPT</text>
+  <rect x="876" y="380" width="228" height="44" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="990" y="408" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">Google Gemini</text>
+  <rect x="876" y="434" width="228" height="44" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="990" y="462" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">DeepSeek / 通义千问</text>
+  <rect x="876" y="488" width="228" height="44" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="990" y="516" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">开源小模型（免费）</text>
+  <rect x="876" y="542" width="228" height="44" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="990" y="570" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">图像 / 视频 / 音频模型</text>
+
+  <text x="600" y="730" text-anchor="middle" font-size="13" fill="#94A3B8">信息查于 2026-08-17 · 收购消息来自 TechCrunch 报道（reportedly）</text>
+</svg>

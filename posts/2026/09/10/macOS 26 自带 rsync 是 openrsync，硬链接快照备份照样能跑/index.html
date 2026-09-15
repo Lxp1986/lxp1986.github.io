@@ -1,0 +1,317 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>macOS 26 自带 rsync 是 openrsync，硬链接快照备份照样能跑 | 三色风</title><meta name="author" content="Levi"><meta name="copyright" content="Levi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f0e4"><meta name="description" content="macOS 从 15.4 起把系统自带的 rsync 换成了 openrsync，--info&#x3D;progress2、--acls、--xattrs 直接报错，但 --link-dest 硬链接快照能用。实测 73 MB 的工程资料目录做三份每日快照只占 93 MB。附完整脚本、恢复命令、快照盘的文件系统要求和 launchd 定时配置。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="macOS 26 自带 rsync 是 openrsync，硬链接快照备份照样能跑">
+<meta property="og:url" content="https://www.lxpyll.top/posts/2026/09/10/macOS%2026%20%E8%87%AA%E5%B8%A6%20rsync%20%E6%98%AF%20openrsync%EF%BC%8C%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E7%85%A7%E6%A0%B7%E8%83%BD%E8%B7%91/">
+<meta property="og:site_name" content="三色风">
+<meta property="og:description" content="macOS 从 15.4 起把系统自带的 rsync 换成了 openrsync，--info&#x3D;progress2、--acls、--xattrs 直接报错，但 --link-dest 硬链接快照能用。实测 73 MB 的工程资料目录做三份每日快照只占 93 MB。附完整脚本、恢复命令、快照盘的文件系统要求和 launchd 定时配置。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lxpyll.top/img/og.jpg">
+<meta property="article:published_time" content="2026-09-10T14:45:00.000Z">
+<meta property="article:modified_time" content="2026-09-15T14:43:25.163Z">
+<meta property="article:author" content="Levi">
+<meta property="article:tag" content="launchd">
+<meta property="article:tag" content="macOS">
+<meta property="article:tag" content="openrsync">
+<meta property="article:tag" content="rsync">
+<meta property="article:tag" content="命令行">
+<meta property="article:tag" content="备份">
+<meta property="article:tag" content="外置硬盘">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.lxpyll.top/img/og.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "macOS 26 自带 rsync 是 openrsync，硬链接快照备份照样能跑",
+  "url": "https://www.lxpyll.top/posts/2026/09/10/macOS%2026%20%E8%87%AA%E5%B8%A6%20rsync%20%E6%98%AF%20openrsync%EF%BC%8C%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E7%85%A7%E6%A0%B7%E8%83%BD%E8%B7%91/",
+  "image": "https://www.lxpyll.top/img/og.jpg",
+  "datePublished": "2026-09-10T14:45:00.000Z",
+  "dateModified": "2026-09-15T14:43:25.163Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Levi",
+      "url": "https://www.lxpyll.top"
+    }
+  ],
+  "description": "macOS 从 15.4 起把系统自带的 rsync 换成了 openrsync，--info=progress2、--acls、--xattrs 直接报错，但 --link-dest 硬链接快照能用。实测 73 MB 的工程资料目录做三份每日快照只占 93 MB。附完整脚本、恢复命令、快照盘的文件系统要求和 launchd 定时配置。"
+}</script><link rel="shortcut icon" href="/img/levi-avatar.svg"><link rel="canonical" href="https://www.lxpyll.top/posts/2026/09/10/macOS%2026%20%E8%87%AA%E5%B8%A6%20rsync%20%E6%98%AF%20openrsync%EF%BC%8C%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E7%85%A7%E6%A0%B7%E8%83%BD%E8%B7%91/"><link rel="alternate" type="application/atom+xml" title="三色风 RSS" href="https://www.lxpyll.top/atom.xml"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#231d17')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f0e4')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&amp;family=Noto+Serif+SC:wght@400;500;600;700;900&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":2,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'macOS 26 自带 rsync 是 openrsync，硬链接快照备份照样能跑',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-78CVHQTCM7"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-78CVHQTCM7')</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/custom.css?v=20260728-hero-poster-3"><meta name="msvalidate.01" content="C77AD03ECD54E088B341BF1F23909B07"><meta name="generator" content="Hexo 8.1.2"></head><body><a class="skip-link" href="#content-inner">跳到主要内容</a><div class="bg-animation" id="web_bg" style="background-color: #f7f0e4;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus" aria-hidden="true" inert="inert"><div class="avatar-img text-center"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">三色风</span></a><a class="nav-page-title" href="/"><span class="site-name">macOS 26 自带 rsync 是 openrsync，硬链接快照备份照样能跑</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><button class="site-page social-icon search" type="button" aria-label="搜索"><i class="fas fa-search fa-fw"></i><span> 搜索</span></button></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><button id="toggle-menu" type="button" aria-label="打开导航菜单" aria-controls="sidebar-menus" aria-expanded="false"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></button></div></nav></header><main class="layout" id="content-inner" tabindex="-1"><div id="post"><div id="post-info"><h1 class="post-title">macOS 26 自带 rsync 是 openrsync，硬链接快照备份照样能跑</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-10T14:45:00.000Z" title="发表于 2026-09-10 22:45:00">2026-09-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-15T14:43:25.163Z" title="更新于 2026-09-15 22:43:25">2026-09-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%80%E5%8F%91%E4%B8%8E%E8%BF%90%E7%BB%B4/">开发与运维</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><p>工程资料现在两百多个 G：施工图、报价书、扫描件、甲方发来的 DXF、现场照片。硬盘上留了一份，但只有一份不够用。报价书改十遍是常事，某一版单价改错了想退回三天前看看，硬盘上只剩被覆盖之后的新文件。</p>
+<p>Time Machine 能救，但它整盘一起备，翻单个文件夹的旧版本要进恢复界面一层层点。我想要的另一种做法是每天生成一个目录快照：每个快照就是个能直接打开的文件夹，而且不重复占磁盘。rsync 的 <code>--link-dest</code> 就是干这个的，没改动的文件做成硬链接指向上一个快照的数据块，磁盘上只存一份。</p>
+<p>写脚本前先看了一眼版本，输出让我停了一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/bin/rsync --version</span><br><span class="line">openrsync: protocol version 29</span><br><span class="line">rsync version 2.6.9 compatible</span><br></pre></td></tr></table></figure>
+
+<p>这不是 GNU rsync 3.x。查了一下，macOS 从 15.4 开始把 <code>/usr/bin/rsync</code> 换成了 openrsync（ISC 许可），之前那个是 2006 年的 rsync 2.6.9，一直没升级是许可证的原因。我手上这台是 macOS 26.4（build 25E246），下面这些选项都是实测出来的，不是抄文档。</p>
+<h2 id="哪些选项能用，哪些直接报错"><a href="#哪些选项能用，哪些直接报错" class="headerlink" title="哪些选项能用，哪些直接报错"></a>哪些选项能用，哪些直接报错</h2><p>从网上抄别人的备份脚本，最常见的是进度条那一条挂掉：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rsync -a --info=progress2 工程资料/ /Volumes/Archive/快照/09-10/</span><br><span class="line">rsync: unrecognized option `--info=progress2&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>实测结果：</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-a</code>、<code>--delete</code>、<code>--exclude</code>、<code>--link-dest</code>、<code>-H</code></td>
+<td>可用，快照正常建</td>
+</tr>
+<tr>
+<td><code>--itemize-changes</code>、<code>--stats</code>、<code>--progress</code>、<code>-n</code></td>
+<td>可用，够看增量和清单</td>
+</tr>
+<tr>
+<td><code>--info=progress2</code>（总进度条）</td>
+<td>报 unrecognized option</td>
+</tr>
+<tr>
+<td><code>--acls</code>&#x2F;<code>-A</code>、<code>--xattrs</code>&#x2F;<code>-X</code>、<code>--iconv</code></td>
+<td>不认，invalid option</td>
+</tr>
+</tbody></table>
+<p>网上流传的说法是改 <code>/var/select/rsync</code> 软链、或者 <code>CHOSEN_RSYNC=rsync_samba</code> 切回老版 rsync。这招在 26 上没用了——<code>/var/select</code> 里只剩一个 <code>sh</code>，设了环境变量输出还是 openrsync。要保留 ACL、Finder 标签这类扩展属性只能自己装 GNU 版（<code>brew install rsync</code>，装完 <code>which -a rsync</code> 确认 <code>/opt/homebrew/bin</code> 排在 <code>/usr/bin</code> 前面）；备份工程文件用不到，我留了系统自带的。</p>
+<h2 id="备份脚本"><a href="#备份脚本" class="headerlink" title="备份脚本"></a>备份脚本</h2><p>脚本放 <code>~/bin/backup-snapshot.sh</code>，三个参数：源目录、快照根目录、保留份数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 用法: backup-snapshot.sh &lt;源目录&gt; &lt;快照根目录&gt; [保留份数]</span></span><br><span class="line"><span class="built_in">set</span> -u</span><br><span class="line">SRC=<span class="string">&quot;<span class="variable">$&#123;1:?用法: backup-snapshot.sh &lt;源目录&gt; &lt;快照根目录&gt; [保留份数]&#125;</span>&quot;</span></span><br><span class="line">DSTROOT=<span class="string">&quot;<span class="variable">$&#123;2:?同上&#125;</span>&quot;</span></span><br><span class="line">KEEP=<span class="string">&quot;<span class="variable">$&#123;3:-14&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># src/ 是复制目录内容，src 会把目录本身也复制进去</span></span><br><span class="line">[ <span class="string">&quot;<span class="variable">$&#123;SRC%/&#125;</span>&quot;</span> = <span class="string">&quot;<span class="variable">$SRC</span>&quot;</span> ] &amp;&amp; SRC=<span class="string">&quot;<span class="variable">$SRC</span>/&quot;</span></span><br><span class="line"><span class="comment"># --link-dest 必须绝对路径，写相对路径会退化成整份复制</span></span><br><span class="line"><span class="keyword">case</span> <span class="string">&quot;<span class="variable">$DSTROOT</span>&quot;</span> <span class="keyword">in</span> /*) ;; *) DSTROOT=<span class="string">&quot;<span class="variable">$PWD</span>/<span class="variable">$DSTROOT</span>&quot;</span> ;; <span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$DSTROOT</span>&quot;</span></span><br><span class="line">DEST=<span class="string">&quot;<span class="variable">$DSTROOT</span>/<span class="subst">$(date +%Y-%m-%d_%H%M)</span>&quot;</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="string">&quot;<span class="variable">$DEST</span>&quot;</span> ]; <span class="keyword">then</span>                 <span class="comment"># 同一分钟手动再跑一次也不覆盖</span></span><br><span class="line">  i=2; <span class="keyword">while</span> [ -e <span class="string">&quot;<span class="variable">$&#123;DEST&#125;</span>_<span class="variable">$i</span>&quot;</span> ]; <span class="keyword">do</span> i=$((i+<span class="number">1</span>)); <span class="keyword">done</span>; DEST=<span class="string">&quot;<span class="variable">$&#123;DEST&#125;</span>_<span class="variable">$i</span>&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">LATEST=$(<span class="built_in">ls</span> -1d <span class="string">&quot;<span class="variable">$DSTROOT</span>&quot;</span>/*/ 2&gt;/dev/null | <span class="built_in">sort</span> | <span class="built_in">tail</span> -1)</span><br><span class="line"></span><br><span class="line">LINKOPT=<span class="string">&quot;&quot;</span></span><br><span class="line">[ -n <span class="string">&quot;<span class="variable">$&#123;LATEST:-&#125;</span>&quot;</span> ] &amp;&amp; LINKOPT=<span class="string">&quot;--link-dest=<span class="variable">$&#123;LATEST%/&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$DEST</span>&quot;</span></span><br><span class="line"><span class="comment"># 增量要看整个快照根目录：单个快照目录 du 会把硬链接重复计一遍，报出来的数不对</span></span><br><span class="line">BEFORE=$(<span class="built_in">du</span> -sk <span class="string">&quot;<span class="variable">$DSTROOT</span>&quot;</span> 2&gt;/dev/null | <span class="built_in">cut</span> -f1); BEFORE=<span class="variable">$&#123;BEFORE:-0&#125;</span></span><br><span class="line">/usr/bin/rsync -a --delete <span class="variable">$LINKOPT</span> \</span><br><span class="line">  --exclude=<span class="string">&#x27;.DS_Store&#x27;</span> --exclude=<span class="string">&#x27;.Trash&#x27;</span> --exclude=<span class="string">&#x27;.Spotlight-V100&#x27;</span> \</span><br><span class="line">  --exclude=<span class="string">&#x27;.fseventsd&#x27;</span> --exclude=<span class="string">&#x27;*.tmp&#x27;</span> --exclude=<span class="string">&#x27;~$*&#x27;</span> \</span><br><span class="line">  --itemize-changes --stats \</span><br><span class="line">  <span class="string">&quot;<span class="variable">$SRC</span>&quot;</span> <span class="string">&quot;<span class="variable">$DEST</span>/&quot;</span> &gt; <span class="string">&quot;<span class="variable">$DSTROOT</span>/last-run.log&quot;</span> 2&gt;&amp;1</span><br><span class="line">RC=$?</span><br><span class="line">AFTER=$(<span class="built_in">du</span> -sk <span class="string">&quot;<span class="variable">$DSTROOT</span>&quot;</span> | <span class="built_in">cut</span> -f1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只保留最近 $KEEP 份</span></span><br><span class="line">COUNT=$(<span class="built_in">ls</span> -1d <span class="string">&quot;<span class="variable">$DSTROOT</span>&quot;</span>/*/ 2&gt;/dev/null | <span class="built_in">wc</span> -l | <span class="built_in">tr</span> -d <span class="string">&#x27; &#x27;</span>)</span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$COUNT</span>&quot;</span> -gt <span class="string">&quot;<span class="variable">$KEEP</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">ls</span> -1d <span class="string">&quot;<span class="variable">$DSTROOT</span>&quot;</span>/*/ | <span class="built_in">sort</span> | <span class="built_in">head</span> -n <span class="string">&quot;<span class="subst">$((COUNT-KEEP)</span>)&quot;</span> | <span class="keyword">while</span> <span class="built_in">read</span> -r old; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">rm</span> -rf <span class="string">&quot;<span class="variable">$old</span>&quot;</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;快照完成: <span class="variable">$DEST</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;rsync 退出码 <span class="variable">$&#123;RC&#125;</span>（0 正常；23 有文件读不到；24 源文件传输中被改，下次会补）&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;本次增量 <span class="subst">$(((AFTER-BEFORE)</span>/1024)) MB   快照根目录总计 <span class="subst">$((AFTER/1024)</span>) MB&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>用法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x ~/bin/backup-snapshot.sh</span><br><span class="line">~/bin/backup-snapshot.sh ~/Documents/工程资料 /Volumes/Archive/工程资料快照 14</span><br></pre></td></tr></table></figure>
+
+<p>有两处容易写错。<code>--delete</code> 是让每份快照忠实反映源目录当时的样子，源里已删的文件在这份快照里也没有——想找被删文件的旧版本，靠的是<strong>上一份</strong>快照，不是最新那份。快照根目录也绝对不能放在源目录里面，否则每一轮都会把前面的快照再备一遍，越滚越大。</p>
+<h2 id="实测占多少空间"><a href="#实测占多少空间" class="headerlink" title="实测占多少空间"></a>实测占多少空间</h2><p>用一个结构跟真实目录一样的测试目录跑：总平面.dwg 40 MB、给排水.dwg 25 MB、报价.xlsx 8 MB，合计 73 MB。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">第 1 次 全量         本次增量 73 MB   快照根目录总计 73 MB</span><br><span class="line">第 2 次 改了报价 8 MB、添一张 12 MB 的图</span><br><span class="line">                     本次增量 20 MB   快照根目录总计 93 MB</span><br><span class="line">第 3 次 源目录没动    本次增量 0 MB    快照根目录总计 93 MB</span><br></pre></td></tr></table></figure>
+
+<p>三份快照加起来 93 MB，同样三天内容各存一份完整拷贝是 243 MB。</p>
+<p>这里有个容易看错的地方：不要用 <code>du -sh</code> 去看单个快照目录。硬链接在单独一次 du 里会被重复算一遍，第二、第三份快照会显示成 85 MB 这种吓人的数字。判断真实占用要看整个快照根目录的总数——一次 du 遍历会把硬链接去重，脚本里算增量就是这么算的。</p>
+<p>中文文件名和路径都正常。想确认硬链接真建起来了，挑个没改动的文件看 link count：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">stat</span> -f <span class="string">&quot;%N link=%l&quot;</span> /Volumes/Archive/工程资料快照/*/图纸/总平面.dwg</span><br><span class="line">/Volumes/Archive/工程资料快照/2026-09-09_2200/图纸/总平面.dwg <span class="built_in">link</span>=3</span><br><span class="line">/Volumes/Archive/工程资料快照/2026-09-10_2200/图纸/总平面.dwg <span class="built_in">link</span>=3</span><br><span class="line">/Volumes/Archive/工程资料快照/2026-09-11_2200/图纸/总平面.dwg <span class="built_in">link</span>=3</span><br></pre></td></tr></table></figure>
+
+<p>link&#x3D;3 就是三份快照共用同一个数据块。想直接看哪些文件走了硬链接，给 rsync 加 <code>-i</code>，输出里 <code>hf</code> 开头的就是硬链接复用，其余是新写入的。下面这张图是三份快照和数据块的关系：</p>
+<p><img src="https://www.lxpyll.top/img/rsync-linkdest-snapshots.svg" alt="硬链接快照结构"></p>
+<h2 id="找回旧文件"><a href="#找回旧文件" class="headerlink" title="找回旧文件"></a>找回旧文件</h2><p>单个文件直接拷出来就行，硬链接的文件拷出来是普通文件，改动不影响快照：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> -a <span class="string">&quot;/Volumes/Archive/工程资料快照/2026-09-08_2230/预算/报价书.xlsx&quot;</span> ~/Desktop/</span><br></pre></td></tr></table></figure>
+
+<p>整个目录回滚注意方向，是用快照覆盖源目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -a --delete <span class="string">&quot;/Volumes/Archive/工程资料快照/2026-09-08_2230/&quot;</span> ~/Documents/工程资料/</span><br></pre></td></tr></table></figure>
+
+<p>回滚前先把当前状态手动快照一份，等于留个后悔的余地；只回滚某个子目录，把路径换成 <code>.../2026-09-08_2230/预算/</code> 就行。</p>
+<h2 id="快照盘得是-APFS-或-HFS"><a href="#快照盘得是-APFS-或-HFS" class="headerlink" title="快照盘得是 APFS 或 HFS+"></a>快照盘得是 APFS 或 HFS+</h2><p>硬链接是文件系统的能力，exFAT、NTFS 不支持。备份盘要是 exFAT，快照会退化成每份都完整拷贝，白占空间。先确认：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ diskutil info /Volumes/Archive | grep <span class="string">&quot;File System Personality&quot;</span></span><br><span class="line">   File System Personality:   APFS</span><br></pre></td></tr></table></figure>
+
+<p>我那块盘是 APFS。手上只有 exFAT 盘的话，要么格成 APFS 再把资料拷回去，要么换别的方案。</p>
+<h2 id="定时跑"><a href="#定时跑" class="headerlink" title="定时跑"></a>定时跑</h2><p>LaunchAgent 放 <code>~/Library/LaunchAgents/com.levi.backup-snapshot.plist</code>，每晚 22:30 跑一次：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">plist</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//Apple//DTD PLIST 1.0//EN&quot;</span> <span class="string">&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="name">key</span>&gt;</span><span class="tag">&lt;<span class="name">string</span>&gt;</span>com.levi.backup-snapshot<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">key</span>&gt;</span>ProgramArguments<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>/bin/bash<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>/Users/levi/bin/backup-snapshot.sh<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>/Users/levi/Documents/工程资料<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>/Volumes/Archive/工程资料快照<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>14<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">key</span>&gt;</span>StartCalendarInterval<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dict</span>&gt;</span><span class="tag">&lt;<span class="name">key</span>&gt;</span>Hour<span class="tag">&lt;/<span class="name">key</span>&gt;</span><span class="tag">&lt;<span class="name">integer</span>&gt;</span>22<span class="tag">&lt;/<span class="name">integer</span>&gt;</span><span class="tag">&lt;<span class="name">key</span>&gt;</span>Minute<span class="tag">&lt;/<span class="name">key</span>&gt;</span><span class="tag">&lt;<span class="name">integer</span>&gt;</span>30<span class="tag">&lt;/<span class="name">integer</span>&gt;</span><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">key</span>&gt;</span>StandardOutPath<span class="tag">&lt;/<span class="name">key</span>&gt;</span><span class="tag">&lt;<span class="name">string</span>&gt;</span>/tmp/backup-snapshot.out<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">key</span>&gt;</span>StandardErrorPath<span class="tag">&lt;/<span class="name">key</span>&gt;</span><span class="tag">&lt;<span class="name">string</span>&gt;</span>/tmp/backup-snapshot.err<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plutil -lint ~/Library/LaunchAgents/com.levi.backup-snapshot.plist   <span class="comment"># 先验格式，输出 OK 再加载</span></span><br><span class="line">launchctl load ~/Library/LaunchAgents/com.levi.backup-snapshot.plist</span><br></pre></td></tr></table></figure>
+
+<p>定时跟外置盘配有个容易忽略的地方：盘没插的时候，rsync 会照着路径在 <code>/Volumes/Archive</code> 下新建一个同名目录，结果备到本机硬盘上去了，本机还越来越小。脚本开头加一句判断，没挂载就直接退出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount | grep -q <span class="string">&quot;on /Volumes/Archive &quot;</span> || &#123; <span class="built_in">echo</span> <span class="string">&quot;备份盘没挂载，退出&quot;</span>; <span class="built_in">exit</span> 1; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我吃过这个亏，清本机空间时才发现备份跑歪了。加上这句，没插盘的日子就不跑，第二天插上再补。</p>
+<p>要不要换 GNU rsync？我这边不用。openrsync 是 OpenBSD 的实现，功能是 GNU 版的子集，做本地目录快照够用，脚本一个字不用改；哪天要往远程服务器同步、或者必须保留扩展属性，再装 GNU 版。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top">Levi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top/posts/2026/09/10/macOS%2026%20%E8%87%AA%E5%B8%A6%20rsync%20%E6%98%AF%20openrsync%EF%BC%8C%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E7%85%A7%E6%A0%B7%E8%83%BD%E8%B7%91/">https://www.lxpyll.top/posts/2026/09/10/macOS%2026%20%E8%87%AA%E5%B8%A6%20rsync%20%E6%98%AF%20openrsync%EF%BC%8C%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E7%85%A7%E6%A0%B7%E8%83%BD%E8%B7%91/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://www.lxpyll.top" target="_blank">三色风</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/macOS/">macOS</a><a class="post-meta__tags" href="/tags/launchd/">launchd</a><a class="post-meta__tags" href="/tags/rsync/">rsync</a><a class="post-meta__tags" href="/tags/%E5%A4%87%E4%BB%BD/">备份</a><a class="post-meta__tags" href="/tags/openrsync/">openrsync</a><a class="post-meta__tags" href="/tags/%E5%A4%96%E7%BD%AE%E7%A1%AC%E7%9B%98/">外置硬盘</a><a class="post-meta__tags" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/">命令行</a></div><div class="post-share"><div class="social-share" data-image="/img/og.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat-reward-qr.jpg" alt="微信支付"/></a><div class="post-qr-code-desc">微信支付</div></li><li class="reward-item"><a href="/img/alipay-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay-reward-qr.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/2026/09/11/%E6%B8%A0%E9%81%93%E6%96%AD%E9%9D%A2%E5%9B%BE%E7%94%A8matplotlib%E8%84%9A%E6%9C%AC%E7%94%BB%EF%BC%8C%E4%B8%AD%E6%96%87%E6%A0%87%E6%B3%A8%E5%92%8C%E5%B9%B3%E6%96%B9%E5%8F%B7%E9%83%BD%E4%B8%8D%E7%BC%BA/" title="渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺</div></div><div class="info-2"><div class="info-item-1">渠道清淤的计算书里得配断面示意图，图上要标上口最大宽、淤厚、边坡，还有算出来的面积。以前这几张图我用 LibreCAD 描，一张十来分钟，问题是复核阶段淤厚改了两回、边坡从 1:1 改成 1:1.25，图上的底宽和面积全跟着要重算重标。手画的东西改一处忘一处，到最后图上写的 2.70 m 和表里写的 2.70 m，谁也不知道哪个是对的。 现在这几张图交...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/09/Whisper%E6%9C%AC%E5%9C%B0%E8%BD%AC%E5%86%99-%E5%BD%95%E9%9F%B3%E5%87%BA%E6%96%87%E5%AD%97%E7%A8%BF-%E8%A7%86%E9%A2%91%E5%87%BASRT%E5%AD%97%E5%B9%95%E6%97%B6%E9%97%B4%E8%BD%B4/" title="Whisper 本地转写，录音出文字稿、视频出 SRT 字幕时间轴"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Whisper 本地转写，录音出文字稿、视频出 SRT 字幕时间轴</div></div><div class="info-2"><div class="info-item-1">做抖音那种 3 到 8 秒一条、字要跟口型走的短视频，最烦的不是写词，是字幕轴。最早我一句句对着波形卡时间，一分钟的素材能磨半小时。后来固定用 Whisper 在本地转写：它把音频切成带时间戳的句子，直接吐一份 SRT，我只要改错别字，时间轴基本不动。 另一个场景是工地会议、甲方口头交代，我习惯录个音，回头转成文字留底。这种内容我是不敢传网页转写工具的...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/2026/09/15/%E7%94%A8qpdf%E5%90%88%E5%B9%B6%E6%89%AB%E6%8F%8F%E4%BB%B6%E4%BA%A4%E8%B5%84%E6%96%99%EF%BC%8C%E9%A1%BA%E6%89%8B%E8%A7%A3%E5%BC%80%E6%9D%83%E9%99%90%E9%94%81%E5%92%8C%E6%89%93%E5%BC%80%E5%AF%86%E7%A0%81/" title="用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-15</div><div class="info-item-2">用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码</div></div><div class="info-2"><div class="info-item-1">上周交收方资料，手上是手机拍的七张签证单、监理发来的两份”禁止打印”PDF，还有一份甲方给的加密图纸（打开要输密码）。以前我的做法是打开预览，一张张往侧边栏里拖，再导出成一份——页数一多，拖到第四十张手就开始抖，碰上打不开的还得先截图再拼。这类活现在全交给 qpdf，一个 brew 装的小工具。 先说清楚它管什么：qpdf 只动 PDF 的壳——合并、...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/30/macOS%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF-%E6%88%91%E6%9C%80%E5%90%8E%E9%83%BD%E4%BA%A4%E7%BB%99%E4%BA%86launchd/" title="macOS定时任务和开机自启，我最后都交给了launchd"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-30</div><div class="info-item-2">macOS定时任务和开机自启，我最后都交给了launchd</div></div><div class="info-2"><div class="info-item-1">我机器上有几个”到点就该干活”的东西：每 5 分钟同步一次多智能体的记忆文件、每 30 分钟重打一次补丁、开机自动把后台网关拉起来。以前用过登录项、用过 crontab，折腾一圈之后全换成了 launchd。理由很简单：launchd 是 macOS 亲生的调度器，开机就接管，不依赖你进不进桌面，还能做到进程挂了自动拉起。写起来不难，坑倒是不少，都记在...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/06/%E4%B8%8D%E7%94%A8%E8%A3%85%E5%8E%8B%E7%BC%A9%E8%BD%AF%E4%BB%B6%EF%BC%8CmacOS%20%E8%87%AA%E5%B8%A6%20sips%20%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86%E7%8E%B0%E5%9C%BA%E7%85%A7%E7%89%87/" title="不用装压缩软件，macOS 自带 sips 批量处理现场照片"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">不用装压缩软件，macOS 自带 sips 批量处理现场照片</div></div><div class="info-2"><div class="info-item-1">干工程的天天要拍照：现场进度、签证、收方，一拍就是几十张。拍完往村委群、工作群里发，或者往系统里传资料，iPhone 原图动辄几 MB，传半天，有些上传系统对单张大小还有限制。 按我的习惯，这种批量图片活不想装第三方压缩软件，系统自带的 sips 就能干，一台 Mac 不用装任何东西。 sips 是 macOS 自带的图片处理命令sips 全名 scr...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/07/LibreOffice%E7%95%8C%E9%9D%A2%E8%AF%AD%E8%A8%80%E5%88%AB%E7%94%A8%E9%BB%98%E8%AE%A4-%E7%9B%B4%E6%8E%A5%E6%8C%87%E5%AE%9A%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87/" title="LibreOffice 界面语言别用默认，直接指定简体中文"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-07</div><div class="info-item-2">LibreOffice 界面语言别用默认，直接指定简体中文</div></div><div class="info-2"><div class="info-item-1">我的机器系统语言不是简体中文，LibreOffice 装完一打开，菜单跟着系统走，看着别扭。干活要用的报价书、签证单都是中文文档，菜单不是简体中文，找个「页面样式」都要反应两秒。后来发现这事跟系统语言没关系，纯靠 LibreOffice 自己一个设置就能固定下来。 先说明白原理：LibreOffice 的界面语言默认是「默认」，也就是跟随操作系统。系统...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/05/%E4%B8%80%E5%A0%86DXF%E5%9B%BE%E7%BA%B8%E8%A6%81%E7%AE%97%E9%9D%A2%E7%A7%AF-freecadcmd%E4%B8%80%E4%B8%AA%E8%84%9A%E6%9C%AC%E5%85%A8%E8%B7%91%E5%AE%8C/" title="一堆 DXF 图纸要算面积，freecadcmd 一个脚本全跑完"><img class="cover" src="/img/fc-dxf-area-flow.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-05</div><div class="info-item-2">一堆 DXF 图纸要算面积，freecadcmd 一个脚本全跑完</div></div><div class="info-2"><div class="info-item-1">干工程的总逃不掉一个动作：收方、算量，最后落到”这块多少平方”。图纸来了，要么是设计院丢过来的 DXF，要么是自己画的图，反正最后都得要个面积数。 日常画图我用 LibreCAD 为主，量面积要一个封闭对象点一次，点完还得自己拿笔记。几十个井盖、地块，图一多就烦。 后来想到：FreeCAD 不是一直装在机器上吗？它带一个命令行版 freecadcmd，...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/31/Obsidian%E6%94%BEiCloud%E5%90%8C%E6%AD%A5-%E5%86%B2%E7%AA%81%E5%89%AF%E6%9C%AC%E5%92%8C%E6%97%A7%E7%89%88%E5%9B%9E%E6%BB%9A%E8%BF%99%E6%A0%B7%E5%A4%84%E7%90%86/" title="Obsidian 放 iCloud 同步，冲突副本和旧版回滚这样处理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-31</div><div class="info-item-2">Obsidian 放 iCloud 同步，冲突副本和旧版回滚这样处理</div></div><div class="info-2"><div class="info-item-1">我的 Obsidian 知识库直接放在 iCloud：~/Library/Mobile Documents/iCloud~md~obsidian/Documents。MacBook、另一台机器、还有几个自动脚本都在读写这个库，好处是啥设备打开都是同一份，坏处是 iCloud 根本没有冲突处理机制——它不合并、不提示，出了冲突自己拿主意，拿错主意就是丢内...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Levi</div><div class="author-info-description">Levi的Blog</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Lxp1986"><i class="fab fa-github"></i><span>访问 GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Lxp1986" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #b85c38;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客，持续更新中。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%AA%E4%BA%9B%E9%80%89%E9%A1%B9%E8%83%BD%E7%94%A8%EF%BC%8C%E5%93%AA%E4%BA%9B%E7%9B%B4%E6%8E%A5%E6%8A%A5%E9%94%99"><span class="toc-number">1.</span> <span class="toc-text">哪些选项能用，哪些直接报错</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E8%84%9A%E6%9C%AC"><span class="toc-number">2.</span> <span class="toc-text">备份脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%B5%8B%E5%8D%A0%E5%A4%9A%E5%B0%91%E7%A9%BA%E9%97%B4"><span class="toc-number">3.</span> <span class="toc-text">实测占多少空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%BE%E5%9B%9E%E6%97%A7%E6%96%87%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">找回旧文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E7%85%A7%E7%9B%98%E5%BE%97%E6%98%AF-APFS-%E6%88%96-HFS"><span class="toc-number">5.</span> <span class="toc-text">快照盘得是 APFS 或 HFS+</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E8%B7%91"><span class="toc-number">6.</span> <span class="toc-text">定时跑</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/15/%E7%94%A8qpdf%E5%90%88%E5%B9%B6%E6%89%AB%E6%8F%8F%E4%BB%B6%E4%BA%A4%E8%B5%84%E6%96%99%EF%BC%8C%E9%A1%BA%E6%89%8B%E8%A7%A3%E5%BC%80%E6%9D%83%E9%99%90%E9%94%81%E5%92%8C%E6%89%93%E5%BC%80%E5%AF%86%E7%A0%81/" title="用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码">用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码</a><time datetime="2026-09-15T14:38:00.000Z" title="发表于 2026-09-15 22:38:00">2026-09-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/14/%E6%B8%85%E6%B7%A4%E9%87%8F%E8%A1%A8%E7%9A%84%E5%85%AC%E5%BC%8F%E4%BB%8EC3%E6%94%B9%E6%88%90%E5%90%8D%E5%AD%97%EF%BC%8CFreeCAD%E7%94%B5%E5%AD%90%E8%A1%A8%E6%A0%BC%E8%BF%99%E4%B9%88%E7%94%A8/" title="清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用">清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用</a><time datetime="2026-09-14T14:38:00.000Z" title="发表于 2026-09-14 22:38:00">2026-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/13/%E5%87%A0%E5%8D%81%E8%A1%8C%E5%B7%A5%E7%A8%8B%E9%87%8F%E5%88%86%E9%A1%B9%EF%BC%8C%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E5%92%8C%E5%85%AC%E5%BC%8F%E4%BA%A4%E7%BB%99%20openpyxl/" title="几十行工程量分项，合并单元格和公式交给 openpyxl">几十行工程量分项，合并单元格和公式交给 openpyxl</a><time datetime="2026-09-13T14:35:00.000Z" title="发表于 2026-09-13 22:35:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/12/Obsidian%E5%BA%93%E6%94%92%E5%88%B0%E4%B8%80%E7%99%BE%E5%A4%9A%E7%AF%87%EF%BC%8C%E6%96%AD%E9%93%BE%E5%92%8C%E5%AD%A4%E5%84%BF%E7%AC%94%E8%AE%B0%E6%88%91%E7%94%A8%E8%84%9A%E6%9C%AC%E6%89%AB/" title="Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫">Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫</a><time datetime="2026-09-12T14:30:00.000Z" title="发表于 2026-09-12 22:30:00">2026-09-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/11/%E6%B8%A0%E9%81%93%E6%96%AD%E9%9D%A2%E5%9B%BE%E7%94%A8matplotlib%E8%84%9A%E6%9C%AC%E7%94%BB%EF%BC%8C%E4%B8%AD%E6%96%87%E6%A0%87%E6%B3%A8%E5%92%8C%E5%B9%B3%E6%96%B9%E5%8F%B7%E9%83%BD%E4%B8%8D%E7%BC%BA/" title="渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺">渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺</a><time datetime="2026-09-11T14:35:00.000Z" title="发表于 2026-09-11 22:35:00">2026-09-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Levi</span></div><div class="footer_custom_text">三色风 | Levi</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Lxp1986/Lxp1986.github.io',
+      'data-repo-id': 'R_kgDOMn0qqg',
+      'data-category-id': 'DIC_kwDOMn0qqs4DDgMy',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="输入关键词搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

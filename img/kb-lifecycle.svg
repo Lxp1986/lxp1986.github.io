@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="s1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#94A3B8"/>
+      <stop offset="1" stop-color="#64748B"/>
+    </linearGradient>
+    <linearGradient id="s2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F2A93B"/>
+      <stop offset="1" stop-color="#F2714B"/>
+    </linearGradient>
+    <linearGradient id="s3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8DEF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+    <linearGradient id="s4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#12B3A6"/>
+      <stop offset="1" stop-color="#3AA0E0"/>
+    </linearGradient>
+    <linearGradient id="s5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1E2A3B"/>
+      <stop offset="1" stop-color="#334155"/>
+    </linearGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="430" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="48" text-anchor="middle" font-size="28" font-weight="700" fill="#1E2A3B">信息生命周期 · 从捕获到沉淀</text>
+  <text x="600" y="78" text-anchor="middle" font-size="15" fill="#64748B">核心原则：先快速捕获，再定期整理；宁可在收集箱多躺几天，也不要打断写作心流</text>
+
+  <!-- step 1 -->
+  <rect x="40" y="110" width="196" height="120" rx="14" fill="url(#s1)"/>
+  <text x="138" y="150" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">📥 收集箱</text>
+  <text x="138" y="178" text-anchor="middle" font-size="12.5" fill="#E2E8F0">碎片/剪藏/灵感</text>
+  <text x="138" y="198" text-anchor="middle" font-size="12.5" fill="#E2E8F0">10-收集箱 无压力</text>
+  <text x="138" y="218" text-anchor="middle" font-size="12.5" fill="#E2E8F0">先记下来再说</text>
+
+  <line x1="236" y1="170" x2="286" y2="170" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- step 2 -->
+  <rect x="292" y="110" width="196" height="120" rx="14" fill="url(#s2)"/>
+  <text x="390" y="150" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">🔍 整理中</text>
+  <text x="390" y="178" text-anchor="middle" font-size="12.5" fill="#FFF7ED">归类到章目录</text>
+  <text x="390" y="198" text-anchor="middle" font-size="12.5" fill="#FFF7ED">补 YAML 属性</text>
+  <text x="390" y="218" text-anchor="middle" font-size="12.5" fill="#FFF7ED">状态: draft</text>
+
+  <line x1="488" y1="170" x2="538" y2="170" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- step 3 -->
+  <rect x="544" y="110" width="196" height="120" rx="14" fill="url(#s3)"/>
+  <text x="642" y="150" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">✅ 已验证</text>
+  <text x="642" y="178" text-anchor="middle" font-size="12.5" fill="#EEF2FF">来源/日期已标注</text>
+  <text x="642" y="198" text-anchor="middle" font-size="12.5" fill="#EEF2FF">事实与推断分开</text>
+  <text x="642" y="218" text-anchor="middle" font-size="12.5" fill="#EEF2FF">状态: verified</text>
+
+  <line x1="740" y1="170" x2="790" y2="170" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- step 4 -->
+  <rect x="796" y="110" width="196" height="120" rx="14" fill="url(#s4)"/>
+  <text x="894" y="150" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">♻️ 可复用</text>
+  <text x="894" y="178" text-anchor="middle" font-size="12.5" fill="#DFF7F5">挂入索引/模板</text>
+  <text x="894" y="198" text-anchor="middle" font-size="12.5" fill="#DFF7F5">被多次引用</text>
+  <text x="894" y="218" text-anchor="middle" font-size="12.5" fill="#DFF7F5">状态: active</text>
+
+  <line x1="992" y1="170" x2="1042" y2="170" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#arr)"/>
+
+  <!-- step 5 -->
+  <rect x="1048" y="110" width="120" height="120" rx="14" fill="url(#s5)"/>
+  <text x="1108" y="150" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">🗄️ 归档</text>
+  <text x="1108" y="178" text-anchor="middle" font-size="12.5" fill="#CBD5E1">不再活跃</text>
+  <text x="1108" y="198" text-anchor="middle" font-size="12.5" fill="#CBD5E1">保留来源</text>
+  <text x="1108" y="218" text-anchor="middle" font-size="12.5" fill="#CBD5E1">不删除</text>
+
+  <!-- back loop -->
+  <path d="M 1108 230 L 1108 280 L 138 280 L 138 234" fill="none" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arr)"/>
+  <text x="623" y="300" text-anchor="middle" font-size="13" fill="#64748B">↩ 旧知识过时/出错 → 回到「整理中」修订，保留修订记录与来源，绝不静默删除</text>
+
+  <!-- bottom tips -->
+  <rect x="40" y="324" width="1120" height="82" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="600" y="356" text-anchor="middle" font-size="16" font-weight="700" fill="#1E2A3B">实操要点</text>
+  <text x="600" y="384" text-anchor="middle" font-size="13.5" fill="#475569">· 状态字段写在 YAML：draft / active / verified / needs-review / archived，一搜 status:archived 就能找归档</text>
+  <text x="600" y="404" text-anchor="middle" font-size="13.5" fill="#475569">· 不确定内容标 #待核实，验证后才改 #已验证 · 易变信息（价格/法规）必须写 source_date + checked_date</text>
+</svg>

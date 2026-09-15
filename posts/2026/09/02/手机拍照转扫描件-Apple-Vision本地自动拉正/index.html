@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>手机拍照转扫描件，Apple Vision 本地自动拉正 | 三色风</title><meta name="author" content="Levi"><meta name="copyright" content="Levi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f0e4"><meta name="description" content="做工程交资料免不了扫描件，没有扫描仪就用手机拍。本文用 macOS 自带 Vision 框架的文档检测 + Core Image 透视矫正，写了个本地命令行工具把斜拍的照片拉正成扫描件，记录了坐标原点翻转、找不到纸、电子截图别矫正三个坑。代码已实测可跑。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="手机拍照转扫描件，Apple Vision 本地自动拉正">
+<meta property="og:url" content="https://www.lxpyll.top/posts/2026/09/02/%E6%89%8B%E6%9C%BA%E6%8B%8D%E7%85%A7%E8%BD%AC%E6%89%AB%E6%8F%8F%E4%BB%B6-Apple-Vision%E6%9C%AC%E5%9C%B0%E8%87%AA%E5%8A%A8%E6%8B%89%E6%AD%A3/">
+<meta property="og:site_name" content="三色风">
+<meta property="og:description" content="做工程交资料免不了扫描件，没有扫描仪就用手机拍。本文用 macOS 自带 Vision 框架的文档检测 + Core Image 透视矫正，写了个本地命令行工具把斜拍的照片拉正成扫描件，记录了坐标原点翻转、找不到纸、电子截图别矫正三个坑。代码已实测可跑。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lxpyll.top/img/docscan-coords.svg">
+<meta property="article:published_time" content="2026-09-02T14:29:44.000Z">
+<meta property="article:modified_time" content="2026-09-15T14:43:25.166Z">
+<meta property="article:author" content="Levi">
+<meta property="article:tag" content="CoreImage">
+<meta property="article:tag" content="Swift">
+<meta property="article:tag" content="Vision">
+<meta property="article:tag" content="命令行">
+<meta property="article:tag" content="扫描件">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.lxpyll.top/img/og.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "手机拍照转扫描件，Apple Vision 本地自动拉正",
+  "url": "https://www.lxpyll.top/posts/2026/09/02/%E6%89%8B%E6%9C%BA%E6%8B%8D%E7%85%A7%E8%BD%AC%E6%89%AB%E6%8F%8F%E4%BB%B6-Apple-Vision%E6%9C%AC%E5%9C%B0%E8%87%AA%E5%8A%A8%E6%8B%89%E6%AD%A3/",
+  "image": "https://www.lxpyll.top/img/docscan-coords.svg",
+  "datePublished": "2026-09-02T14:29:44.000Z",
+  "dateModified": "2026-09-15T14:43:25.166Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Levi",
+      "url": "https://www.lxpyll.top"
+    }
+  ],
+  "description": "做工程交资料免不了扫描件，没有扫描仪就用手机拍。本文用 macOS 自带 Vision 框架的文档检测 + Core Image 透视矫正，写了个本地命令行工具把斜拍的照片拉正成扫描件，记录了坐标原点翻转、找不到纸、电子截图别矫正三个坑。代码已实测可跑。"
+}</script><link rel="shortcut icon" href="/img/levi-avatar.svg"><link rel="canonical" href="https://www.lxpyll.top/posts/2026/09/02/%E6%89%8B%E6%9C%BA%E6%8B%8D%E7%85%A7%E8%BD%AC%E6%89%AB%E6%8F%8F%E4%BB%B6-Apple-Vision%E6%9C%AC%E5%9C%B0%E8%87%AA%E5%8A%A8%E6%8B%89%E6%AD%A3/"><link rel="alternate" type="application/atom+xml" title="三色风 RSS" href="https://www.lxpyll.top/atom.xml"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#231d17')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f0e4')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&amp;family=Noto+Serif+SC:wght@400;500;600;700;900&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":2,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '手机拍照转扫描件，Apple Vision 本地自动拉正',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-78CVHQTCM7"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-78CVHQTCM7')</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/custom.css?v=20260728-hero-poster-3"><meta name="msvalidate.01" content="C77AD03ECD54E088B341BF1F23909B07"><meta name="generator" content="Hexo 8.1.2"></head><body><a class="skip-link" href="#content-inner">跳到主要内容</a><div class="bg-animation" id="web_bg" style="background-color: #f7f0e4;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus" aria-hidden="true" inert="inert"><div class="avatar-img text-center"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">三色风</span></a><a class="nav-page-title" href="/"><span class="site-name">手机拍照转扫描件，Apple Vision 本地自动拉正</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><button class="site-page social-icon search" type="button" aria-label="搜索"><i class="fas fa-search fa-fw"></i><span> 搜索</span></button></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><button id="toggle-menu" type="button" aria-label="打开导航菜单" aria-controls="sidebar-menus" aria-expanded="false"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></button></div></nav></header><main class="layout" id="content-inner" tabindex="-1"><div id="post"><div id="post-info"><h1 class="post-title">手机拍照转扫描件，Apple Vision 本地自动拉正</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-02T14:29:44.000Z" title="发表于 2026-09-02 22:29:44">2026-09-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-15T14:43:25.166Z" title="更新于 2026-09-15 22:43:25">2026-09-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/macOS/">macOS</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><p>做工程免不了交扫描件。前几天给公司报名供应商建库，营业执照、法人身份证、授权书，全是「请提供扫描件」。手边没有扫描仪，镇上打印店的机器还得专门跑一趟。手机拍倒是快，但拍出来是斜的——纸成梯形，字越远越小。</p>
+<p>手机备忘录自带的扫描能拍正，但一张张在手机上框边、导出，量一多就烦。第三方扫描 App 倒是一拍就正，可证件类资料要传它的服务器，还要看会员脸色。身份证照片我不想交给不认识的服务器，就在 Mac 上想办法本地解决。</p>
+<h2 id="Vision-找纸，Core-Image-拉正"><a href="#Vision-找纸，Core-Image-拉正" class="headerlink" title="Vision 找纸，Core Image 拉正"></a>Vision 找纸，Core Image 拉正</h2><p>macOS 自带 Vision 框架里有个 <code>VNDetectDocumentSegmentationRequest</code>，专门干「在一张照片里找出像纸的区域」这件事，iPhone 备忘录的「扫描文稿」底层检测就是它。我的方案就两步：</p>
+<ol>
+<li>Vision 找出纸张的四个角</li>
+<li>Core Image 的 <code>CIPerspectiveCorrection</code> 滤镜把四边形拉成矩形</li>
+</ol>
+<p>Swift 写命令行工具不需要建 Xcode 工程，一个 .swift 文件直接跑。前提是装过 Command Line Tools（没装先跑 <code>xcode-select --install</code>）。</p>
+<p>完整代码存成 <code>docscan.swift</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">#<span class="operator">!/</span>usr<span class="regexp">/bin/</span>env swift</span><br><span class="line"><span class="comment">// docscan.swift —— 手机拍照转扫描件：Vision 找纸张边缘 + 透视拉正</span></span><br><span class="line"><span class="comment">// 用法: swift docscan.swift 输入图片 [输出图片] [--enhance]</span></span><br><span class="line"><span class="keyword">import</span> Vision</span><br><span class="line"><span class="keyword">import</span> CoreImage</span><br><span class="line"><span class="keyword">import</span> AppKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> args <span class="operator">=</span> <span class="type">CommandLine</span>.arguments</span><br><span class="line"><span class="keyword">guard</span> args.count <span class="operator">&gt;=</span> <span class="number">2</span> <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;用法: swift docscan.swift 输入图片 [输出图片] [--enhance]&quot;</span>)</span><br><span class="line">    exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> inputPath <span class="operator">=</span> args[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">let</span> outputPath <span class="operator">=</span> args.count <span class="operator">&gt;=</span> <span class="number">3</span> <span class="operator">&amp;&amp;</span> <span class="operator">!</span>args[<span class="number">2</span>].hasPrefix(<span class="string">&quot;--&quot;</span>) <span class="operator">?</span> args[<span class="number">2</span>] : <span class="string">&quot;scan.png&quot;</span></span><br><span class="line"><span class="keyword">let</span> enhance <span class="operator">=</span> args.contains(<span class="string">&quot;--enhance&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读图，转成 CGImage</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> img <span class="operator">=</span> <span class="type">NSImage</span>(contentsOfFile: inputPath),</span><br><span class="line">      <span class="keyword">let</span> tiff <span class="operator">=</span> img.tiffRepresentation,</span><br><span class="line">      <span class="keyword">let</span> rep <span class="operator">=</span> <span class="type">NSBitmapImageRep</span>(data: tiff),</span><br><span class="line">      <span class="keyword">let</span> cgImage <span class="operator">=</span> rep.cgImage <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;读不了图片: <span class="subst">\(inputPath)</span>&quot;</span>)</span><br><span class="line">    exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. Vision 找文档四角</span></span><br><span class="line"><span class="keyword">let</span> request <span class="operator">=</span> <span class="type">VNDetectDocumentSegmentationRequest</span>()</span><br><span class="line"><span class="keyword">let</span> handler <span class="operator">=</span> <span class="type">VNImageRequestHandler</span>(cgImage: cgImage, options: [:])</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> handler.perform([request])</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;识别失败: <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">    exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> doc <span class="operator">=</span> request.results<span class="operator">?</span>.first <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;没找到文档边缘。把纸放深色背景上拍，四角要拍全。&quot;</span>)</span><br><span class="line">    exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 坐标换算：Vision 是归一化坐标且原点在左下，像素坐标原点在左上</span></span><br><span class="line"><span class="keyword">let</span> ciImage <span class="operator">=</span> <span class="type">CIImage</span>(cgImage: cgImage)</span><br><span class="line"><span class="keyword">let</span> <span class="type">W</span> <span class="operator">=</span> ciImage.extent.width</span><br><span class="line"><span class="keyword">let</span> <span class="type">H</span> <span class="operator">=</span> ciImage.extent.height</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">toPixel</span>(<span class="keyword">_</span> <span class="params">p</span>: <span class="type">CGPoint</span>) -&gt; <span class="type">CGPoint</span> &#123;</span><br><span class="line">    <span class="type">CGPoint</span>(x: p.x <span class="operator">*</span> <span class="type">W</span>, y: (<span class="number">1</span> <span class="operator">-</span> p.y) <span class="operator">*</span> <span class="type">H</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> params: [<span class="type">String</span>: <span class="keyword">Any</span>] <span class="operator">=</span> [</span><br><span class="line">    <span class="string">&quot;inputTopLeft&quot;</span>: <span class="type">CIVector</span>(cgPoint: toPixel(doc.topLeft)),</span><br><span class="line">    <span class="string">&quot;inputTopRight&quot;</span>: <span class="type">CIVector</span>(cgPoint: toPixel(doc.topRight)),</span><br><span class="line">    <span class="string">&quot;inputBottomLeft&quot;</span>: <span class="type">CIVector</span>(cgPoint: toPixel(doc.bottomLeft)),</span><br><span class="line">    <span class="string">&quot;inputBottomRight&quot;</span>: <span class="type">CIVector</span>(cgPoint: toPixel(doc.bottomRight))</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 透视矫正；纸质件反光发灰时加个对比增强更像扫描件</span></span><br><span class="line"><span class="keyword">var</span> out <span class="operator">=</span> ciImage.applyingFilter(<span class="string">&quot;CIPerspectiveCorrection&quot;</span>, parameters: params)</span><br><span class="line"><span class="keyword">if</span> enhance &#123;</span><br><span class="line">    out <span class="operator">=</span> out.applyingFilter(<span class="string">&quot;CIColorControls&quot;</span>, parameters: [</span><br><span class="line">        <span class="string">&quot;inputContrast&quot;</span>: <span class="number">1.15</span>,</span><br><span class="line">        <span class="string">&quot;inputSaturation&quot;</span>: <span class="number">0.8</span></span><br><span class="line">    ])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4. 存成 PNG（要 PDF 用 sips 转：sips -s format pdf scan.png --out scan.pdf）</span></span><br><span class="line"><span class="keyword">let</span> ctx <span class="operator">=</span> <span class="type">CIContext</span>()</span><br><span class="line"><span class="keyword">try</span> ctx.writePNGRepresentation(of: out, to: <span class="type">URL</span>(fileURLWithPath: outputPath),</span><br><span class="line">                               format: .<span class="type">RGBA8</span>, colorSpace: <span class="type">CGColorSpace</span>(name: <span class="type">CGColorSpace</span>.sRGB)<span class="operator">!</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;完成: <span class="subst">\(outputPath)</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>单张：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x docscan.swift</span><br><span class="line">./docscan.swift 拍的照片.jpg scan.png --enhance</span><br></pre></td></tr></table></figure>
+
+<p><code>--enhance</code> 会加一点对比度，纸面反光发灰的时候输出更像扫描件。批量就把文件名交给 shell：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> *.jpg; <span class="keyword">do</span></span><br><span class="line">  ./docscan.swift <span class="string">&quot;<span class="variable">$f</span>&quot;</span> <span class="string">&quot;scan-<span class="variable">$&#123;f%.jpg&#125;</span>.png&quot;</span> --enhance</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>要 PDF 用 sips 转一下就行，不用改代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sips -s format pdf scan.png --out scan.pdf</span><br></pre></td></tr></table></figure>
+
+<h2 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h2><h3 id="坑一：坐标原点是反的"><a href="#坑一：坐标原点是反的" class="headerlink" title="坑一：坐标原点是反的"></a>坑一：坐标原点是反的</h3><p>Vision 返回的角点坐标是归一化小数（0~1），而且原点在左下角；图片像素坐标原点在左上角。我第一次直接拿 <code>x × 宽、y × 高</code> 去算，输出上下颠倒。正确换算是 <code>y′ = (1 − y) × 高</code>，关系见图：</p>
+<p><img src="/img/docscan-coords.svg" alt="Vision 坐标转像素坐标示意"></p>
+<p>另外别自己拿 boundingBox 凑角点，<code>VNRectangleObservation</code> 直接给了 topLeft &#x2F; topRight &#x2F; bottomLeft &#x2F; bottomRight 四个点，用现成的就行。</p>
+<h3 id="坑二：找不到纸"><a href="#坑二：找不到纸" class="headerlink" title="坑二：找不到纸"></a>坑二：找不到纸</h3><p>纸上内容太少、背景和纸颜色接近、纸没拍全，都会报「没找到文档边缘」。拍的时候把纸放深色桌面上、四角留出边，成功率明显高。白纸贴白墙拍大概率失败，别问我是怎么知道的。</p>
+<h3 id="坑三：电子截图不要矫正"><a href="#坑三：电子截图不要矫正" class="headerlink" title="坑三：电子截图不要矫正"></a>坑三：电子截图不要矫正</h3><p>手机截图、网页截图本来就是正的，跑透视矫正反而把边裁歪。截图类的我直接用，顶多加个对比度，不碰矫正。</p>
+<h2 id="现在的流程"><a href="#现在的流程" class="headerlink" title="现在的流程"></a>现在的流程</h2><p>手机拍 → AirDrop 到 Mac → 跑一下 → PNG 或 PDF 直接交。M 芯片上处理 iPhone 原图，识别加输出基本一秒内。对「拍得还行」的照片成功率很高；但整片反光、拍糊了救不回来，老老实实重拍——这工具解决的是「拍正了但透视歪」，不解决「没拍好」。</p>
+<p>代码丢在 <code>~/bin/</code> 里，几十行，以后再要扫描件就是一条命令的事。全程照片不出本机，营业执照、身份证这类东西，交得放心点。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top">Levi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top/posts/2026/09/02/%E6%89%8B%E6%9C%BA%E6%8B%8D%E7%85%A7%E8%BD%AC%E6%89%AB%E6%8F%8F%E4%BB%B6-Apple-Vision%E6%9C%AC%E5%9C%B0%E8%87%AA%E5%8A%A8%E6%8B%89%E6%AD%A3/">https://www.lxpyll.top/posts/2026/09/02/%E6%89%8B%E6%9C%BA%E6%8B%8D%E7%85%A7%E8%BD%AC%E6%89%AB%E6%8F%8F%E4%BB%B6-Apple-Vision%E6%9C%AC%E5%9C%B0%E8%87%AA%E5%8A%A8%E6%8B%89%E6%AD%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://www.lxpyll.top" target="_blank">三色风</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/">命令行</a><a class="post-meta__tags" href="/tags/Swift/">Swift</a><a class="post-meta__tags" href="/tags/Vision/">Vision</a><a class="post-meta__tags" href="/tags/CoreImage/">CoreImage</a><a class="post-meta__tags" href="/tags/%E6%89%AB%E6%8F%8F%E4%BB%B6/">扫描件</a></div><div class="post-share"><div class="social-share" data-image="/img/docscan-coords.svg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat-reward-qr.jpg" alt="微信支付"/></a><div class="post-qr-code-desc">微信支付</div></li><li class="reward-item"><a href="/img/alipay-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay-reward-qr.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/2026/09/03/MoneyPrinterTurbo%E8%B7%91%E8%A7%A3%E8%AF%B4%E8%A7%86%E9%A2%91%E6%B5%81%E6%B0%B4%E7%BA%BF-%E4%BB%8E%E9%83%A8%E7%BD%B2%E5%88%B0%E8%B7%91%E9%80%9A/" title="MoneyPrinterTurbo 跑解说视频流水线，从部署到跑通"><img class="cover" src="/img/mpt-pipeline.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">MoneyPrinterTurbo 跑解说视频流水线，从部署到跑通</div></div><div class="info-2"><div class="info-item-1">我要做一批中文解说短视频——城市航拍、乡村风光那种，画面配旁白。手动剪太慢，就试了开源的 MoneyPrinterTurbo（Python 写的），它把文案、配音、拼素材、烧字幕、合成一条命令串完。文案走 DeepSeek 的接口（兼容 OpenAI 格式），配音用 Edge TTS，这俩都不要钱，素材用自己手头的视频。跑通之后发现真正卡人的不是部署，...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/01/%E6%B8%A0%E9%81%93%E6%B8%85%E6%B7%A4%E7%AE%97%E9%87%8F-%E5%9C%9F%E6%B8%A0%E6%BA%AA%E6%B2%B3%E6%8C%89%E6%A2%AF%E5%BD%A2%E6%96%AD%E9%9D%A2%E7%AE%97/" title="渠道清淤算量：土渠溪河按梯形断面算，不是上口宽乘淤厚乘长"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">渠道清淤算量：土渠溪河按梯形断面算，不是上口宽乘淤厚乘长</div></div><div class="info-2"><div class="info-item-1">上个月在阳春做一条水毁修复的渠道清淤，工程量计算书第一版我按「宽 × 淤厚 × 长」算，量出来比实际能挖的大一截，被业主一句话点醒：土渠、溪河都是带边坡的梯形断面，淤泥层是上宽下窄的倒梯形，拿上口宽直接乘，等于把两个坡脚的三角都算进去了，量自然虚高。 这单最后全部按梯形口径重算，业主复核没再提意见。记下来，给同样做农村水利、市政渠道的同行省点事。 为什...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/2026/09/15/%E7%94%A8qpdf%E5%90%88%E5%B9%B6%E6%89%AB%E6%8F%8F%E4%BB%B6%E4%BA%A4%E8%B5%84%E6%96%99%EF%BC%8C%E9%A1%BA%E6%89%8B%E8%A7%A3%E5%BC%80%E6%9D%83%E9%99%90%E9%94%81%E5%92%8C%E6%89%93%E5%BC%80%E5%AF%86%E7%A0%81/" title="用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-15</div><div class="info-item-2">用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码</div></div><div class="info-2"><div class="info-item-1">上周交收方资料，手上是手机拍的七张签证单、监理发来的两份”禁止打印”PDF，还有一份甲方给的加密图纸（打开要输密码）。以前我的做法是打开预览，一张张往侧边栏里拖，再导出成一份——页数一多，拖到第四十张手就开始抖，碰上打不开的还得先截图再拼。这类活现在全交给 qpdf，一个 brew 装的小工具。 先说清楚它管什么：qpdf 只动 PDF 的壳——合并、...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/08/%E7%94%A8Ghostscript%E5%8E%8B%E7%BC%A9%E6%89%AB%E6%8F%8F%E7%89%88PDF-4.8MB%E4%B8%80%E9%A1%B5%E5%8E%8B%E5%88%B0790KB/" title="用 Ghostscript 压缩扫描版 PDF，4.8MB 的一页能压到 790KB"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-08</div><div class="info-item-2">用 Ghostscript 压缩扫描版 PDF，4.8MB 的一页能压到 790KB</div></div><div class="info-2"><div class="info-item-1">现场收方、签证资料我是手机拍了直接转 PDF 的，一页就是 4.8MB 那种。整本几十页下来上百 MB，微信传不动，邮箱附件传到一半就失败。网上压缩网站要先上传，几十 MB 传半天，整本资料放到别人服务器上过一遍，心里也不踏实。macOS 预览 App 能压，导出时选「减小文件大小」，但质量没得选，几十页一本手动导太烦。 后来固定用 Ghostscri...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/28/%E6%89%AB%E6%8F%8F%E4%BB%B6PDF%E6%90%9C%E4%B8%8D%E4%BA%86%E5%AD%97-ocrmypdf%E4%B8%AD%E6%96%87OCR%E4%B8%80%E6%AC%A1%E8%A7%A3%E5%86%B3/" title="扫描件 PDF 搜不了字？ocrmypdf 中文 OCR 一次解决"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-28</div><div class="info-item-2">扫描件 PDF 搜不了字？ocrmypdf 中文 OCR 一次解决</div></div><div class="info-2"><div class="info-item-1">做工程的，手上全是扫描件：图纸、报价单、合同、签证单，清一色”图片”。要找某句话只能一页页翻，要引用一段文字只能对着屏幕手敲。Spotlight 和阅读器都搜不到内容，因为 PDF 里根本没有文字层。 ocrmypdf 就是干这个的：把文字层加到 PDF 里，扫描件变成能搜、能复制的文档。装完踩了三个坑，都记下来。 安装1brew install oc...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/05/%E4%B8%80%E5%A0%86DXF%E5%9B%BE%E7%BA%B8%E8%A6%81%E7%AE%97%E9%9D%A2%E7%A7%AF-freecadcmd%E4%B8%80%E4%B8%AA%E8%84%9A%E6%9C%AC%E5%85%A8%E8%B7%91%E5%AE%8C/" title="一堆 DXF 图纸要算面积，freecadcmd 一个脚本全跑完"><img class="cover" src="/img/fc-dxf-area-flow.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-05</div><div class="info-item-2">一堆 DXF 图纸要算面积，freecadcmd 一个脚本全跑完</div></div><div class="info-2"><div class="info-item-1">干工程的总逃不掉一个动作：收方、算量，最后落到”这块多少平方”。图纸来了，要么是设计院丢过来的 DXF，要么是自己画的图，反正最后都得要个面积数。 日常画图我用 LibreCAD 为主，量面积要一个封闭对象点一次，点完还得自己拿笔记。几十个井盖、地块，图一多就烦。 后来想到：FreeCAD 不是一直装在机器上吗？它带一个命令行版 freecadcmd，...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/06/%E4%B8%8D%E7%94%A8%E8%A3%85%E5%8E%8B%E7%BC%A9%E8%BD%AF%E4%BB%B6%EF%BC%8CmacOS%20%E8%87%AA%E5%B8%A6%20sips%20%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86%E7%8E%B0%E5%9C%BA%E7%85%A7%E7%89%87/" title="不用装压缩软件，macOS 自带 sips 批量处理现场照片"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">不用装压缩软件，macOS 自带 sips 批量处理现场照片</div></div><div class="info-2"><div class="info-item-1">干工程的天天要拍照：现场进度、签证、收方，一拍就是几十张。拍完往村委群、工作群里发，或者往系统里传资料，iPhone 原图动辄几 MB，传半天，有些上传系统对单张大小还有限制。 按我的习惯，这种批量图片活不想装第三方压缩软件，系统自带的 sips 就能干，一台 Mac 不用装任何东西。 sips 是 macOS 自带的图片处理命令sips 全名 scr...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/10/macOS%2026%20%E8%87%AA%E5%B8%A6%20rsync%20%E6%98%AF%20openrsync%EF%BC%8C%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E7%85%A7%E6%A0%B7%E8%83%BD%E8%B7%91/" title="macOS 26 自带 rsync 是 openrsync，硬链接快照备份照样能跑"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-10</div><div class="info-item-2">macOS 26 自带 rsync 是 openrsync，硬链接快照备份照样能跑</div></div><div class="info-2"><div class="info-item-1">工程资料现在两百多个 G：施工图、报价书、扫描件、甲方发来的 DXF、现场照片。硬盘上留了一份，但只有一份不够用。报价书改十遍是常事，某一版单价改错了想退回三天前看看，硬盘上只剩被覆盖之后的新文件。 Time Machine 能救，但它整盘一起备，翻单个文件夹的旧版本要进恢复界面一层层点。我想要的另一种做法是每天生成一个目录快照：每个快照就是个能直接打...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Levi</div><div class="author-info-description">Levi的Blog</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Lxp1986"><i class="fab fa-github"></i><span>访问 GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Lxp1986" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #b85c38;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客，持续更新中。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vision-%E6%89%BE%E7%BA%B8%EF%BC%8CCore-Image-%E6%8B%89%E6%AD%A3"><span class="toc-number">1.</span> <span class="toc-text">Vision 找纸，Core Image 拉正</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91"><span class="toc-number">3.</span> <span class="toc-text">踩过的坑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91%E4%B8%80%EF%BC%9A%E5%9D%90%E6%A0%87%E5%8E%9F%E7%82%B9%E6%98%AF%E5%8F%8D%E7%9A%84"><span class="toc-number">3.1.</span> <span class="toc-text">坑一：坐标原点是反的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91%E4%BA%8C%EF%BC%9A%E6%89%BE%E4%B8%8D%E5%88%B0%E7%BA%B8"><span class="toc-number">3.2.</span> <span class="toc-text">坑二：找不到纸</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%91%E4%B8%89%EF%BC%9A%E7%94%B5%E5%AD%90%E6%88%AA%E5%9B%BE%E4%B8%8D%E8%A6%81%E7%9F%AB%E6%AD%A3"><span class="toc-number">3.3.</span> <span class="toc-text">坑三：电子截图不要矫正</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%B0%E5%9C%A8%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">现在的流程</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/15/%E7%94%A8qpdf%E5%90%88%E5%B9%B6%E6%89%AB%E6%8F%8F%E4%BB%B6%E4%BA%A4%E8%B5%84%E6%96%99%EF%BC%8C%E9%A1%BA%E6%89%8B%E8%A7%A3%E5%BC%80%E6%9D%83%E9%99%90%E9%94%81%E5%92%8C%E6%89%93%E5%BC%80%E5%AF%86%E7%A0%81/" title="用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码">用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码</a><time datetime="2026-09-15T14:38:00.000Z" title="发表于 2026-09-15 22:38:00">2026-09-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/14/%E6%B8%85%E6%B7%A4%E9%87%8F%E8%A1%A8%E7%9A%84%E5%85%AC%E5%BC%8F%E4%BB%8EC3%E6%94%B9%E6%88%90%E5%90%8D%E5%AD%97%EF%BC%8CFreeCAD%E7%94%B5%E5%AD%90%E8%A1%A8%E6%A0%BC%E8%BF%99%E4%B9%88%E7%94%A8/" title="清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用">清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用</a><time datetime="2026-09-14T14:38:00.000Z" title="发表于 2026-09-14 22:38:00">2026-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/13/%E5%87%A0%E5%8D%81%E8%A1%8C%E5%B7%A5%E7%A8%8B%E9%87%8F%E5%88%86%E9%A1%B9%EF%BC%8C%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E5%92%8C%E5%85%AC%E5%BC%8F%E4%BA%A4%E7%BB%99%20openpyxl/" title="几十行工程量分项，合并单元格和公式交给 openpyxl">几十行工程量分项，合并单元格和公式交给 openpyxl</a><time datetime="2026-09-13T14:35:00.000Z" title="发表于 2026-09-13 22:35:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/12/Obsidian%E5%BA%93%E6%94%92%E5%88%B0%E4%B8%80%E7%99%BE%E5%A4%9A%E7%AF%87%EF%BC%8C%E6%96%AD%E9%93%BE%E5%92%8C%E5%AD%A4%E5%84%BF%E7%AC%94%E8%AE%B0%E6%88%91%E7%94%A8%E8%84%9A%E6%9C%AC%E6%89%AB/" title="Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫">Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫</a><time datetime="2026-09-12T14:30:00.000Z" title="发表于 2026-09-12 22:30:00">2026-09-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/11/%E6%B8%A0%E9%81%93%E6%96%AD%E9%9D%A2%E5%9B%BE%E7%94%A8matplotlib%E8%84%9A%E6%9C%AC%E7%94%BB%EF%BC%8C%E4%B8%AD%E6%96%87%E6%A0%87%E6%B3%A8%E5%92%8C%E5%B9%B3%E6%96%B9%E5%8F%B7%E9%83%BD%E4%B8%8D%E7%BC%BA/" title="渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺">渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺</a><time datetime="2026-09-11T14:35:00.000Z" title="发表于 2026-09-11 22:35:00">2026-09-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Levi</span></div><div class="footer_custom_text">三色风 | Levi</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Lxp1986/Lxp1986.github.io',
+      'data-repo-id': 'R_kgDOMn0qqg',
+      'data-category-id': 'DIC_kwDOMn0qqs4DDgMy',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="输入关键词搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

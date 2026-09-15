@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 240" font-family="PingFang SC, Heiti SC, Microsoft YaHei, sans-serif">
+  <rect width="720" height="240" fill="#FAFAFA"/>
+  <text x="20" y="30" font-size="14" fill="#555">候选框参数示意（改造后：暗底实心）</text>
+
+  <!-- candidate bar -->
+  <rect x="40" y="60" width="560" height="86" rx="5" fill="#545554"/>
+  <rect x="120" y="70" width="130" height="66" rx="5" fill="#98FB98"/>
+  <text x="132" y="112" font-size="16" fill="#000000">1. 工程</text>
+  <text x="282" y="112" font-size="16" fill="#FFFFFF">2. 功课</text>
+  <text x="386" y="112" font-size="16" fill="#FFFFFF">3. 公课</text>
+
+  <!-- corner radius -->
+  <line x1="600" y1="65" x2="648" y2="35" stroke="#333333"/>
+  <circle cx="600" cy="65" r="2.5" fill="#333333"/>
+  <text x="660" y="35" font-size="12" fill="#333333" text-anchor="end">corner_radius=5（圆角）</text>
+
+  <!-- border height -->
+  <line x1="90" y1="60" x2="90" y2="25" stroke="#333333"/>
+  <circle cx="90" cy="60" r="2.5" fill="#333333"/>
+  <text x="98" y="38" font-size="12" fill="#333333">border_height=0（上下留白，最矮）</text>
+
+  <!-- spacing -->
+  <line x1="360" y1="103" x2="360" y2="200" stroke="#333333"/>
+  <circle cx="360" cy="103" r="2.5" fill="#333333"/>
+  <text x="300" y="218" font-size="12" fill="#333333">spacing=2（词间距）</text>
+
+  <!-- back color -->
+  <line x1="600" y1="140" x2="662" y2="175" stroke="#333333"/>
+  <circle cx="600" cy="140" r="2.5" fill="#333333"/>
+  <text x="700" y="185" font-size="12" fill="#333333" text-anchor="end">底色 back_color 0x545554</text>
+
+  <!-- highlight -->
+  <line x1="120" y1="146" x2="80" y2="215" stroke="#333333"/>
+  <circle cx="120" cy="146" r="2.5" fill="#333333"/>
+  <text x="88" y="230" font-size="12" fill="#333333">选中项高亮 0x98FB98（淡绿底黑字）</text>
+</svg>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="csp-top" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1E2A3B"/>
+      <stop offset="1" stop-color="#334155"/>
+    </linearGradient>
+    <linearGradient id="csp-main" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8DEF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+    <marker id="csp-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="680" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#1E2A3B">claude.ai 系统提示词：里面有什么，能抄什么</text>
+  <text x="600" y="82" text-anchor="middle" font-size="15" fill="#64748B">Anthropic 官方公开 · 每次对话前注入 · 按模型和日期版本化（Opus 5 版本约 3.1 万词）</text>
+
+  <!-- top box -->
+  <rect x="360" y="106" width="480" height="54" rx="12" fill="url(#csp-top)"/>
+  <text x="600" y="131" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">📋 每次对话开始前，注入给模型看的「说明书」</text>
+  <text x="600" y="152" text-anchor="middle" font-size="12" fill="#CBD5E1">官方文档：platform.claude.com/docs/en/release-notes/system-prompts</text>
+
+  <line x1="600" y1="160" x2="600" y2="186" stroke="#94A3B8" stroke-width="2" marker-end="url(#csp-arrow)"/>
+
+  <!-- three columns -->
+  <rect x="60" y="192" width="340" height="300" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="430" y="192" width="340" height="300" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="800" y="192" width="340" height="300" rx="12" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+
+  <text x="230" y="226" text-anchor="middle" font-size="16" font-weight="700" fill="#7C5CD6">💬 行为与语气</text>
+  <rect x="82" y="244" width="296" height="38" rx="8" fill="#EEF2FF"/>
+  <text x="230" y="268" text-anchor="middle" font-size="13" fill="#3B5BC9">默认姿态是帮忙，不轻易拒绝</text>
+  <rect x="82" y="288" width="296" height="38" rx="8" fill="#EEF2FF"/>
+  <text x="230" y="312" text-anchor="middle" font-size="13" fill="#3B5BC9">回复保持简短，结论先行</text>
+  <rect x="82" y="332" width="296" height="38" rx="8" fill="#EEF2FF"/>
+  <text x="230" y="356" text-anchor="middle" font-size="13" fill="#3B5BC9">每条回复最多追问一个问题</text>
+  <rect x="82" y="376" width="296" height="38" rx="8" fill="#EEF2FF"/>
+  <text x="230" y="400" text-anchor="middle" font-size="13" fill="#3B5BC9">少用「说实话/老实讲」这类强调词</text>
+  <rect x="82" y="420" width="296" height="38" rx="8" fill="#EEF2FF"/>
+  <text x="230" y="444" text-anchor="middle" font-size="13" fill="#3B5BC9">出错就认，但不过度道歉</text>
+
+  <text x="600" y="226" text-anchor="middle" font-size="16" font-weight="700" fill="#7C5CD6">🛡️ 边界与安全</text>
+  <rect x="452" y="244" width="296" height="38" rx="8" fill="#F0FDFA"/>
+  <text x="600" y="268" text-anchor="middle" font-size="13" fill="#0B8E82">拒绝规则：武器 / 恶意代码 / 儿童安全</text>
+  <rect x="452" y="288" width="296" height="38" rx="8" fill="#F0FDFA"/>
+  <text x="600" y="312" text-anchor="middle" font-size="13" fill="#0B8E82">财务法律问题只给事实，不做推荐</text>
+  <rect x="452" y="332" width="296" height="38" rx="8" fill="#F0FDFA"/>
+  <text x="600" y="356" text-anchor="middle" font-size="13" fill="#0B8E82">用户情绪危机时，优先照顾人再干活</text>
+  <rect x="452" y="376" width="296" height="38" rx="8" fill="#F0FDFA"/>
+  <text x="600" y="400" text-anchor="middle" font-size="13" fill="#0B8E82">立场文：讲「支持者会怎么说」，不是自己的观点</text>
+  <rect x="452" y="420" width="296" height="38" rx="8" fill="#F0FDFA"/>
+  <text x="600" y="444" text-anchor="middle" font-size="13" fill="#0B8E82">讽刺幽默不建立在刻板印象上</text>
+
+  <text x="970" y="226" text-anchor="middle" font-size="16" font-weight="700" fill="#7C5CD6">⚙️ 机制与记忆</text>
+  <rect x="822" y="244" width="296" height="38" rx="8" fill="#FEF3C7"/>
+  <text x="970" y="268" text-anchor="middle" font-size="13" fill="#92610A">记忆文件系统（读写用户偏好）</text>
+  <rect x="822" y="288" width="296" height="38" rx="8" fill="#FEF3C7"/>
+  <text x="970" y="312" text-anchor="middle" font-size="13" fill="#92610A">Artifacts 持久存储与读写规范</text>
+  <rect x="822" y="332" width="296" height="38" rx="8" fill="#FEF3C7"/>
+  <text x="970" y="356" text-anchor="middle" font-size="13" fill="#92610A">MCP 第三方工具建议与授权</text>
+  <rect x="822" y="376" width="296" height="38" rx="8" fill="#FEF3C7"/>
+  <text x="970" y="400" text-anchor="middle" font-size="13" fill="#92610A">历史对话搜索、结束对话工具</text>
+  <rect x="822" y="420" width="296" height="38" rx="8" fill="#FEF3C7"/>
+  <text x="970" y="444" text-anchor="middle" font-size="13" fill="#92610A">产品信息 + 当前日期（每次更新）</text>
+
+  <!-- bottom -->
+  <line x1="230" y1="492" x2="230" y2="520" stroke="#94A3B8" stroke-width="2" marker-end="url(#csp-arrow)"/>
+  <line x1="970" y1="492" x2="970" y2="520" stroke="#94A3B8" stroke-width="2" marker-end="url(#csp-arrow)"/>
+
+  <rect x="60" y="524" width="540" height="120" rx="12" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1.5"/>
+  <text x="330" y="554" text-anchor="middle" font-size="16" font-weight="700" fill="#065F46">✅ 能抄：行为与语气规则</text>
+  <text x="330" y="582" text-anchor="middle" font-size="13" fill="#065F46">「默认帮忙、简短回复、最多一个问题、</text>
+  <text x="330" y="604" text-anchor="middle" font-size="13" fill="#065F46">少用强调词、立场中立」——通用，</text>
+  <text x="330" y="626" text-anchor="middle" font-size="13" fill="#065F46">改改就能贴进自己的 Agent / CLAUDE.md</text>
+
+  <rect x="620" y="524" width="520" height="120" rx="12" fill="#FFF1F2" stroke="#FECDD3" stroke-width="1.5"/>
+  <text x="880" y="554" text-anchor="middle" font-size="16" font-weight="700" fill="#9F1239">⚠️ 别整份抄：产品与机制部分</text>
+  <text x="880" y="582" text-anchor="middle" font-size="13" fill="#9F1239">产品介绍、记忆文件系统、Artifacts 存储</text>
+  <text x="880" y="604" text-anchor="middle" font-size="13" fill="#9F1239">都依赖 Anthropic 自家基础设施，</text>
+  <text x="880" y="626" text-anchor="middle" font-size="13" fill="#9F1239">整份贴到自己配置里会出怪问题</text>
+</svg>

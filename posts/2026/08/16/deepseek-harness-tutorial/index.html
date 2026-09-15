@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>把 DeepSeek Harness 跑起来了，安装过程记录 | 三色风</title><meta name="author" content="Levi"><meta name="copyright" content="Levi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f0e4"><meta name="description" content="Harness 安装和使用的过程记录：环境、安装、配置、三个我实际在用的场景，加上踩过的几个坑。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把 DeepSeek Harness 跑起来了，安装过程记录">
+<meta property="og:url" content="https://www.lxpyll.top/posts/2026/08/16/deepseek-harness-tutorial/">
+<meta property="og:site_name" content="三色风">
+<meta property="og:description" content="Harness 安装和使用的过程记录：环境、安装、配置、三个我实际在用的场景，加上踩过的几个坑。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lxpyll.top/img/dsh-tutorial.svg">
+<meta property="article:published_time" content="2026-08-16T15:40:00.000Z">
+<meta property="article:modified_time" content="2026-09-15T14:43:25.163Z">
+<meta property="article:author" content="Levi">
+<meta property="article:tag" content="AI Agent">
+<meta property="article:tag" content="DeepSeek">
+<meta property="article:tag" content="效率工具">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.lxpyll.top/img/og.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "把 DeepSeek Harness 跑起来了，安装过程记录",
+  "url": "https://www.lxpyll.top/posts/2026/08/16/deepseek-harness-tutorial/",
+  "image": "https://www.lxpyll.top/img/dsh-tutorial.svg",
+  "datePublished": "2026-08-16T15:40:00.000Z",
+  "dateModified": "2026-09-15T14:43:25.163Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Levi",
+      "url": "https://www.lxpyll.top"
+    }
+  ],
+  "description": "Harness 安装和使用的过程记录：环境、安装、配置、三个我实际在用的场景，加上踩过的几个坑。"
+}</script><link rel="shortcut icon" href="/img/levi-avatar.svg"><link rel="canonical" href="https://www.lxpyll.top/posts/2026/08/16/deepseek-harness-tutorial/"><link rel="alternate" type="application/atom+xml" title="三色风 RSS" href="https://www.lxpyll.top/atom.xml"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#231d17')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f0e4')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&amp;family=Noto+Serif+SC:wght@400;500;600;700;900&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":2,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '把 DeepSeek Harness 跑起来了，安装过程记录',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script async src="https://www.googletagmanager.com/gtag/js?id=G-78CVHQTCM7"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-78CVHQTCM7')</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/custom.css?v=20260728-hero-poster-3"><meta name="msvalidate.01" content="C77AD03ECD54E088B341BF1F23909B07"><meta name="generator" content="Hexo 8.1.2"></head><body><a class="skip-link" href="#content-inner">跳到主要内容</a><div class="bg-animation" id="web_bg" style="background-color: #f7f0e4;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus" aria-hidden="true" inert="inert"><div class="avatar-img text-center"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">三色风</span></a><a class="nav-page-title" href="/"><span class="site-name">把 DeepSeek Harness 跑起来了，安装过程记录</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><button class="site-page social-icon search" type="button" aria-label="搜索"><i class="fas fa-search fa-fw"></i><span> 搜索</span></button></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-tree"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-message"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><button id="toggle-menu" type="button" aria-label="打开导航菜单" aria-controls="sidebar-menus" aria-expanded="false"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></button></div></nav></header><main class="layout" id="content-inner" tabindex="-1"><div id="post"><div id="post-info"><h1 class="post-title">把 DeepSeek Harness 跑起来了，安装过程记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-16T15:40:00.000Z" title="发表于 2026-08-16 23:40:00">2026-08-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-15T14:43:25.163Z" title="更新于 2026-09-15 22:43:25">2026-09-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><p>Harness 开源那天我装了一个，Windows 和 Mac 都试了一遍。过程比想的简单，把记录放这里，给还没动手的人省点时间。</p>
+<h2 id="环境就一个-Node-js"><a href="#环境就一个-Node-js" class="headerlink" title="环境就一个 Node.js"></a>环境就一个 Node.js</h2><p>版本要 22.19 以上，或者 24。官网下 LTS 版装上，终端里跑 <code>node -v</code> 能出数字就行。</p>
+<h2 id="安装是一行命令"><a href="#安装是一行命令" class="headerlink" title="安装是一行命令"></a>安装是一行命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx @deepseek-ai/dsh web</span><br></pre></td></tr></table></figure>
+
+<p>第一次跑会自己下载，等几十秒。然后浏览器打开 <code>http://127.0.0.1:3080</code>，能看到页面就装好了。终端别关。</p>
+<h2 id="配置两步"><a href="#配置两步" class="headerlink" title="配置两步"></a>配置两步</h2><p>第一步，Settings → Models 里填 DeepSeek 的 API Key，去 platform.deepseek.com 申请，有免费额度。填完保存就行，不用重启。</p>
+<p>第二步，Choose workspace 选一个文件夹给它当工作区。这步不选的话输入框是灰的，我一开始就卡在这。</p>
+<h2 id="第一次用"><a href="#第一次用" class="headerlink" title="第一次用"></a>第一次用</h2><p>新建会话，发了句「总结这个文件夹的结构，说说是什么项目，新人从哪看起」。它会自己翻文件、读代码、跑命令，最后给一份总结。</p>
+<h2 id="三个我实际在用的场景"><a href="#三个我实际在用的场景" class="headerlink" title="三个我实际在用的场景"></a>三个我实际在用的场景</h2><p><strong>分析老项目。</strong> 看不懂的代码仓库丢给它，让它先讲一遍结构，比自己硬啃快。</p>
+<p><strong>自动写周报。</strong> 让它把上周的 git 提交汇总成周报，用 headless 模式跑，一条命令的事：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> --since=<span class="string">&quot;1 week ago&quot;</span> --pretty=format:<span class="string">&quot;%h %an %ad %s&quot;</span> --<span class="built_in">date</span>=short &gt; /tmp/gitlog.txt</span><br><span class="line">dsh --profile headless <span class="string">&quot;根据下面的提交记录写一份中文周报，按主题归类：<span class="subst">$(cat /tmp/gitlog.txt)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>再配个 cron 定时跑就行。</p>
+<p><strong>定时巡检。</strong> 让它每小时查一次磁盘、服务健康、依赖更新，有问题提醒。这个要开 schedule 插件，稍微折腾一点，官方文档有写。</p>
+<h2 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h2><ul>
+<li>Key 填了还报错，八成是填错位置了，确认在 Settings → Models 里填的。</li>
+<li>它默认只在工作区文件夹里能改东西，其他地方只读，工作区别直接指到重要目录。</li>
+<li>费用这块，工具免费，花钱的是 API。DeepSeek 现在有峰谷定价，晚上和周末便宜，批量任务排晚上跑能省一半。</li>
+</ul>
+<p>装好之后到底要不要长期用，跟 Claude Code、Codex 比怎么样，我写在另一篇里了：《<a href="/posts/2026/08/16/deepseek-harness-review/">用了几天 DeepSeek Harness，说几个真实感受</a>》。</p>
+<blockquote>
+<p>命令和版本信息查于 2026-08-16，工具还在快速更新，以官方为准。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top">Levi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lxpyll.top/posts/2026/08/16/deepseek-harness-tutorial/">https://www.lxpyll.top/posts/2026/08/16/deepseek-harness-tutorial/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://www.lxpyll.top" target="_blank">三色风</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/DeepSeek/">DeepSeek</a><a class="post-meta__tags" href="/tags/AI-Agent/">AI Agent</a><a class="post-meta__tags" href="/tags/%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/">效率工具</a><a class="post-meta__tags" href="/tags/%E6%95%99%E7%A8%8B/">教程</a></div><div class="post-share"><div class="social-share" data-image="/img/dsh-tutorial.svg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat-reward-qr.jpg" alt="微信支付"/></a><div class="post-qr-code-desc">微信支付</div></li><li class="reward-item"><a href="/img/alipay-reward-qr.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay-reward-qr.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/2026/08/16/deepseek-harness-review/" title="用了几天 DeepSeek Harness，说几个真实感受"><img class="cover" src="/img/dsh-review.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">用了几天 DeepSeek Harness，说几个真实感受</div></div><div class="info-2"><div class="info-item-1">先给结论：这工具现在还不适合拿来干正事。想尝鲜、想学它架构的可以装，指望它稳定出活，再等几个月。 几个不错的地方官方出品，模型和框架是一套，配合比第三方拼出来的顺。MIT 开源，代码随便改。不绑死模型，DeepSeek、OpenAI、Claude 都能接。工具免费，API 也便宜，晚上还半价。 几个让我犹豫的地方还是预览版，官方自己都写了「会有破坏性变...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/10/%E7%94%A8Obsidian%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93%E6%95%99%E7%A8%8B/" title="笔记散在五个地方，我最后都收进了 Obsidian"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">笔记散在五个地方，我最后都收进了 Obsidian</div></div><div class="info-2"><div class="info-item-1">我的笔记以前是散成一地的。备忘录里存几条，微信收藏夹一堆，浏览器剪藏一堆，还有几个 Word 文档东一个西一个。真到要用的时候，就是想不起当时记哪去了，等于没记。后来我全搬进 Obsidian，用到现在，把思路和做法记下来，给你个参考。 为什么选 Obsidian我最看重的一点是：笔记是纯 Markdown 文件，就放在你自己硬盘上。厂商关停、改版、涨...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/2026/08/16/deepseek-harness-review/" title="用了几天 DeepSeek Harness，说几个真实感受"><img class="cover" src="/img/dsh-review.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-16</div><div class="info-item-2">用了几天 DeepSeek Harness，说几个真实感受</div></div><div class="info-2"><div class="info-item-1">先给结论：这工具现在还不适合拿来干正事。想尝鲜、想学它架构的可以装，指望它稳定出活，再等几个月。 几个不错的地方官方出品，模型和框架是一套，配合比第三方拼出来的顺。MIT 开源，代码随便改。不绑死模型，DeepSeek、OpenAI、Claude 都能接。工具免费，API 也便宜，晚上还半价。 几个让我犹豫的地方还是预览版，官方自己都写了「会有破坏性变...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/21/%E6%88%91%E7%8E%B0%E5%9C%A8%E7%9A%84-vibe-coding-%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="我现在的 vibe coding 工作流"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-21</div><div class="info-item-2">我现在的 vibe coding 工作流</div></div><div class="info-2"><div class="info-item-1">vibe coding 这个词最近在技术社区里出现的频率明显变高了，V2EX 上有个帖子统计大家现在都用什么方案，回复一百多条。简单说，vibe coding 就是用自然语言描述需求，让 AI 把代码写出来，人负责提要求和看结果，不自己一行行敲。 我是被一个小需求逼着开始用的。当时要写个处理表格的小脚本，想着让 AI 全包试试，结果真跑通了。从那以后流...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/10/%E7%94%A8Obsidian%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%9F%A5%E8%AF%86%E5%BA%93%E6%95%99%E7%A8%8B/" title="笔记散在五个地方，我最后都收进了 Obsidian"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-10</div><div class="info-item-2">笔记散在五个地方，我最后都收进了 Obsidian</div></div><div class="info-2"><div class="info-item-1">我的笔记以前是散成一地的。备忘录里存几条，微信收藏夹一堆，浏览器剪藏一堆，还有几个 Word 文档东一个西一个。真到要用的时候，就是想不起当时记哪去了，等于没记。后来我全搬进 Obsidian，用到现在，把思路和做法记下来，给你个参考。 为什么选 Obsidian我最看重的一点是：笔记是纯 Markdown 文件，就放在你自己硬盘上。厂商关停、改版、涨...</div></div></div></a><a class="pagination-related" href="/posts/2026/09/03/MoneyPrinterTurbo%E8%B7%91%E8%A7%A3%E8%AF%B4%E8%A7%86%E9%A2%91%E6%B5%81%E6%B0%B4%E7%BA%BF-%E4%BB%8E%E9%83%A8%E7%BD%B2%E5%88%B0%E8%B7%91%E9%80%9A/" title="MoneyPrinterTurbo 跑解说视频流水线，从部署到跑通"><img class="cover" src="/img/mpt-pipeline.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-03</div><div class="info-item-2">MoneyPrinterTurbo 跑解说视频流水线，从部署到跑通</div></div><div class="info-2"><div class="info-item-1">我要做一批中文解说短视频——城市航拍、乡村风光那种，画面配旁白。手动剪太慢，就试了开源的 MoneyPrinterTurbo（Python 写的），它把文案、配音、拼素材、烧字幕、合成一条命令串完。文案走 DeepSeek 的接口（兼容 OpenAI 格式），配音用 Edge TTS，这俩都不要钱，素材用自己手头的视频。跑通之后发现真正卡人的不是部署，...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/17/firefox-ios-adblocker/" title="iPhone 上装了个 Firefox，网页广告终于能拦了"><img class="cover" src="/img/ff-ios-adblock.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-17</div><div class="info-item-2">iPhone 上装了个 Firefox，网页广告终于能拦了</div></div><div class="info-2"><div class="info-item-1">iPhone 上去广告这事，一直比安卓麻烦。Safari 要另装内容拦截器 app，Chrome、Edge 在 iOS 上又装不了扩展——苹果规定所有 iOS 浏览器都得用 WebKit 内核，拦截只能靠网络层过滤，这个功能之前没几个浏览器愿意做。 这周 Mozilla 开始给 Firefox for iOS 推内置广告拦截，官方标注 experime...</div></div></div></a><a class="pagination-related" href="/posts/2026/08/25/FreeCAD%E5%AF%BCDXF%E4%B8%A2%E6%96%87%E5%AD%97%E6%A0%87%E6%B3%A8-%E6%8D%A2%E6%97%A7%E7%89%88%E5%AF%BC%E5%87%BA%E5%99%A8%E5%B0%B1%E5%A5%BD%E4%BA%86/" title="FreeCAD 导 DXF 丢文字标注，换旧版导出器就好了"><img class="cover" src="/img/fc-dxf-exporters.svg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-25</div><div class="info-item-2">FreeCAD 导 DXF 丢文字标注，换旧版导出器就好了</div></div><div class="info-2"><div class="info-item-1">画施工图这行，FreeCAD 出图之后绕不开一步：导 DXF。我的流程是 FreeCAD 里画好，导 DXF 给做预算的或者施工队，对方用 LibreCAD 或者 CAD 打开接着干活。 上个月给一个村道项目的排水断面图收尾，画完导 DXF 发出去，隔天对方回一句：标注呢？我打开文件一看，线都在，尺寸标注全没了，图上的文字说明也一个不剩。图能看，但没尺...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/levi-avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Levi</div><div class="author-info-description">Levi的Blog</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">113</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Lxp1986"><i class="fab fa-github"></i><span>访问 GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Lxp1986" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #b85c38;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客，持续更新中。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%B0%B1%E4%B8%80%E4%B8%AA-Node-js"><span class="toc-number">1.</span> <span class="toc-text">环境就一个 Node.js</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%98%AF%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">安装是一行命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%B8%A4%E6%AD%A5"><span class="toc-number">3.</span> <span class="toc-text">配置两步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">第一次用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E6%88%91%E5%AE%9E%E9%99%85%E5%9C%A8%E7%94%A8%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="toc-number">5.</span> <span class="toc-text">三个我实际在用的场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91"><span class="toc-number">6.</span> <span class="toc-text">踩过的坑</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/15/%E7%94%A8qpdf%E5%90%88%E5%B9%B6%E6%89%AB%E6%8F%8F%E4%BB%B6%E4%BA%A4%E8%B5%84%E6%96%99%EF%BC%8C%E9%A1%BA%E6%89%8B%E8%A7%A3%E5%BC%80%E6%9D%83%E9%99%90%E9%94%81%E5%92%8C%E6%89%93%E5%BC%80%E5%AF%86%E7%A0%81/" title="用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码">用 qpdf 合并扫描件交资料，顺手解开权限锁和打开密码</a><time datetime="2026-09-15T14:38:00.000Z" title="发表于 2026-09-15 22:38:00">2026-09-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/14/%E6%B8%85%E6%B7%A4%E9%87%8F%E8%A1%A8%E7%9A%84%E5%85%AC%E5%BC%8F%E4%BB%8EC3%E6%94%B9%E6%88%90%E5%90%8D%E5%AD%97%EF%BC%8CFreeCAD%E7%94%B5%E5%AD%90%E8%A1%A8%E6%A0%BC%E8%BF%99%E4%B9%88%E7%94%A8/" title="清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用">清淤量表的公式从 C3 改成名字，FreeCAD 电子表格这么用</a><time datetime="2026-09-14T14:38:00.000Z" title="发表于 2026-09-14 22:38:00">2026-09-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/13/%E5%87%A0%E5%8D%81%E8%A1%8C%E5%B7%A5%E7%A8%8B%E9%87%8F%E5%88%86%E9%A1%B9%EF%BC%8C%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC%E5%92%8C%E5%85%AC%E5%BC%8F%E4%BA%A4%E7%BB%99%20openpyxl/" title="几十行工程量分项，合并单元格和公式交给 openpyxl">几十行工程量分项，合并单元格和公式交给 openpyxl</a><time datetime="2026-09-13T14:35:00.000Z" title="发表于 2026-09-13 22:35:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/12/Obsidian%E5%BA%93%E6%94%92%E5%88%B0%E4%B8%80%E7%99%BE%E5%A4%9A%E7%AF%87%EF%BC%8C%E6%96%AD%E9%93%BE%E5%92%8C%E5%AD%A4%E5%84%BF%E7%AC%94%E8%AE%B0%E6%88%91%E7%94%A8%E8%84%9A%E6%9C%AC%E6%89%AB/" title="Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫">Obsidian 库攒到一百多篇，断链和孤儿笔记我用脚本扫</a><time datetime="2026-09-12T14:30:00.000Z" title="发表于 2026-09-12 22:30:00">2026-09-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2026/09/11/%E6%B8%A0%E9%81%93%E6%96%AD%E9%9D%A2%E5%9B%BE%E7%94%A8matplotlib%E8%84%9A%E6%9C%AC%E7%94%BB%EF%BC%8C%E4%B8%AD%E6%96%87%E6%A0%87%E6%B3%A8%E5%92%8C%E5%B9%B3%E6%96%B9%E5%8F%B7%E9%83%BD%E4%B8%8D%E7%BC%BA/" title="渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺">渠道断面图用 matplotlib 脚本画，中文标注和平方号都不缺</a><time datetime="2026-09-11T14:35:00.000Z" title="发表于 2026-09-11 22:35:00">2026-09-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Levi</span></div><div class="footer_custom_text">三色风 | Levi</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Lxp1986/Lxp1986.github.io',
+      'data-repo-id': 'R_kgDOMn0qqg',
+      'data-category-id': 'DIC_kwDOMn0qqs4DDgMy',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="输入关键词搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

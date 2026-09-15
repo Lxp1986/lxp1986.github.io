@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="440" viewBox="0 0 640 440" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <rect width="640" height="440" fill="#fafafa"/>
+  <rect x="10" y="10" width="620" height="420" rx="8" fill="none" stroke="#d0d0d0"/>
+
+  <text x="320" y="32" text-anchor="middle" font-size="16" fill="#333333">渠道清淤断面：上宽下窄的倒梯形</text>
+  <text x="320" y="56" text-anchor="middle" font-size="12" fill="#c0392b">红虚线框 = 矩形算法多算的两个坡脚三角</text>
+
+  <!-- 淤积层（梯形） -->
+  <polygon points="170,230 470,230 370,330 270,330" fill="#f2e3c2" stroke="#8a6d3b" stroke-width="1.5"/>
+  <!-- 矩形虚高部分（两个坡脚三角） -->
+  <polygon points="170,230 270,330 170,330" fill="#f9dcdc"/>
+  <polygon points="470,230 370,330 470,330" fill="#f9dcdc"/>
+  <rect x="170" y="230" width="300" height="100" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+  <!-- 上口宽 B -->
+  <line x1="170" y1="212" x2="470" y2="212" stroke="#555555" stroke-width="1.2"/>
+  <line x1="170" y1="206" x2="170" y2="218" stroke="#555555" stroke-width="1.2"/>
+  <line x1="470" y1="206" x2="470" y2="218" stroke="#555555" stroke-width="1.2"/>
+  <text x="320" y="202" text-anchor="middle" font-size="13" fill="#333333">上口宽 B（现场量顶宽）</text>
+
+  <!-- 淤厚 h -->
+  <line x1="505" y1="230" x2="505" y2="330" stroke="#555555" stroke-width="1.2"/>
+  <line x1="499" y1="230" x2="511" y2="230" stroke="#555555" stroke-width="1.2"/>
+  <line x1="499" y1="330" x2="511" y2="330" stroke="#555555" stroke-width="1.2"/>
+  <text x="513" y="285" font-size="13" fill="#333333">淤厚 h</text>
+
+  <!-- 底宽 b -->
+  <line x1="270" y1="348" x2="370" y2="348" stroke="#555555" stroke-width="1.2"/>
+  <line x1="270" y1="342" x2="270" y2="354" stroke="#555555" stroke-width="1.2"/>
+  <line x1="370" y1="342" x2="370" y2="354" stroke="#555555" stroke-width="1.2"/>
+  <text x="320" y="366" text-anchor="middle" font-size="12" fill="#666666">底宽 b = B − 2m·h</text>
+
+  <!-- 边坡标注 -->
+  <text x="203" y="284" text-anchor="end" font-size="12" fill="#666666">边坡 1:m</text>
+  <text x="433" y="284" font-size="12" fill="#666666">1:m</text>
+
+  <!-- m 取值说明 -->
+  <text x="320" y="380" text-anchor="middle" font-size="12" fill="#666666">m：土渠取 1:1，偏砂溪河取 1:1.25（随土质，和业主确认口径）</text>
+
+  <!-- 公式 -->
+  <rect x="170" y="388" width="300" height="36" rx="6" fill="#ffffff" stroke="#2d6a9f" stroke-width="1.5"/>
+  <text x="320" y="411" text-anchor="middle" font-size="15" fill="#2d6a9f">V = (B − m·h) × h × L</text>
+</svg>

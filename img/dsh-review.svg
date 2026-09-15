@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="rv-h" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8DEF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="620" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="48" text-anchor="middle" font-size="30" font-weight="700" fill="#1E2A3B">六款 AI 编程工具，谁适合你？</text>
+  <text x="600" y="78" text-anchor="middle" font-size="15" fill="#64748B">一句话定位，按你的需求对号入座（信息查询于 2026-08-16）</text>
+
+  <!-- 表头 -->
+  <rect x="70" y="104" width="1060" height="44" rx="10" fill="#1E2A3B"/>
+  <text x="150" y="132" text-anchor="middle" font-size="15" font-weight="700" fill="#FFF">工具</text>
+  <text x="430" y="132" text-anchor="middle" font-size="15" font-weight="700" fill="#FFF">出品方</text>
+  <text x="640" y="132" text-anchor="middle" font-size="15" font-weight="700" fill="#FFF">开源？</text>
+  <text x="900" y="132" text-anchor="middle" font-size="15" font-weight="700" fill="#FFF">一句话总结</text>
+
+  <!-- 行：Harness（高亮） -->
+  <rect x="70" y="158" width="1060" height="62" rx="10" fill="#EEF2FF" stroke="#5B8DEF" stroke-width="1.5"/>
+  <text x="150" y="195" text-anchor="middle" font-size="15" font-weight="700" fill="#3B5BC9">DeepSeek Harness</text>
+  <text x="430" y="195" text-anchor="middle" font-size="14" fill="#475569">DeepSeek</text>
+  <text x="640" y="195" text-anchor="middle" font-size="14" fill="#16A34A">✅ MIT</text>
+  <text x="900" y="195" text-anchor="middle" font-size="14" fill="#1E2A3B">可定制性最强、最便宜，但还年轻</text>
+
+  <!-- 行：Claude Code -->
+  <rect x="70" y="230" width="1060" height="62" rx="10" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="150" y="267" text-anchor="middle" font-size="15" font-weight="700" fill="#1E2A3B">Claude Code</text>
+  <text x="430" y="267" text-anchor="middle" font-size="14" fill="#475569">Anthropic</text>
+  <text x="640" y="267" text-anchor="middle" font-size="14" fill="#DC2626">❌ 闭源</text>
+  <text x="900" y="267" text-anchor="middle" font-size="14" fill="#1E2A3B">最省心、生态最成熟，但要订阅</text>
+
+  <!-- 行：Codex CLI -->
+  <rect x="70" y="302" width="1060" height="62" rx="10" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="150" y="339" text-anchor="middle" font-size="15" font-weight="700" fill="#1E2A3B">Codex CLI</text>
+  <text x="430" y="339" text-anchor="middle" font-size="14" fill="#475569">OpenAI</text>
+  <text x="640" y="339" text-anchor="middle" font-size="14" fill="#16A34A">✅ 开源</text>
+  <text x="900" y="339" text-anchor="middle" font-size="14" fill="#1E2A3B">跟 GitHub 配合最好</text>
+
+  <!-- 行：Gemini CLI -->
+  <rect x="70" y="374" width="1060" height="62" rx="10" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="150" y="411" text-anchor="middle" font-size="15" font-weight="700" fill="#1E2A3B">Gemini CLI</text>
+  <text x="430" y="411" text-anchor="middle" font-size="14" fill="#475569">Google</text>
+  <text x="640" y="411" text-anchor="middle" font-size="14" fill="#16A34A">✅ 开源</text>
+  <text x="900" y="411" text-anchor="middle" font-size="14" fill="#1E2A3B">Google 生态用户的通用 Agent</text>
+
+  <!-- 行：OpenHands -->
+  <rect x="70" y="446" width="1060" height="62" rx="10" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="150" y="483" text-anchor="middle" font-size="15" font-weight="700" fill="#1E2A3B">OpenHands</text>
+  <text x="430" y="483" text-anchor="middle" font-size="14" fill="#475569">社区</text>
+  <text x="640" y="483" text-anchor="middle" font-size="14" fill="#16A34A">✅ MIT</text>
+  <text x="900" y="483" text-anchor="middle" font-size="14" fill="#1E2A3B">偏研究、多 Agent 协作</text>
+
+  <!-- 行：Aider -->
+  <rect x="70" y="518" width="1060" height="62" rx="10" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="150" y="555" text-anchor="middle" font-size="15" font-weight="700" fill="#1E2A3B">Aider</text>
+  <text x="430" y="555" text-anchor="middle" font-size="14" fill="#475569">社区</text>
+  <text x="640" y="555" text-anchor="middle" font-size="14" fill="#16A34A">✅ 开源</text>
+  <text x="900" y="555" text-anchor="middle" font-size="14" fill="#1E2A3B">极简，只做"结对写代码"</text>
+</svg>

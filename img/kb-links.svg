@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="good" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#12B3A6"/>
+      <stop offset="1" stop-color="#3AA0E0"/>
+    </linearGradient>
+    <linearGradient id="bad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F2714B"/>
+      <stop offset="1" stop-color="#EF4444"/>
+    </linearGradient>
+    <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="520" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="48" text-anchor="middle" font-size="28" font-weight="700" fill="#1E2A3B">链接纪律 · 让图谱是「逻辑链」而不是「乱麻」</text>
+  <text x="600" y="78" text-anchor="middle" font-size="15" fill="#64748B">wikilink（[[双向链接]]）按文件名解析、跨目录有效：分类管「放哪」，链接管「怎么找到」</text>
+
+  <!-- left: healthy -->
+  <rect x="40" y="104" width="540" height="388" rx="14" fill="#FFF" stroke="#12B3A6" stroke-width="1.5"/>
+  <text x="310" y="140" text-anchor="middle" font-size="18" font-weight="700" fill="#0B8E82">✅ 健康笔记：入链 ≥1 + 出链 ≥1</text>
+
+  <!-- incoming -->
+  <rect x="60" y="158" width="150" height="46" rx="10" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1.2"/>
+  <text x="135" y="176" text-anchor="middle" font-size="13" fill="#0F766E">章首页</text>
+  <text x="135" y="194" text-anchor="middle" font-size="12" fill="#0F766E">（入链来源）</text>
+  <rect x="60" y="222" width="150" height="46" rx="10" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1.2"/>
+  <text x="135" y="240" text-anchor="middle" font-size="13" fill="#0F766E">业务索引</text>
+  <text x="135" y="258" text-anchor="middle" font-size="12" fill="#0F766E">（入链来源）</text>
+
+  <!-- center note -->
+  <rect x="235" y="180" width="230" height="90" rx="12" fill="url(#good)"/>
+  <text x="350" y="212" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">📄 正文笔记</text>
+  <text x="350" y="236" text-anchor="middle" font-size="12" fill="#DFF7F5">title + type + status</text>
+  <text x="350" y="254" text-anchor="middle" font-size="12" fill="#DFF7F5">归属唯一章节目录</text>
+
+  <!-- outgoing -->
+  <rect x="300" y="300" width="150" height="46" rx="10" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1.2"/>
+  <text x="375" y="318" text-anchor="middle" font-size="13" fill="#0F766E">相关概念</text>
+  <text x="375" y="336" text-anchor="middle" font-size="12" fill="#0F766E">（出链目标）</text>
+  <rect x="300" y="364" width="150" height="46" rx="10" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1.2"/>
+  <text x="375" y="382" text-anchor="middle" font-size="13" fill="#0F766E">来源资料</text>
+  <text x="375" y="400" text-anchor="middle" font-size="12" fill="#0F766E">（出链目标）</text>
+
+  <!-- arrows -->
+  <line x1="210" y1="181" x2="233" y2="198" stroke="#12B3A6" stroke-width="2" marker-end="url(#a3)"/>
+  <line x1="210" y1="245" x2="233" y2="228" stroke="#12B3A6" stroke-width="2" marker-end="url(#a3)"/>
+  <line x1="465" y1="250" x2="453" y2="298" stroke="#12B3A6" stroke-width="2" marker-end="url(#a3)"/>
+  <line x1="465" y1="262" x2="453" y2="362" stroke="#12B3A6" stroke-width="2" marker-end="url(#a3)"/>
+
+  <text x="310" y="470" text-anchor="middle" font-size="13" fill="#475569">从索引可达 = 不会被「孤立」</text>
+
+  <!-- right: broken -->
+  <rect x="620" y="104" width="540" height="388" rx="14" fill="#FFF" stroke="#F2714B" stroke-width="1.5"/>
+  <text x="890" y="140" text-anchor="middle" font-size="18" font-weight="700" fill="#C2410C">❌ 常见病：断链 / 孤立 / 平铺</text>
+
+  <rect x="650" y="160" width="230" height="70" rx="10" fill="#FFF7ED" stroke="#FDBA74" stroke-width="1.2"/>
+  <text x="765" y="186" text-anchor="middle" font-size="14" fill="#B45309">[[不存在的笔记]]</text>
+  <text x="765" y="210" text-anchor="middle" font-size="12.5" fill="#92631F">灰色节点 = 断链占位，图谱出现「鬼节点」</text>
+
+  <rect x="650" y="250" width="230" height="70" rx="10" fill="#FFF7ED" stroke="#FDBA74" stroke-width="1.2"/>
+  <text x="765" y="276" text-anchor="middle" font-size="14" fill="#B45309">孤立笔记（入链 0）</text>
+  <text x="765" y="300" text-anchor="middle" font-size="12.5" fill="#92631F">谁都找不到它 = 逻辑链断点，等于没记</text>
+
+  <rect x="650" y="340" width="230" height="70" rx="10" fill="#FFF7ED" stroke="#FDBA74" stroke-width="1.2"/>
+  <text x="765" y="366" text-anchor="middle" font-size="14" fill="#B45309">平铺堆叠（不归章）</text>
+  <text x="765" y="390" text-anchor="middle" font-size="12.5" fill="#92631F">索引 30+ 条直链 = 图谱乱麻的根源</text>
+
+  <!-- fix box -->
+  <rect x="905" y="160" width="230" height="250" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.2"/>
+  <text x="1020" y="190" text-anchor="middle" font-size="14" font-weight="700" fill="#1E2A3B">修法</text>
+  <text x="1020" y="222" text-anchor="middle" font-size="12.5" fill="#475569">· 断链 → 建占位笔记</text>
+  <text x="1020" y="244" text-anchor="middle" font-size="12.5" fill="#475569">　status: needs-content</text>
+  <text x="1020" y="270" text-anchor="middle" font-size="12.5" fill="#475569">· 孤立 → 挂到所属索引</text>
+  <text x="1020" y="296" text-anchor="middle" font-size="12.5" fill="#475569">· 乱麻 → 索引只列章首页</text>
+  <text x="1020" y="322" text-anchor="middle" font-size="12.5" fill="#475569">· 删除前先查入链</text>
+  <text x="1020" y="348" text-anchor="middle" font-size="12.5" fill="#475569">· 定期跑断链扫描脚本</text>
+  <text x="1020" y="382" text-anchor="middle" font-size="12" fill="#94A3B8">（可用 Graph View 插件排查）</text>
+
+  <rect x="620" y="452" width="540" height="40" rx="10" fill="#FFF7ED"/>
+  <text x="890" y="477" text-anchor="middle" font-size="13" fill="#B45309">目标：真实断链 0、导航全连通、工作区无孤立笔记</text>
+</svg>

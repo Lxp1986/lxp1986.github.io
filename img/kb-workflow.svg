@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="920" viewBox="0 0 1200 920" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="w1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#94A3B8"/>
+      <stop offset="1" stop-color="#64748B"/>
+    </linearGradient>
+    <linearGradient id="w2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F2A93B"/>
+      <stop offset="1" stop-color="#F2714B"/>
+    </linearGradient>
+    <linearGradient id="w3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8DEF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+    <linearGradient id="w4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#12B3A6"/>
+      <stop offset="1" stop-color="#3AA0E0"/>
+    </linearGradient>
+    <marker id="wa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="920" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="48" text-anchor="middle" font-size="28" font-weight="700" fill="#1E2A3B">使用过程示例 · 一条笔记的一生</text>
+  <text x="600" y="78" text-anchor="middle" font-size="14.5" fill="#64748B">场景：记录一条工程知识「C25 商品混凝土 2026年8月 阳春信息价」——从捕获到被反复引用</text>
+
+  <!-- step 1 -->
+  <rect x="40" y="104" width="176" height="150" rx="14" fill="url(#w1)"/>
+  <text x="128" y="138" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">① 捕获</text>
+  <text x="128" y="166" text-anchor="middle" font-size="12" fill="#E2E8F0">手机上随手记</text>
+  <text x="128" y="186" text-anchor="middle" font-size="12" fill="#E2E8F0">或剪藏/截图</text>
+  <text x="128" y="206" text-anchor="middle" font-size="12" fill="#E2E8F0">丢进 10-收集箱</text>
+  <text x="128" y="230" text-anchor="middle" font-size="11.5" fill="#CBD5E1">不整理、不打断</text>
+
+  <line x1="216" y1="179" x2="256" y2="179" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#wa)"/>
+
+  <!-- step 2 -->
+  <rect x="262" y="104" width="176" height="150" rx="14" fill="url(#w2)"/>
+  <text x="350" y="138" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">② 命名+属性</text>
+  <text x="350" y="166" text-anchor="middle" font-size="12" fill="#FFF7ED">清晰中文标题</text>
+  <text x="350" y="186" text-anchor="middle" font-size="12" fill="#FFF7ED">补 YAML 属性</text>
+  <text x="350" y="206" text-anchor="middle" font-size="12" fill="#FFF7ED">status: draft</text>
+  <text x="350" y="230" text-anchor="middle" font-size="11.5" fill="#FDBA74">来源+日期先写上</text>
+
+  <line x1="438" y1="179" x2="478" y2="179" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#wa)"/>
+
+  <!-- step 3 -->
+  <rect x="484" y="104" width="176" height="150" rx="14" fill="url(#w3)"/>
+  <text x="572" y="138" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">③ 归类</text>
+  <text x="572" y="166" text-anchor="middle" font-size="12" fill="#EEF2FF">移动到章目录</text>
+  <text x="572" y="186" text-anchor="middle" font-size="12" fill="#EEF2FF">05-报价与成本/</text>
+  <text x="572" y="206" text-anchor="middle" font-size="12" fill="#EEF2FF">价格信息/</text>
+  <text x="572" y="230" text-anchor="middle" font-size="11.5" fill="#C7D2FE">wikilink 移动不断链</text>
+
+  <line x1="660" y1="179" x2="700" y2="179" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#wa)"/>
+
+  <!-- step 4 -->
+  <rect x="706" y="104" width="176" height="150" rx="14" fill="url(#w4)"/>
+  <text x="794" y="138" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">④ 建链接</text>
+  <text x="794" y="166" text-anchor="middle" font-size="12" fill="#DFF7F5">正文加 [[双向链接]]</text>
+  <text x="794" y="186" text-anchor="middle" font-size="12" fill="#DFF7F5">挂到报价索引</text>
+  <text x="794" y="206" text-anchor="middle" font-size="12" fill="#DFF7F5">相关笔记互链</text>
+  <text x="794" y="230" text-anchor="middle" font-size="11.5" fill="#99F6E4">入链+出链都有</text>
+
+  <line x1="882" y1="179" x2="922" y2="179" stroke="#94A3B8" stroke-width="2.5" marker-end="url(#wa)"/>
+
+  <!-- step 5 -->
+  <rect x="928" y="104" width="176" height="150" rx="14" fill="url(#w1)"/>
+  <text x="1016" y="138" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">⑤ 检索使用</text>
+  <text x="1016" y="166" text-anchor="middle" font-size="12" fill="#E2E8F0">全文搜索/标签/</text>
+  <text x="1016" y="186" text-anchor="middle" font-size="12" fill="#E2E8F0">YAML 字段过滤</text>
+  <text x="1016" y="206" text-anchor="middle" font-size="12" fill="#E2E8F0">报价时直接引用</text>
+  <text x="1016" y="230" text-anchor="middle" font-size="11.5" fill="#CBD5E1">写进报价书/结算</text>
+
+  <!-- arrow back to ④ -->
+  <path d="M 1016 254 L 1016 288 L 794 288 L 794 258" fill="none" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#wa)"/>
+  <text x="905" y="306" text-anchor="middle" font-size="12.5" fill="#64748B">被引用后从「已使用」沉淀为可复用</text>
+
+  <!-- example area -->
+  <rect x="40" y="336" width="1120" height="300" rx="14" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="600" y="372" text-anchor="middle" font-size="18" font-weight="700" fill="#1E2A3B">同一篇笔记的两次变身</text>
+
+  <!-- before -->
+  <rect x="70" y="394" width="520" height="222" rx="12" fill="#F8FAFC" stroke="#F2714B" stroke-width="1.4"/>
+  <text x="330" y="424" text-anchor="middle" font-size="15" font-weight="700" fill="#C2410C">10-收集箱 里的草稿（30 秒完成）</text>
+  <text x="96" y="456" font-family="'SF Mono','Menlo',monospace" font-size="13" fill="#475569">C25砼 8月价 阳春 380/方 参考</text>
+  <text x="96" y="482" font-family="'SF Mono','Menlo',monospace" font-size="13" fill="#475569">供应商报价截图（手机拍）</text>
+  <text x="96" y="508" font-family="'SF Mono','Menlo',monospace" font-size="13" fill="#475569">要查：跟7月比涨没涨</text>
+  <text x="96" y="546" font-size="12" fill="#64748B">→ 什么都先别整理，先落袋为安</text>
+  <text x="96" y="574" font-size="12" fill="#64748B">→ 关键：没有 YAML、没有链接，也不影响捕获</text>
+
+  <!-- after -->
+  <rect x="610" y="394" width="520" height="222" rx="12" fill="#F8FAFC" stroke="#12B3A6" stroke-width="1.4"/>
+  <text x="870" y="424" text-anchor="middle" font-size="15" font-weight="700" fill="#0B8E82">整理后的正式笔记（2 分钟）</text>
+
+  <text x="636" y="452" font-family="'SF Mono','Menlo',monospace" font-size="12" fill="#475569">---</text>
+  <text x="636" y="470" font-family="'SF Mono','Menlo',monospace" font-size="12" fill="#475569">title: C25商品砼2026年8月阳春信息价</text>
+  <text x="636" y="488" font-family="'SF Mono','Menlo',monospace" font-size="12" fill="#475569">type: source</text>
+  <text x="636" y="506" font-family="'SF Mono','Menlo',monospace" font-size="12" fill="#475569">status: verified</text>
+  <text x="636" y="524" font-family="'SF Mono','Menlo',monospace" font-size="12" fill="#475569">tags: [报价, 混凝土, 信息价]</text>
+  <text x="636" y="542" font-family="'SF Mono','Menlo',monospace" font-size="12" fill="#475569">source: XX商砼8月报价单</text>
+  <text x="636" y="560" font-family="'SF Mono','Menlo',monospace" font-size="12" fill="#475569">---</text>
+  <text x="636" y="582" font-family="'SF Mono','Menlo',monospace" font-size="12" fill="#475569">8 月 C25 约 380 元/方，较 7 月 +2.7%，</text>
+  <text x="636" y="600" font-family="'SF Mono','Menlo',monospace" font-size="12" fill="#475569">见 [[2026年7月材料信息价]]，已挂 [[报价与成本索引]]</text>
+
+  <!-- bottom tips -->
+  <rect x="40" y="660" width="1120" height="226" rx="14" fill="#F0FDFA" stroke="#12B3A6" stroke-width="1.5"/>
+  <text x="600" y="694" text-anchor="middle" font-size="17" font-weight="700" fill="#0B8E82">这套流程带来的实际差别</text>
+
+  <text x="80" y="732" font-size="14" fill="#0F766E">① 捕获零成本：手机随手一记，30 秒，不需要想放哪 → 所以能长期坚持</text>
+  <text x="80" y="764" font-size="14" fill="#0F766E">② 整理有标准动作：命名 → YAML → 归类 → 链接，2 分钟一次，不靠灵感</text>
+  <text x="80" y="796" font-size="14" fill="#0F766E">③ 检索快：想找「8月C25价」→ 搜索 title 或 tag:信息价 立刻定位，还能看到它被哪些笔记引用</text>
+  <text x="80" y="828" font-size="14" fill="#0F766E">④ 可复用：报价书、结算、下个月比价，全部从这一篇引用；AI 智能体也能直接读这篇 Markdown</text>
+  <text x="80" y="860" font-size="14" fill="#0F766E">⑤ 时间越久越值钱：笔记间链接成网，后期一搜一个完整知识面，而不是一条孤立记录</text>
+</svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 250" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <rect width="780" height="250" fill="#fdfdfd"/>
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#4a6a8a"/>
+    </marker>
+  </defs>
+  <text x="30" y="32" font-size="15" font-weight="600" fill="#2c3e50">FreeCAD 电子表格：参数格起别名，公式格写名字</text>
+
+  <!-- 表头 -->
+  <rect x="30" y="52" width="130" height="28" fill="#e8eef5" stroke="#4a6a8a" stroke-width="1.2"/>
+  <rect x="160" y="52" width="250" height="28" fill="#e8eef5" stroke="#4a6a8a" stroke-width="1.2"/>
+  <rect x="410" y="52" width="60" height="28" fill="#e8eef5" stroke="#4a6a8a" stroke-width="1.2"/>
+  <text x="40" y="71" font-size="13" fill="#2c3e50">项目 / 别名</text>
+  <text x="170" y="71" font-size="13" fill="#2c3e50">数值</text>
+  <text x="420" y="71" font-size="13" fill="#2c3e50">单位</text>
+
+  <!-- 数据行 -->
+  <g font-size="13" fill="#2c3e50">
+    <rect x="30" y="80" width="130" height="28" fill="#f4f8fc" stroke="#9bb3c9" stroke-width="1"/>
+    <rect x="160" y="80" width="250" height="28" fill="#fff" stroke="#9bb3c9" stroke-width="1"/>
+    <rect x="410" y="80" width="60" height="28" fill="#f4f8fc" stroke="#9bb3c9" stroke-width="1"/>
+    <text x="40" y="99">渠长 len</text><text x="170" y="99">120</text><text x="420" y="99">m</text>
+
+    <rect x="30" y="108" width="130" height="28" fill="#f4f8fc" stroke="#9bb3c9" stroke-width="1"/>
+    <rect x="160" y="108" width="250" height="28" fill="#fff" stroke="#9bb3c9" stroke-width="1"/>
+    <rect x="410" y="108" width="60" height="28" fill="#f4f8fc" stroke="#9bb3c9" stroke-width="1"/>
+    <text x="40" y="127">上口宽 Btop</text><text x="170" y="127">3.5</text><text x="420" y="127">m</text>
+
+    <rect x="30" y="136" width="130" height="28" fill="#f4f8fc" stroke="#9bb3c9" stroke-width="1"/>
+    <rect x="160" y="136" width="250" height="28" fill="#fff" stroke="#9bb3c9" stroke-width="1"/>
+    <rect x="410" y="136" width="60" height="28" fill="#f4f8fc" stroke="#9bb3c9" stroke-width="1"/>
+    <text x="40" y="155">淤厚 thick</text><text x="170" y="155">0.5</text><text x="420" y="155">m</text>
+  </g>
+
+  <!-- 结果行 -->
+  <rect x="30" y="164" width="130" height="36" fill="#fff8ec" stroke="#c9a227" stroke-width="1.2"/>
+  <rect x="160" y="164" width="250" height="36" fill="#fff8ec" stroke="#c9a227" stroke-width="1.2"/>
+  <rect x="410" y="164" width="60" height="36" fill="#fff8ec" stroke="#c9a227" stroke-width="1.2"/>
+  <text x="40" y="187" font-size="13" fill="#2c3e50">清淤量 vol</text>
+  <text x="167" y="187" font-size="11.5" font-family="'SF Mono',Menlo,monospace" fill="#8a4b00">=(Btop-mval*thick)*thick*len</text>
+  <text x="420" y="187" font-size="13" fill="#2c3e50">m3</text>
+
+  <path d="M482,182 L540,182" stroke="#4a6a8a" stroke-width="1.8" marker-end="url(#ar)"/>
+
+  <!-- 右侧说明 -->
+  <rect x="552" y="52" width="198" height="64" rx="8" fill="#f4f8fc" stroke="#4a6a8a" stroke-width="1.4"/>
+  <text x="564" y="74" font-size="12.5" fill="#2c3e50">导出电子表格 → .csv</text>
+  <text x="564" y="93" font-size="12" fill="#5b6b7c">制表符分隔、UTF-8 无 BOM</text>
+  <text x="564" y="109" font-size="12" fill="#5b6b7c">Excel 导入时选「制表符」</text>
+
+  <rect x="552" y="128" width="198" height="72" rx="8" fill="#fff8ec" stroke="#c9a227" stroke-width="1.4"/>
+  <text x="564" y="150" font-size="12.5" fill="#8a4b00">别名别用 H / M / V 单字母</text>
+  <text x="564" y="168" font-size="12" fill="#8a4b00">会被当成单位符号，报 Invalid alias</text>
+  <text x="564" y="188" font-size="12" fill="#8a4b00">函数名一律小写：=sum(F2:F3)</text>
+</svg>

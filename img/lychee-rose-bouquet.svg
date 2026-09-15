@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" role="img" aria-label="Transparent pink lychee rose cluster">
+  <defs>
+    <radialGradient id="petalOuter" cx="50%" cy="45%" r="72%">
+      <stop offset="0%" stop-color="#ffd3e1"/>
+      <stop offset="72%" stop-color="#ffe8f0"/>
+      <stop offset="100%" stop-color="#fff5f9"/>
+    </radialGradient>
+    <radialGradient id="petalCore" cx="45%" cy="40%" r="62%">
+      <stop offset="0%" stop-color="#ff8fb0"/>
+      <stop offset="55%" stop-color="#ffbdd0"/>
+      <stop offset="100%" stop-color="#ffe0ea"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.8"/>
+    </filter>
+  </defs>
+
+  <g opacity="0.96">
+    <g transform="translate(220 300)">
+      <ellipse cx="0" cy="0" rx="210" ry="180" fill="url(#petalOuter)"/>
+      <ellipse cx="0" cy="0" rx="138" ry="118" fill="url(#petalCore)"/>
+      <path d="M-118 2 C-70 -72, 62 -68, 104 -10 C62 35, -16 64, -82 68 C-111 54, -127 28, -118 2 Z" fill="#ffd3e1"/>
+      <path d="M-64 -30 C-22 -70, 43 -62, 65 -36 C36 -8, -10 4, -49 8 C-62 -2, -70 -16, -64 -30 Z" fill="#ffabc3"/>
+      <path d="M-22 -18 C8 -42, 35 -34, 47 -16 C32 5, 13 13, -7 14 C-18 8, -26 -4, -22 -18 Z" fill="#ff86a8"/>
+    </g>
+
+    <g transform="translate(560 210)">
+      <ellipse cx="0" cy="0" rx="235" ry="198" fill="url(#petalOuter)"/>
+      <ellipse cx="0" cy="0" rx="156" ry="130" fill="url(#petalCore)"/>
+      <path d="M-130 8 C-75 -78, 72 -70, 118 -12 C72 41, -15 68, -88 75 C-120 62, -139 34, -130 8 Z" fill="#ffd5e3"/>
+      <path d="M-72 -34 C-24 -76, 52 -66, 74 -38 C42 -10, -8 5, -56 10 C-68 -1, -79 -16, -72 -34 Z" fill="#ffadc5"/>
+      <path d="M-24 -20 C9 -45, 42 -35, 54 -15 C38 8, 17 14, -5 15 C-19 10, -27 -4, -24 -20 Z" fill="#ff88aa"/>
+    </g>
+
+    <g transform="translate(950 320)">
+      <ellipse cx="0" cy="0" rx="220" ry="186" fill="url(#petalOuter)"/>
+      <ellipse cx="0" cy="0" rx="146" ry="122" fill="url(#petalCore)"/>
+      <path d="M-124 4 C-72 -74, 66 -68, 110 -10 C66 38, -12 63, -82 70 C-112 58, -132 32, -124 4 Z" fill="#ffd4e2"/>
+      <path d="M-68 -31 C-20 -72, 46 -62, 68 -34 C37 -9, -8 5, -52 8 C-64 -1, -74 -16, -68 -31 Z" fill="#ffadc5"/>
+      <path d="M-20 -18 C10 -41, 40 -33, 52 -14 C37 7, 15 13, -5 14 C-16 9, -25 -4, -20 -18 Z" fill="#ff87a9"/>
+    </g>
+
+    <g transform="translate(420 700)">
+      <ellipse cx="0" cy="0" rx="250" ry="210" fill="url(#petalOuter)"/>
+      <ellipse cx="0" cy="0" rx="166" ry="138" fill="url(#petalCore)"/>
+      <path d="M-136 8 C-78 -82, 80 -74, 126 -12 C78 45, -15 74, -92 80 C-126 66, -145 36, -136 8 Z" fill="#ffd4e2"/>
+      <path d="M-75 -37 C-25 -80, 56 -68, 79 -40 C45 -11, -8 7, -59 10 C-73 0, -82 -16, -75 -37 Z" fill="#ffadc5"/>
+      <path d="M-24 -22 C12 -48, 47 -38, 58 -16 C41 8, 18 16, -6 16 C-18 11, -28 -5, -24 -22 Z" fill="#ff89aa"/>
+    </g>
+
+    <g transform="translate(850 700)">
+      <ellipse cx="0" cy="0" rx="228" ry="194" fill="url(#petalOuter)"/>
+      <ellipse cx="0" cy="0" rx="152" ry="126" fill="url(#petalCore)"/>
+      <path d="M-128 8 C-72 -76, 68 -70, 114 -11 C68 42, -14 70, -87 74 C-120 63, -138 34, -128 8 Z" fill="#ffd6e5"/>
+      <path d="M-70 -34 C-22 -77, 50 -66, 72 -38 C40 -10, -8 6, -55 8 C-68 -1, -78 -16, -70 -34 Z" fill="#ffafc7"/>
+      <path d="M-22 -20 C11 -44, 43 -34, 54 -15 C39 8, 16 15, -6 16 C-18 10, -28 -4, -22 -20 Z" fill="#ff8aac"/>
+    </g>
+  </g>
+
+  <g opacity="0.46" filter="url(#soft)">
+    <circle cx="224" cy="300" r="44" fill="#ff7ba2"/>
+    <circle cx="560" cy="208" r="52" fill="#ff799f"/>
+    <circle cx="946" cy="320" r="48" fill="#ff7da4"/>
+    <circle cx="414" cy="700" r="56" fill="#ff789f"/>
+    <circle cx="846" cy="700" r="52" fill="#ff7aa1"/>
+  </g>
+</svg>

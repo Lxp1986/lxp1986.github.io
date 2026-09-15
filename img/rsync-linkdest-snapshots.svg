@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="320" viewBox="0 0 780 320" role="img" aria-label="rsync 硬链接快照：三份快照共用一份数据">
+  <style>
+    .bg{fill:#f7f8fa}
+    .ttl{font:bold 16px "PingFang SC",sans-serif;fill:#1f3a5f}
+    .box{fill:#fff;stroke:#1f3a5f;stroke-width:1.4}
+    .sn{font:bold 13px "PingFang SC",sans-serif;fill:#1f3a5f}
+    .fl{font:11px "PingFang SC",sans-serif;fill:#5a6b7d}
+    .blk{fill:#e8eef6;stroke:#1f3a5f;stroke-width:1.4}
+    .newblk{fill:#e6f4ea;stroke:#2e7d32;stroke-width:1.4}
+    .bt{font:12px "PingFang SC",sans-serif;fill:#22303f}
+    .ln{stroke:#1f3a5f;stroke-width:1.2;fill:none}
+    .lng{stroke:#2e7d32;stroke-width:1.6;fill:none}
+    .note{font:11px "PingFang SC",sans-serif;fill:#5a6b7d}
+  </style>
+  <rect class="bg" width="780" height="320"/>
+
+  <text class="ttl" x="24" y="34">rsync --link-dest：三份快照，共用一份数据</text>
+
+  <g>
+    <rect class="box" x="24" y="64" width="250" height="52" rx="6"/>
+    <text class="sn" x="36" y="86">快照 09-09（首次全量 73 MB）</text>
+    <text class="fl" x="36" y="104">总平面.dwg ／ 报价.xlsx</text>
+  </g>
+  <g>
+    <rect class="box" x="24" y="136" width="250" height="52" rx="6"/>
+    <text class="sn" x="36" y="158">快照 09-10（本次增量 20 MB）</text>
+    <text class="fl" x="36" y="176">总平面.dwg ／ 报价.xlsx ／ 新增.dwg</text>
+  </g>
+  <g>
+    <rect class="box" x="24" y="208" width="250" height="52" rx="6"/>
+    <text class="sn" x="36" y="230">快照 09-11（本次增量 0 字节）</text>
+    <text class="fl" x="36" y="248">总平面.dwg ／ 报价.xlsx ／ 新增.dwg</text>
+  </g>
+
+  <path class="ln"  d="M274 90 C 430 90, 440 76, 590 76"/>
+  <path class="lng" d="M274 90 C 430 90, 440 130, 590 130"/>
+  <path class="ln"  d="M274 162 C 430 162, 440 76, 590 76"/>
+  <path class="lng" d="M274 162 C 430 162, 450 184, 590 184"/>
+  <path class="lng" d="M274 162 C 430 162, 450 238, 590 238"/>
+  <path class="ln"  d="M274 234 C 430 234, 440 76, 590 76"/>
+  <path class="ln"  d="M274 234 C 420 234, 440 184, 590 184"/>
+  <path class="ln"  d="M274 234 C 430 234, 440 238, 590 238"/>
+
+  <rect class="blk" x="590" y="56" width="166" height="40" rx="4"/>
+  <text class="bt" x="600" y="81">总平面.dwg</text>
+  <rect class="newblk" x="590" y="110" width="166" height="40" rx="4"/>
+  <text class="bt" x="600" y="135">报价.xlsx 第一版</text>
+  <rect class="newblk" x="590" y="164" width="166" height="40" rx="4"/>
+  <text class="bt" x="600" y="189">报价.xlsx 改后</text>
+  <rect class="newblk" x="590" y="218" width="166" height="40" rx="4"/>
+  <text class="bt" x="600" y="243">新增.dwg</text>
+
+  <line class="ln" x1="24" y1="292" x2="58" y2="292"/>
+  <text class="note" x="64" y="296">硬链接：复用已有数据块，不占新空间</text>
+  <line class="lng" x1="330" y1="292" x2="364" y2="292"/>
+  <text class="note" x="370" y="296">绿框＝真实占磁盘的块；三份快照实际只占 73+20 MB</text>
+</svg>

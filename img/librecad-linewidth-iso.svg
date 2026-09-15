@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="430" viewBox="0 0 720 430">
+  <rect width="720" height="430" fill="#f7f7f2"/>
+  <text x="360" y="42" text-anchor="middle" font-size="20" fill="#333333">LibreCAD 出图线宽参考（ISO 制图标准）</text>
+  <line x1="60" y1="115" x2="360" y2="115" stroke="#333333" stroke-width="1.2"/>
+  <text x="382" y="110" font-size="15" fill="#333333">0.18 mm — 标注、尺寸、中心线、文字</text>
+  <line x1="60" y1="175" x2="360" y2="175" stroke="#333333" stroke-width="2.5"/>
+  <text x="382" y="170" font-size="15" fill="#333333">0.35 mm — 可见轮廓（墙线、道路边线）</text>
+  <line x1="60" y1="235" x2="360" y2="235" stroke="#333333" stroke-width="5"/>
+  <text x="382" y="230" font-size="15" fill="#333333">0.70 mm — 剖切线、断面轮廓</text>
+  <line x1="60" y1="295" x2="360" y2="295" stroke="#333333" stroke-width="7"/>
+  <text x="382" y="290" font-size="15" fill="#333333">1.00 mm — 图框线</text>
+  <rect x="60" y="330" width="600" height="72" rx="8" fill="#fdf3d8" stroke="#d9a520" stroke-width="1.5"/>
+  <text x="360" y="356" text-anchor="middle" font-size="15" fill="#8a6d1a">别用「按图层 By Layer」：LibreCAD 里它等于 0.00 mm</text>
+  <text x="360" y="380" text-anchor="middle" font-size="15" fill="#8a6d1a">导出 PDF 时线条会淡到看不清，甚至直接消失</text>
+</svg>

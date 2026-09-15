@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="460" height="640" viewBox="0 0 460 640">
+  <rect width="460" height="640" fill="#fafafa"/>
+  <rect x="1" y="1" width="458" height="638" fill="none" stroke="#d0d7de" stroke-width="1"/>
+  <text x="230" y="32" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="bold" fill="#333">yt-dlp 报 SSL 证书错误的排查路径</text>
+
+  <!-- 节点1：报错 -->
+  <rect x="80" y="55" width="300" height="44" rx="8" fill="#fdeaea" stroke="#c05555" stroke-width="1.5"/>
+  <text x="230" y="82" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#8a2f2f">yt-dlp 报 CERTIFICATE_VERIFY_FAILED</text>
+  <line x1="230" y1="99" x2="230" y2="118" stroke="#888" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 节点2：curl -->
+  <rect x="80" y="120" width="300" height="44" rx="8" fill="#eef3fa" stroke="#4a6fa5" stroke-width="1.5"/>
+  <text x="230" y="147" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">curl 访问 YouTube → 200，正常</text>
+  <line x1="230" y1="164" x2="230" y2="183" stroke="#888" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 节点3：系统python -->
+  <rect x="80" y="185" width="300" height="44" rx="8" fill="#eef3fa" stroke="#4a6fa5" stroke-width="1.5"/>
+  <text x="230" y="212" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">系统 python3（LibreSSL）→ 200，也正常</text>
+  <line x1="230" y1="229" x2="230" y2="248" stroke="#888" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 节点4：锁定解释器 -->
+  <rect x="80" y="250" width="300" height="56" rx="8" fill="#eef3fa" stroke="#4a6fa5" stroke-width="1.5"/>
+  <text x="230" y="274" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">head -1 $(which yt-dlp)：uv 独立 Python</text>
+  <text x="230" y="294" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#666">用它直接访问 → 报同样错，锁定解释器</text>
+  <line x1="230" y1="306" x2="230" y2="325" stroke="#888" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 节点5：openssl 看证书 -->
+  <rect x="80" y="327" width="300" height="56" rx="8" fill="#eef3fa" stroke="#4a6fa5" stroke-width="1.5"/>
+  <text x="230" y="351" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">openssl s_client 看真实证书</text>
+  <text x="230" y="371" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#c05555">O=Loon, CN=xn--ck8h.com</text>
+  <line x1="230" y1="383" x2="230" y2="402" stroke="#888" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 节点6：结论 -->
+  <rect x="80" y="404" width="300" height="56" rx="8" fill="#fff8e6" stroke="#b98a2f" stroke-width="1.5"/>
+  <text x="230" y="428" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#333">代理 HTTPS 解密：OpenSSL 3 只认</text>
+  <text x="230" y="448" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#666">cert.pem 文件，不认 macOS 钥匙串</text>
+  <line x1="230" y1="460" x2="230" y2="479" stroke="#888" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 节点7：修复 -->
+  <rect x="60" y="481" width="340" height="130" rx="8" fill="#e9f5e9" stroke="#3d8a3d" stroke-width="1.5"/>
+  <text x="230" y="505" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#2f6b2f">修复：导出代理根证书合并进 bundle</text>
+  <text x="90" y="532" font-family="Menlo, monospace" font-size="11" fill="#333">security find-certificate -c "LOON" -p</text>
+  <text x="90" y="550" font-family="Menlo, monospace" font-size="11" fill="#333">  /Library/Keychains/System.keychain \</text>
+  <text x="90" y="568" font-family="Menlo, monospace" font-size="11" fill="#333">  > ~/.config/ssl/loon-ca.pem</text>
+  <text x="90" y="589" font-family="Menlo, monospace" font-size="11" fill="#333">cat /etc/ssl/cert.pem loon-ca.pem \</text>
+  <text x="90" y="607" font-family="Menlo, monospace" font-size="11" fill="#333">  > combined.pem  +  export SSL_CERT_FILE</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#888"/>
+    </marker>
+  </defs>
+</svg>

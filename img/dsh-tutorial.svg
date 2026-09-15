@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <linearGradient id="tt-step" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8DEF"/>
+      <stop offset="1" stop-color="#7C5CD6"/>
+    </linearGradient>
+    <marker id="tt-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="560" rx="18" fill="#F6F8FB"/>
+  <text x="600" y="48" text-anchor="middle" font-size="30" font-weight="700" fill="#1E2A3B">DeepSeek Harness 5 分钟上手</text>
+  <text x="600" y="78" text-anchor="middle" font-size="15" fill="#64748B">装环境 → 装工具 → 配 Key → 发任务，四步让 AI 真正帮你干活</text>
+
+  <!-- 步骤1 -->
+  <rect x="60" y="110" width="240" height="330" rx="14" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="180" cy="148" r="22" fill="url(#tt-step)"/>
+  <text x="180" y="155" text-anchor="middle" font-size="18" font-weight="700" fill="#FFF">1</text>
+  <text x="180" y="196" text-anchor="middle" font-size="19" font-weight="700" fill="#1E2A3B">装环境</text>
+  <rect x="78" y="214" width="204" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="180" y="239" text-anchor="middle" font-size="14" font-family="Menlo,Consolas,monospace" fill="#3B5BC9">node -v</text>
+  <text x="88" y="284" font-size="13" fill="#475569">装一个 Node.js 就够了</text>
+  <text x="88" y="306" font-size="13" fill="#475569">（版本 ≥ 22.19 或 24）</text>
+  <text x="88" y="328" font-size="12.5" fill="#94A3B8">官网下载 LTS 版</text>
+  <text x="88" y="348" font-size="12.5" fill="#94A3B8">Windows/Mac 都能装</text>
+
+  <!-- 箭头 1→2 -->
+  <line x1="300" y1="275" x2="334" y2="275" stroke="#94A3B8" stroke-width="2" marker-end="url(#tt-arrow)"/>
+
+  <!-- 步骤2 -->
+  <rect x="340" y="110" width="240" height="330" rx="14" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="460" cy="148" r="22" fill="url(#tt-step)"/>
+  <text x="460" y="155" text-anchor="middle" font-size="18" font-weight="700" fill="#FFF">2</text>
+  <text x="460" y="196" text-anchor="middle" font-size="19" font-weight="700" fill="#1E2A3B">装工具</text>
+  <rect x="358" y="214" width="204" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="460" y="239" text-anchor="middle" font-size="12" font-family="Menlo,Consolas,monospace" fill="#3B5BC9">npx @deepseek-ai/dsh web</text>
+  <text x="368" y="284" font-size="13" fill="#475569">一条命令自动下载安装</text>
+  <text x="368" y="306" font-size="13" fill="#475569">然后浏览器打开</text>
+  <text x="368" y="328" font-size="12.5" font-family="Menlo,Consolas,monospace" fill="#64748B">127.0.0.1:3080</text>
+  <text x="368" y="348" font-size="12.5" fill="#94A3B8">看到界面就装好了</text>
+
+  <!-- 箭头 2→3 -->
+  <line x1="580" y1="275" x2="614" y2="275" stroke="#94A3B8" stroke-width="2" marker-end="url(#tt-arrow)"/>
+
+  <!-- 步骤3 -->
+  <rect x="620" y="110" width="240" height="330" rx="14" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="740" cy="148" r="22" fill="url(#tt-step)"/>
+  <text x="740" y="155" text-anchor="middle" font-size="18" font-weight="700" fill="#FFF">3</text>
+  <text x="740" y="196" text-anchor="middle" font-size="19" font-weight="700" fill="#1E2A3B">配 Key</text>
+  <rect x="638" y="214" width="204" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="740" y="239" text-anchor="middle" font-size="14" font-family="Menlo,Consolas,monospace" fill="#3B5BC9">Settings → Models</text>
+  <text x="648" y="284" font-size="13" fill="#475569">填 DeepSeek API Key</text>
+  <text x="648" y="306" font-size="13" fill="#475569">（免费额度，不用重启）</text>
+  <text x="648" y="328" font-size="12.5" fill="#94A3B8">再选工作区文件夹</text>
+  <text x="648" y="348" font-size="12.5" fill="#94A3B8">不选输入框是灰的</text>
+
+  <!-- 箭头 3→4 -->
+  <line x1="860" y1="275" x2="894" y2="275" stroke="#94A3B8" stroke-width="2" marker-end="url(#tt-arrow)"/>
+
+  <!-- 步骤4 -->
+  <rect x="900" y="110" width="240" height="330" rx="14" fill="#FFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="1020" cy="148" r="22" fill="url(#tt-step)"/>
+  <text x="1020" y="155" text-anchor="middle" font-size="18" font-weight="700" fill="#FFF">4</text>
+  <text x="1020" y="196" text-anchor="middle" font-size="19" font-weight="700" fill="#1E2A3B">发任务</text>
+  <rect x="918" y="214" width="204" height="40" rx="8" fill="#EEF2FF"/>
+  <text x="1020" y="239" text-anchor="middle" font-size="12.5" font-family="Menlo,Consolas,monospace" fill="#3B5BC9">"总结这个项目…"</text>
+  <text x="928" y="284" font-size="13" fill="#475569">复制一句提示词进去</text>
+  <text x="928" y="306" font-size="13" fill="#475569">看它自己翻文件、跑命令</text>
+  <text x="928" y="328" font-size="12.5" fill="#94A3B8">最后吐出一份结果</text>
+  <text x="928" y="348" font-size="12.5" fill="#94A3B8">恭喜，你会用了</text>
+
+  <text x="600" y="500" text-anchor="middle" font-size="13" fill="#94A3B8">全程约 5 分钟 · 环境要求只有 Node.js · 工具免费开源</text>
+</svg>
